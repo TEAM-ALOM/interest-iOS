@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 @main
 struct iOSApp: App {
     var body: some Scene {

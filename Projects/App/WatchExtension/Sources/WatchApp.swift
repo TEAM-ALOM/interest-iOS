@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 @main
 struct WatchApp: App {
     @SceneBuilder var body: some Scene {
