@@ -20,7 +20,7 @@ let appTarget = Target(
     resources: ["iOS/Resources/**"],
     dependencies: [
         .target(name: "InterestWatch"),
-        .project(target: "Shared", path: .relativeToRoot("Projects/Shared"))
+        .project(target: "Feature", path: .relativeToRoot("Projects/Feature")),
     ],
     settings: nil
 )
@@ -50,7 +50,7 @@ let watchExtensionTarget = Target(
     sources: ["WatchExtension/Sources/**"],
     resources: ["WatchExtension/Resources/**"],
     dependencies: [
-        .project(target: "WatchShared", path: .relativeToRoot("Projects/WatchShared"))
+        .project(target: "WatchFeature", path: .relativeToRoot("Projects/WatchFeature"))
     ],
     settings: nil
 )

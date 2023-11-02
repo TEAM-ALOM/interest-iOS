@@ -8,12 +8,13 @@
 import SwiftUI
 
 import ComposableArchitecture
+import WatchFeature
 
 @main
 struct WatchApp: App {
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            Text("Watch App")
+            WatchFeatureView()
         }
     }
 }
