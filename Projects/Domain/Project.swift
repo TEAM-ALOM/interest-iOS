@@ -19,7 +19,7 @@ let domainTarget = Target(
     sources: ["Sources/**"],
     resources: ["Resources/**"],
     dependencies: [
-        .project(target: "Core", path: .relativeToRoot("Projects/Core")),
+        .project(target: "Shared", path: .relativeToRoot("Projects/Shared")),
     ],
     settings: nil
 )
