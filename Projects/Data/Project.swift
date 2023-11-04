@@ -9,11 +9,11 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import MyPlugin
 
-let featureTarget = Target(
-    name: "Feature",
+let dataTarget = Target(
+    name: "Data",
     platform: .iOS,
     product: .framework,
-    bundleId: "interest.feature",
+    bundleId: "interest.data",
     deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
     infoPlist: .default,
     sources: ["Sources/**"],
@@ -25,11 +25,11 @@ let featureTarget = Target(
 )
 
 let project = Project(
-    name: "Feature",
+    name: "Data",
     organizationName: "",
     packages: [],
     settings: nil,
     targets: [
-        featureTarget
+        dataTarget
     ]
 )

@@ -9,27 +9,27 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import MyPlugin
 
-let coreTarget = Target(
-    name: "Core",
+let presentationTarget = Target(
+    name: "Presentation",
     platform: .iOS,
     product: .framework,
-    bundleId: "interest.core",
+    bundleId: "interest.presentation",
     deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
     infoPlist: .default,
     sources: ["Sources/**"],
     resources: ["Resources/**"],
     dependencies: [
-        .project(target: "Shared", path: .relativeToRoot("Projects/Shared")),
+        .project(target: "Domain", path: .relativeToRoot("Projects/Domain")),
     ],
     settings: nil
 )
 
 let project = Project(
-    name: "Core",
+    name: "Presentation",
     organizationName: "",
     packages: [],
     settings: nil,
     targets: [
-        coreTarget
+        presentationTarget
     ]
 )

@@ -20,7 +20,8 @@ let appTarget = Target(
     resources: ["iOS/Resources/**"],
     dependencies: [
         .target(name: "InterestWatch"),
-        .project(target: "Feature", path: .relativeToRoot("Projects/Feature")),
+        .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
+        .project(target: "Data", path: .relativeToRoot("Projects/Data")),
     ],
     settings: nil
 )
