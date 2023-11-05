@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import ComposableArchitecture
 import WatchFeature
 
 @main
