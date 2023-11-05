@@ -51,7 +51,8 @@ let watchExtensionTarget = Target(
     sources: ["WatchExtension/Sources/**"],
     resources: ["WatchExtension/Resources/**"],
     dependencies: [
-        .project(target: "WatchFeature", path: .relativeToRoot("Projects/WatchFeature"))
+        .project(target: "WatchPresentation", path: .relativeToRoot("Projects/WatchPresentation")),
+        .project(target: "WatchData", path: .relativeToRoot("Projects/WatchData"))
     ],
     settings: nil
 )

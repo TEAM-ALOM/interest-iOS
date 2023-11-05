@@ -19,7 +19,7 @@ let watchDomainTarget = Target(
     sources: ["Sources/**"],
     resources: ["Resources/**"],
     dependencies: [
-        .project(target: "WatchCore", path: .relativeToRoot("Projects/WatchCore")),
+        .project(target: "WatchShared", path: .relativeToRoot("Projects/WatchShared")),
     ],
     settings: nil
 )
