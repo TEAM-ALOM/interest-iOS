@@ -29,12 +29,13 @@ extension IntervalRouter {
         case interval
         case intervalDetail
         
+        @ViewBuilder
         func nextView(router: IntervalRouter) -> some View {
             switch self {
             case .interval:
-                return AnyView(IntervalScreen(router: router))
+                IntervalScreen(router: router)
             case .intervalDetail:
-                return AnyView(IntervalDetailScreen(router: router))
+                IntervalDetailScreen(router: router)
             }
         }
     }

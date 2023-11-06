@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-
-import WatchFeature
+import WatchPresentation
 
 @main
 struct WatchApp: App {

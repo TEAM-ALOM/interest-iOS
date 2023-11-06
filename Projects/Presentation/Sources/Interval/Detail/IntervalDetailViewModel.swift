@@ -8,7 +8,7 @@
 import SwiftUI
 
 class IntervalDetailViewModel: ObservableObject {
-    private weak var router: IntervalRouter?
+    private var router: IntervalRouter
     
     init(router: IntervalRouter) {
         self.router = router
