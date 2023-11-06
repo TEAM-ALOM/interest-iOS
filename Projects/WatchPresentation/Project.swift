@@ -1,5 +1,5 @@
 //
-//  WatchCore.swift
+//  Project.swift
 //  ProjectDescriptionHelpers
 //
 //  Created by 송영모 on 11/2/23.
@@ -9,27 +9,27 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import MyPlugin
 
-let watchCoreTarget = Target(
-    name: "WatchCore",
+let watchPresentationTarget = Target(
+    name: "WatchPresentation",
     platform: .watchOS,
     product: .framework,
-    bundleId: "interest.watch.extension.core",
+    bundleId: "interest.watch.extension.presentation",
     deploymentTarget: .watchOS(targetVersion: "10.0"),
     infoPlist: .default,
     sources: ["Sources/**"],
     resources: ["Resources/**"],
     dependencies: [
-        .project(target: "WatchShared", path: .relativeToRoot("Projects/WatchShared")),
+        .project(target: "WatchDomain", path: .relativeToRoot("Projects/WatchDomain")),
     ],
     settings: nil
 )
 
 let project = Project(
-    name: "WatchCore",
+    name: "WatchPresentation",
     organizationName: "",
     packages: [],
     settings: nil,
     targets: [
-        watchCoreTarget
+        watchPresentationTarget
     ]
 )

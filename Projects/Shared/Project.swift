@@ -33,7 +33,6 @@ let thirdPartyLibTarget = Target(
     infoPlist: .default,
     sources: ["ThirdPartyLib/Sources/**"],
     dependencies: [
-        .external(name: "ComposableArchitecture")
     ],
     settings: nil
 )

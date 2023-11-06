@@ -6,9 +6,7 @@
 //
 
 import SwiftUI
-
-import ComposableArchitecture
-import WatchFeature
+import WatchPresentation
 
 @main
 struct WatchApp: App {
