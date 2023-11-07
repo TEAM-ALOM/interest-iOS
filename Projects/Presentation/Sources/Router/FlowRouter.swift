@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-protocol FlowRouter: Hashable {
+public protocol FlowRouter: Hashable {
     associatedtype PushRoute: Hashable
     associatedtype NextScreen: View
 
@@ -16,13 +16,13 @@ protocol FlowRouter: Hashable {
 
     var navigationPath: NavigationPath { get set }
 
-    var nextTransitionRoute: PushRoute { get }
+    var nextTransitionRoute: PushRoute { get set }
 
     func triggerScreenTransition(route: PushRoute)
     func nextTransitionScreen() -> NextScreen
 }
 
-extension FlowRouter {
+public extension FlowRouter {
     static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
     }

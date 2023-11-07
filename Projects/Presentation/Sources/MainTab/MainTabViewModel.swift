@@ -6,3 +6,15 @@
 //
 
 import Foundation
+import SwiftUI
+
+class MainTabViewModel: ObservableObject {
+    @Published
+    var isBottomSheetPresent = false
+    
+    private var router: MainTabRouter
+    
+    init(router: MainTabRouter) {
+        self.router = router
+    }
+}
