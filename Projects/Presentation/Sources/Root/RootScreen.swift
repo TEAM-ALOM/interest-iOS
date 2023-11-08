@@ -21,7 +21,7 @@ public struct RootScreen: View {
     }
 }
 
-//intervalScreen
+//빌드를 통해 intervalScreen을 보기 위한 rootScreen 코드
 //
 //public struct RootScreen: View {
 //    @StateObject var intervalRouter: IntervalRouter = .init()

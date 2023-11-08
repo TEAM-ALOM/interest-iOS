@@ -15,7 +15,7 @@ public final class MainTabRouter: ObservableObject, FlowRouter {
     
     @Published public var navigationPath: NavigationPath = .init()
     
-    public var nextTransitionRoute: PushRoute = .closeError
+    public var nextTransitionRoute: PushRoute = .open
     
     public func triggerScreenTransition(route: PushRoute) {
         navigationPath.append(route)
@@ -30,14 +30,11 @@ public final class MainTabRouter: ObservableObject, FlowRouter {
 public extension MainTabRouter {
     enum PushRoute: Hashable {
         case open
-        case closeError
         
         func nextView(router: MainTabRouter) -> some View {
             switch self {
             case .open:
                 return MainTabScreen(router: MainTabRouter())
-            case .closeError:
-                fatalError("no set next transition screen.")
             }
         }
     }
