@@ -7,16 +7,35 @@
 
 import SwiftUI
 
-struct RootScreen: View {
-    @StateObject var intervalRouter: IntervalRouter = .init()
+public struct RootScreen: View {
+    @StateObject var mainTabRouter: MainTabRouter = .init()
     
-    var body: some View {
-        NavigationStack(path: $intervalRouter.navigationPath) {
-            IntervalScreen(router: intervalRouter)
+    public init(mainTabRouter: MainTabRouter) {
+        self._mainTabRouter = .init(wrappedValue: mainTabRouter)
+    }
+    
+    public var body: some View {
+        NavigationStack(path: $mainTabRouter.navigationPath) {
+            MainTabScreen(router: mainTabRouter)
         }
     }
 }
 
-#Preview {
-    RootScreen(intervalRouter: IntervalRouter())
-}
+//빌드를 통해 intervalScreen을 보기 위한 rootScreen 코드
+//
+//public struct RootScreen: View {
+//    @StateObject var intervalRouter: IntervalRouter = .init()
+//    
+//    public init(intervalRouter: IntervalRouter) {
+//        self._intervalRouter = .init(wrappedValue: intervalRouter)
+//    }
+//    
+//    public var body: some View {
+//        NavigationStack(path: $intervalRouter.navigationPath) {
+//            IntervalScreen(router: intervalRouter)
+//        }
+//    }
+//}
+//#Preview {
+//    RootScreen(intervalRouter: IntervalRouter())
+//}

@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Presentation
 
 @main
 struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            Text("iOS App")
+            RootScreen(mainTabRouter: .init())
         }
     }
 }
