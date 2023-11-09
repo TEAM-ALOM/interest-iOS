@@ -6,3 +6,12 @@
 //
 
 import Foundation
+import SwiftUI
+
+class IntervalListViewModel: ObservableObject {
+    private var router: IntervalRouter
+    
+    init(router: IntervalRouter) {
+        self.router = router
+    }
+}
