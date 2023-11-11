@@ -1,15 +1,17 @@
 //
-//  EditIntervalViewModel.swift
+//  AddIntervalViewModel.swift
 //  Presentation
 //
-//  Created by 송영모 on 11/3/23.
+//  Created by 민지은 on 2023/11/09.
 //
 
 import Foundation
 import SwiftUI
 
-class EditIntervalViewModel: ObservableObject {
+class AddIntervalViewModel: ObservableObject {
     private var router: IntervalRouter
+    
+    @Published var date = Date()
     
     init(router: IntervalRouter) {
         self.router = router

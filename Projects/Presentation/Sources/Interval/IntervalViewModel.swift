@@ -9,6 +9,9 @@ import SwiftUI
 
 @MainActor
 class IntervalViewModel: ObservableObject {
+    @Published
+    var isBottomSheetPresent = false
+    
     private var router: IntervalRouter
     
     init(router: IntervalRouter) {

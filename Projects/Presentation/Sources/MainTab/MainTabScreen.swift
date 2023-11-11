@@ -14,6 +14,9 @@ struct MainTabScreen: View {
     var bottomSheetFlowRouter = BottomSheetRouter()
     
     @StateObject
+    var intervalRouter = IntervalRouter()
+    
+    @StateObject
     var viewModel: MainTabViewModel
     
     init(router: MainTabRouter) {
@@ -21,17 +24,21 @@ struct MainTabScreen: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            
-            Button("Open") {
-                viewModel.isBottomSheetPresent = true
-            }
-        }
-        .padding()
-        .sheet(isPresented: $viewModel.isBottomSheetPresent){
-            NavigationStack(path: $bottomSheetFlowRouter.navigationPath) {
-                Text("Bottom Sheet")
-            }
-        }
+        
+        IntervalScreen(router: intervalRouter)
+        
+// Open버튼을 통해 bottomSheet가 올라오는 화면 임시 주석 처리
+//        VStack(alignment: .leading) {
+//            
+//            Button("Open") {
+//                viewModel.isBottomSheetPresent = true
+//            }
+//        }
+//        .padding()
+//        .sheet(isPresented: $viewModel.isBottomSheetPresent){
+//            NavigationStack(path: $bottomSheetFlowRouter.navigationPath) {
+//                Text("Bottom Sheet")
+//            }
+//        }
     }
 }

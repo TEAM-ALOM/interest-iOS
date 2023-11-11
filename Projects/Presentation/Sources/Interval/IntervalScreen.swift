@@ -14,6 +14,9 @@ struct IntervalScreen: View {
         self._viewModel = StateObject(wrappedValue: IntervalViewModel(router: router))
     }
     
+    @StateObject
+    var bottomSheetFlowRouter = BottomSheetRouter()
+    
     var body: some View {
         VStack {
             Button(action: {
@@ -27,6 +30,18 @@ struct IntervalScreen: View {
         .navigationDestination(for: IntervalRouter.PushRoute.self) { _ in
             viewModel.nextScreen()
         }
+        .navigationBarItems(leading:
+            Button(action: {
+                viewModel.isBottomSheetPresent = true
+            }, label: {
+                Image(systemName: "plus")
+                .foregroundStyle(.blue)
+            })
+            .sheet(isPresented: $viewModel.isBottomSheetPresent){
+                NavigationStack(path: $bottomSheetFlowRouter.navigationPath) {
+                    AddIntervalScreen(router: IntervalRouter())
+                }
+            })
     }
 }
 
