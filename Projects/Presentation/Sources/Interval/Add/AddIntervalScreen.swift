@@ -9,18 +9,18 @@ import Foundation
 import SwiftUI
 
 struct AddIntervalScreen: View {
-    @ObservedObject var viewModel: AddIntervalViewModel
+    @StateObject var viewModel: AddIntervalViewModel
     
     init(router: IntervalRouter) {
-        self._viewModel = ObservedObject(wrappedValue: AddIntervalViewModel(router: router))
+        self._viewModel = StateObject(wrappedValue: AddIntervalViewModel(router: router))
     }
-    
-    @State var date = Date()
     
     var body: some View {
         Text("인터벌 추가 페이지")
         
-        DatePickerView(viewModel: DatePickerViewModel(model: DatePickerModel(selectedDate: Date())))
+        DatePicker("Select Date", selection: $viewModel.date, displayedComponents: [.date, .hourAndMinute])
+            .datePickerStyle(WheelDatePickerStyle())
+            .labelsHidden()
     }
     
 }

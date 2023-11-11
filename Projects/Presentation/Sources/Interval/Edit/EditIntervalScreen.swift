@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 struct EditIntervalScreen: View {
-    @ObservedObject var viewModel: EditIntervalViewModel
+    @StateObject var viewModel: EditIntervalViewModel
     
     init(router: IntervalRouter) {
-        self._viewModel = ObservedObject(wrappedValue: EditIntervalViewModel(router: router))
+        self._viewModel = StateObject(wrappedValue: EditIntervalViewModel(router: router))
     }
     
     var body: some View {
