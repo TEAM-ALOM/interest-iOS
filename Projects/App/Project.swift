@@ -15,7 +15,7 @@ let appTarget = Target(
     product: .app,
     bundleId: "interest.app",
     deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
-    infoPlist: .default,
+    infoPlist: .file(path: .relativeToRoot("Projects/App/iOS/Resources/InterestApp-Info.plist")),
     sources: ["iOS/Sources/**"],
     resources: ["iOS/Resources/**"],
     dependencies: [
@@ -26,13 +26,14 @@ let appTarget = Target(
     settings: nil
 )
 
+
 let watchTarget = Target(
     name: "InterestWatch",
     platform: .watchOS,
     product: .watch2App,
     bundleId: "interest.app.watch",
     deploymentTarget: .watchOS(targetVersion: "10.0"),
-    infoPlist: .default,
+    infoPlist: .file(path: .relativeToRoot("Projects/App/WatchExtension/Resources/InterestWatch-Info.plist")),
     sources: nil,
     resources: nil,
     dependencies: [
@@ -47,7 +48,7 @@ let watchExtensionTarget = Target(
     product: .watch2Extension,
     bundleId: "interest.app.watch.extension",
     deploymentTarget: .watchOS(targetVersion: "10.0"),
-    infoPlist: .default,
+    infoPlist: .file(path: .relativeToRoot("Projects/App/WatchExtension/Resources/InterestWatchExtension-Info.plist")),
     sources: ["WatchExtension/Sources/**"],
     resources: ["WatchExtension/Resources/**"],
     dependencies: [
