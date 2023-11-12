@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 public struct IntervalInfoCellView: View {
-    public var item: IntervalInfoCellItem
+    public var intervalItem: IntervalItem
     
-    init(item: IntervalInfoCellItem) {
-        self.item = item
+    init(intervalItem: IntervalItem) {
+        self.intervalItem = intervalItem
     }
     
     public var body: some View {
@@ -27,7 +27,7 @@ public struct IntervalInfoCellView: View {
         VStack(alignment: .leading) {
             Image(systemName: "figure.pool.swim")
             
-            Text(self.item.title)
+            Text(self.intervalItem.title)
         }
     }
 }

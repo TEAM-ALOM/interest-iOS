@@ -12,7 +12,7 @@ struct IntervalListScreen: View {
     @StateObject var viewModel: IntervalListViewModel
     
     init(router: IntervalRouter) {
-        self._viewModel = .init(wrappedValue: IntervalListViewModel(router: router))
+        self._viewModel = .init(wrappedValue: IntervalListViewModel())
     }
     
     var body: some View {

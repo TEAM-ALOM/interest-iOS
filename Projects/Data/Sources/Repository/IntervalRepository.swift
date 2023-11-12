@@ -6,3 +6,19 @@
 //
 
 import Foundation
+import Domain
+
+final class IntervalRepository: IntervalRepositoryInterface {
+    private let dataSource: IntervalDataSourceInterface
+    
+    init(dataSource: IntervalDataSourceInterface) {
+        self.dataSource = dataSource
+    }
+    
+    func fetchIntervals() -> [IntervalEntity] {
+        return dataSource.fetchIntervals()
+            .map {
+                $0.toEntity()
+            }
+    }
+}

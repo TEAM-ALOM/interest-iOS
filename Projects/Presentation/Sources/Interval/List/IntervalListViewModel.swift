@@ -9,19 +9,17 @@ import Foundation
 import SwiftUI
 
 class IntervalListViewModel: ObservableObject {
-    private var router: IntervalRouter
+    weak var router: IntervalRouter?
     
     @Published var isBottomSheetPresent = false
     
-    init(router: IntervalRouter) {
-        self.router = router
-    }
+    init() { }
     
     func triggerTransition(route: IntervalRouter.PushRoute) {
-        router.triggerScreenTransition(route: route)
+        router?.triggerScreenTransition(route: route)
     }
     
     func nextScreen() -> some View {
-        router.nextTransitionScreen()
+        router?.nextTransitionScreen()
     }
 }

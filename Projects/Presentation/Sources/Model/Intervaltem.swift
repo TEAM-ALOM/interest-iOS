@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct IntervalInfoCellItem: Identifiable {
+public struct IntervalItem: Identifiable {
     public var id: UUID = .init()
     
     public var title: String

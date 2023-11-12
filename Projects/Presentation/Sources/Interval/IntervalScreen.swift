@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 struct IntervalScreen: View {
     @StateObject private var intervalRouter: IntervalRouter
@@ -13,9 +14,12 @@ struct IntervalScreen: View {
     
     private let intervalListScreen: IntervalListScreen
     
-    init(router: IntervalRouter) {
+    init(
+        router: IntervalRouter,
+        viewModel: IntervalViewModel
+    ) {
         self._intervalRouter = .init(wrappedValue: router)
-        self._viewModel = .init(wrappedValue: IntervalViewModel(router: router))
+        self._viewModel = .init(wrappedValue: viewModel)
         
         self.intervalListScreen = .init(router: router)
     }
@@ -43,8 +47,8 @@ struct IntervalScreen: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        IntervalScreen(router: .init())
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        IntervalScreen(router: .init(), viewModel: .init(router: <#T##IntervalRouter#>, intervalUseCase: <#T##IntervalUseCaseInterface#>))
+//    }
+//}
