@@ -12,7 +12,7 @@ import Presentation
 struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            RootScreen(mainTabRouter: .init())
+            RootScreen()
         }
     }
 }

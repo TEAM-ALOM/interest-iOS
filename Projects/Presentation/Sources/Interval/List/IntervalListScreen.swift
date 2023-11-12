@@ -9,13 +9,19 @@ import Foundation
 import SwiftUI
 
 struct IntervalListScreen: View {
-    @ObservedObject var viewModel: IntervalListViewModel
+    @StateObject var viewModel: IntervalListViewModel
     
     init(router: IntervalRouter) {
-        self._viewModel = ObservedObject(wrappedValue: IntervalListViewModel(router: router))
+        self._viewModel = .init(wrappedValue: IntervalListViewModel(router: router))
     }
     
     var body: some View {
-        Text("인터벌 리스트 페이지")
+        ScrollView {
+            Button(action: {
+                viewModel.triggerTransition(route: .intervalDetail)
+            }, label: {
+                Text("인터벌 상세페이지 가기")
+            })
+        }
     }
 }

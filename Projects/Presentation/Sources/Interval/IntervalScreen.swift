@@ -8,45 +8,43 @@
 import SwiftUI
 
 struct IntervalScreen: View {
+    @StateObject private var intervalRouter: IntervalRouter
     @StateObject private var viewModel: IntervalViewModel
     
+    private let intervalListScreen: IntervalListScreen
+    
     init(router: IntervalRouter) {
-        self._viewModel = StateObject(wrappedValue: IntervalViewModel(router: router))
+        self._intervalRouter = .init(wrappedValue: router)
+        self._viewModel = .init(wrappedValue: IntervalViewModel(router: router))
+        
+        self.intervalListScreen = .init(router: router)
     }
     
-    @StateObject
-    var bottomSheetFlowRouter = BottomSheetRouter()
-    
     var body: some View {
-        VStack {
-            Button(action: {
-                viewModel.triggerTransition(route: .intervalDetail)
-            }, label: {
-                Text("인터벌 상세페이지 가기")
-            })
-        }
-        .navigationTitle("인터레스트")
-        .navigationBarTitleDisplayMode(.large)
-        .navigationDestination(for: IntervalRouter.PushRoute.self) { _ in
-            viewModel.nextScreen()
-        }
-        .navigationBarItems(leading:
-            Button(action: {
-                viewModel.isBottomSheetPresent = true
-            }, label: {
-                Image(systemName: "plus")
-                .foregroundStyle(.blue)
-            })
-            .sheet(isPresented: $viewModel.isBottomSheetPresent){
-                NavigationStack(path: $bottomSheetFlowRouter.navigationPath) {
+        NavigationStack(path: $intervalRouter.navigationPath) {
+            intervalListScreen
+                .navigationTitle("인터레스트")
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            viewModel.isBottomSheetPresent = true
+                        }, label: {
+                            Image(systemName: "plus")
+                        })
+                    }
+                }
+                .navigationDestination(for: IntervalRouter.PushRoute.self) { _ in
+                    viewModel.nextScreen()
+                }
+                .sheet(isPresented: $viewModel.isBottomSheetPresent){
                     AddIntervalScreen(router: IntervalRouter())
                 }
-            })
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        IntervalScreen(router: IntervalRouter())
+        IntervalScreen(router: .init())
     }
 }
