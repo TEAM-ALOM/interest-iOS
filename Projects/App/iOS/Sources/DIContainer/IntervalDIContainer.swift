@@ -11,13 +11,6 @@ import Presentation
 import Domain
 import Data
 
-public protocol IntervalDIContainerInterface {
-    var intervalRouter: IntervalRouter { get set }
-    
-    func intervalScreenDependencies() -> IntervalViewModel
-    func intervalListDependencies() -> IntervalListViewModel
-}
-
 public final class IntervalDIContainer: IntervalDIContainerInterface {
     public var intervalRouter: IntervalRouter = .init()
     

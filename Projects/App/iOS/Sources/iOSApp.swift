@@ -9,10 +9,16 @@ import SwiftUI
 import Presentation
 
 @main
-struct iOSApp: App {
-    var body: some Scene {
+public struct iOSApp: App {
+    let compositionRoot: CompositionRootInterface
+    
+    public init() {
+        self.compositionRoot = CompositionRoot()
+    }
+    
+    public var body: some Scene {
         WindowGroup {
-            IntervalScreen(intervalDIContainer: IntervalDIContainer())
+            IntervalScreen(intervalDIContainer: compositionRoot.intervalDIContainer)
         }
     }
 }

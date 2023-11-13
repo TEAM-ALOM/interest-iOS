@@ -6,9 +6,7 @@
 //
 
 import SwiftUI
-import Presentation
 import Domain
-import Data
 
 public struct IntervalScreen: View {
     @StateObject private var router: IntervalRouter
@@ -45,11 +43,5 @@ public struct IntervalScreen: View {
                     AddIntervalScreen(router: IntervalRouter())
                 }
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        IntervalScreen(intervalDIContainer: IntervalDIContainer())
     }
 }
