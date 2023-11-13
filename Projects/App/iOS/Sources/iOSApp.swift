@@ -12,7 +12,7 @@ import Presentation
 struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            RootScreen()
+            IntervalScreen(intervalDIContainer: IntervalDIContainer())
         }
     }
 }

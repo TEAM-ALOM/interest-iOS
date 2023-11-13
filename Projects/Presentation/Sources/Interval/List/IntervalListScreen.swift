@@ -8,17 +8,24 @@
 import Foundation
 import SwiftUI
 
-struct IntervalListScreen: View {
+import Domain
+
+public struct IntervalListScreen: View {
     @StateObject var viewModel: IntervalListViewModel
     
-    init(router: IntervalRouter) {
-        self._viewModel = .init(wrappedValue: IntervalListViewModel())
+    public init(router: IntervalRouter, intervalUseCase: IntervalUseCaseInterface) {
+        self._viewModel = .init(
+            wrappedValue: IntervalListViewModelWithRouter(
+                router: router,
+                intervalUseCase: intervalUseCase
+            )
+        )
     }
     
-    var body: some View {
+    public var body: some View {
         ScrollView {
             Button(action: {
-                viewModel.triggerTransition(route: .intervalDetail)
+                viewModel.tapIntervalDetailPageButton()
             }, label: {
                 Text("인터벌 상세페이지 가기")
             })

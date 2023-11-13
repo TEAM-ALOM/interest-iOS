@@ -12,14 +12,14 @@ public protocol IntervalUseCaseInterface {
     func fetchIntervals() -> [IntervalEntity]
 }
 
-final class IntervalUseCase: IntervalUseCaseInterface {
+public final class IntervalUseCase: IntervalUseCaseInterface {
     private let intervalRepository: IntervalRepositoryInterface
     
-    init(intervalRepository: IntervalRepositoryInterface) {
+    public init(intervalRepository: IntervalRepositoryInterface) {
         self.intervalRepository = intervalRepository
     }
     
-    func fetchIntervals() -> [IntervalEntity] {
+    public func fetchIntervals() -> [IntervalEntity] {
         return intervalRepository.fetchIntervals()
     }
 }

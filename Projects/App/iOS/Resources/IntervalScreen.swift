@@ -6,26 +6,28 @@
 //
 
 import SwiftUI
+import Presentation
 import Domain
+import Data
 
-struct IntervalScreen: View {
-    @StateObject private var intervalRouter: IntervalRouter
+public struct IntervalScreen: View {
+//    @StateObject private var intervalRouter: IntervalRouter
     @StateObject private var viewModel: IntervalViewModel
     
     private let intervalListScreen: IntervalListScreen
     
-    init(
-        router: IntervalRouter,
-        viewModel: IntervalViewModel
+    public init(
+        intervalDIContainer: IntervalDIContainerInterface
     ) {
-        self._intervalRouter = .init(wrappedValue: router)
-        self._viewModel = .init(wrappedValue: viewModel)
+        self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies())
+//        self._intervalRouter = .init(wrappedValue: router)
+//        self._viewModel = .init(wrappedValue: viewModel)
         
-        self.intervalListScreen = .init(router: router)
+        self.intervalListScreen = .init(router: .init(), intervalUseCase: IntervalUseCase(intervalRepository: IntervalRepository(dataSource: IntervalDataSource())))
     }
     
-    var body: some View {
-        NavigationStack(path: $intervalRouter.navigationPath) {
+    public var body: some View {
+        NavigationStack(path: $viewModel.router.navigationPath) {
             intervalListScreen
                 .navigationTitle("인터레스트")
                 .toolbar {

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Domain
+
 public final class IntervalRouter: ObservableObject, FlowRouter {
     public let id = UUID()
     
@@ -14,7 +16,7 @@ public final class IntervalRouter: ObservableObject, FlowRouter {
     
     @Published public var navigationPath: NavigationPath = .init()
     
-    public var nextTransitionRoute: PushRoute = .interval
+    public var nextTransitionRoute: PushRoute = .intervalDetail
     
     public func triggerScreenTransition(route: PushRoute) {
         navigationPath.append(route)
@@ -28,14 +30,11 @@ public final class IntervalRouter: ObservableObject, FlowRouter {
 
 public extension IntervalRouter {
     enum PushRoute: Hashable {
-        case interval
         case intervalDetail
        
         @ViewBuilder
         func nextView(router: IntervalRouter) -> some View {
             switch self {
-            case .interval:
-                IntervalScreen(router: router)
             case .intervalDetail:
                 IntervalDetailScreen(router: router)
             }

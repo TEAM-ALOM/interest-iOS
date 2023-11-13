@@ -8,14 +8,13 @@
 import SwiftUI
 import Domain
 
-@MainActor
-class IntervalViewModel: ObservableObject {
-    private let router: IntervalRouter
+public class IntervalViewModel: ObservableObject {
+    public var router: IntervalRouter
     private let intervalUseCase: IntervalUseCaseInterface
     
-    @Published var isBottomSheetPresent = false
+    @Published public var isBottomSheetPresent = false
     
-    init(
+    public init(
         router: IntervalRouter,
         intervalUseCase: IntervalUseCaseInterface
     ) {
@@ -27,7 +26,7 @@ class IntervalViewModel: ObservableObject {
         router.triggerScreenTransition(route: route)
     }
     
-    func nextScreen() -> some View {
+    public func nextScreen() -> some View {
         router.nextTransitionScreen()
     }
 }

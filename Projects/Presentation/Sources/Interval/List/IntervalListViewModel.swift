@@ -8,18 +8,49 @@
 import Foundation
 import SwiftUI
 
-class IntervalListViewModel: ObservableObject {
-    weak var router: IntervalRouter?
+import Domain
+
+class IntervalListViewModelWithRouter: IntervalListViewModel {
+    private var router: IntervalRouter
     
-    @Published var isBottomSheetPresent = false
-    
-    init() { }
-    
-    func triggerTransition(route: IntervalRouter.PushRoute) {
-        router?.triggerScreenTransition(route: route)
+    init(
+        router: IntervalRouter,
+        intervalUseCase: IntervalUseCaseInterface
+    ) {
+        self.router = router
+        super.init(intervalUseCase: intervalUseCase)
     }
     
-    func nextScreen() -> some View {
-        router?.nextTransitionScreen()
+    override func tapIntervalDetailPageButton() {
+        router.triggerScreenTransition(route: .intervalDetail)
     }
+}
+
+
+public class IntervalListViewModel: ObservableObject {
+    private let intervalUseCase: IntervalUseCaseInterface
+    
+    @Published var intervalItems: [IntervalItem] = []
+    
+    public init(intervalUseCase: IntervalUseCaseInterface) {
+        self.intervalUseCase = intervalUseCase
+    }
+    
+    func fetchIntervalItems() {
+        intervalItems = intervalUseCase.fetchIntervals().map {
+            IntervalModelMapper.toPresentationModel(entity: $0)
+        }
+    }
+    
+    func tapIntervalDetailPageButton() {
+        
+    }
+    
+//    func triggerTransition(route: IntervalRouter.PushRoute) {
+//        router?.triggerScreenTransition(route: route)
+//    }
+//    
+//    func nextScreen() -> some View {
+//        router?.nextTransitionScreen()
+//    }
 }
