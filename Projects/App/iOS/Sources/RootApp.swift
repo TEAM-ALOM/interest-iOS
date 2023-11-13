@@ -9,7 +9,7 @@ import SwiftUI
 import Presentation
 
 @main
-public struct iOSApp: App {
+public struct RootApp: App {
     let compositionRoot: CompositionRootInterface
     
     public init() {
