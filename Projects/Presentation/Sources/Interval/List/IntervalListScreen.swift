@@ -13,13 +13,8 @@ import Domain
 public struct IntervalListScreen: View {
     @StateObject var viewModel: IntervalListViewModel
     
-    public init(router: IntervalRouter, intervalUseCase: IntervalUseCaseInterface) {
-        self._viewModel = .init(
-            wrappedValue: IntervalListViewModelWithRouter(
-                router: router,
-                intervalUseCase: intervalUseCase
-            )
-        )
+    public init(viewModel: IntervalListViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
     public var body: some View {

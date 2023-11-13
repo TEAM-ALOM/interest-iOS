@@ -10,10 +10,10 @@ import SwiftUI
 
 import Domain
 
-class IntervalListViewModelWithRouter: IntervalListViewModel {
+public class IntervalListViewModelWithRouter: IntervalListViewModel {
     private var router: IntervalRouter
     
-    init(
+    public init(
         router: IntervalRouter,
         intervalUseCase: IntervalUseCaseInterface
     ) {
@@ -22,6 +22,7 @@ class IntervalListViewModelWithRouter: IntervalListViewModel {
     }
     
     override func tapIntervalDetailPageButton() {
+        super.tapIntervalDetailPageButton()
         router.triggerScreenTransition(route: .intervalDetail)
     }
 }
@@ -42,15 +43,5 @@ public class IntervalListViewModel: ObservableObject {
         }
     }
     
-    func tapIntervalDetailPageButton() {
-        
-    }
-    
-//    func triggerTransition(route: IntervalRouter.PushRoute) {
-//        router?.triggerScreenTransition(route: route)
-//    }
-//    
-//    func nextScreen() -> some View {
-//        router?.nextTransitionScreen()
-//    }
+    func tapIntervalDetailPageButton() { }
 }

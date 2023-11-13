@@ -9,7 +9,7 @@ import SwiftUI
 import Domain
 
 public class IntervalViewModel: ObservableObject {
-    public var router: IntervalRouter
+    private let router: IntervalRouter
     private let intervalUseCase: IntervalUseCaseInterface
     
     @Published public var isBottomSheetPresent = false

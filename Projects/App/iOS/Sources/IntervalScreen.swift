@@ -11,7 +11,7 @@ import Domain
 import Data
 
 public struct IntervalScreen: View {
-//    @StateObject private var intervalRouter: IntervalRouter
+    @StateObject private var router: IntervalRouter
     @StateObject private var viewModel: IntervalViewModel
     
     private let intervalListScreen: IntervalListScreen
@@ -19,15 +19,14 @@ public struct IntervalScreen: View {
     public init(
         intervalDIContainer: IntervalDIContainerInterface
     ) {
+        self._router = .init(wrappedValue: intervalDIContainer.intervalRouter)
         self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies())
-//        self._intervalRouter = .init(wrappedValue: router)
-//        self._viewModel = .init(wrappedValue: viewModel)
         
-        self.intervalListScreen = .init(router: .init(), intervalUseCase: IntervalUseCase(intervalRepository: IntervalRepository(dataSource: IntervalDataSource())))
+        self.intervalListScreen = .init(viewModel: intervalDIContainer.intervalListDependencies())
     }
     
     public var body: some View {
-        NavigationStack(path: $viewModel.router.navigationPath) {
+        NavigationStack(path: $router.navigationPath) {
             intervalListScreen
                 .navigationTitle("인터레스트")
                 .toolbar {
@@ -49,8 +48,8 @@ public struct IntervalScreen: View {
     }
 }
 
-//#Preview {
-//    NavigationStack {
-//        IntervalScreen(router: .init(), viewModel: .init(router: <#T##IntervalRouter#>, intervalUseCase: <#T##IntervalUseCaseInterface#>))
-//    }
-//}
+#Preview {
+    NavigationStack {
+        IntervalScreen(intervalDIContainer: IntervalDIContainer())
+    }
+}
