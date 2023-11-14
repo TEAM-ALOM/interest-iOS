@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct AddIntervalScreen: View {
+public struct AddIntervalScreen: View {
     @StateObject var viewModel: AddIntervalViewModel
     
-    init(router: IntervalRouter) {
+    public init(router: IntervalRouter) {
         self._viewModel = StateObject(wrappedValue: AddIntervalViewModel(router: router))
     }
     
-    var body: some View {
+    public var body: some View {
         Text("인터벌 추가 페이지")
         
         DatePicker("Select Date", selection: $viewModel.date, displayedComponents: [.date, .hourAndMinute])

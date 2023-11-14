@@ -8,14 +8,22 @@
 import Foundation
 import SwiftUI
 
-struct IntervalListScreen: View {
-    @ObservedObject var viewModel: IntervalListViewModel
+import Domain
+
+public struct IntervalListScreen: View {
+    @StateObject var viewModel: IntervalListViewModel
     
-    init(router: IntervalRouter) {
-        self._viewModel = ObservedObject(wrappedValue: IntervalListViewModel(router: router))
+    public init(viewModel: IntervalListViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
-    var body: some View {
-        Text("인터벌 리스트 페이지")
+    public var body: some View {
+        ScrollView {
+            Button(action: {
+                viewModel.tapIntervalDetailPageButton()
+            }, label: {
+                Text("인터벌 상세페이지 가기")
+            })
+        }
     }
 }

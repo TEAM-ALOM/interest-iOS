@@ -8,10 +8,40 @@
 import Foundation
 import SwiftUI
 
-class IntervalListViewModel: ObservableObject {
+import Domain
+
+public class IntervalListViewModelWithRouter: IntervalListViewModel {
     private var router: IntervalRouter
     
-    init(router: IntervalRouter) {
+    public init(
+        router: IntervalRouter,
+        intervalUseCase: IntervalUseCaseInterface
+    ) {
         self.router = router
+        super.init(intervalUseCase: intervalUseCase)
     }
+    
+    override func tapIntervalDetailPageButton() {
+        super.tapIntervalDetailPageButton()
+        router.triggerScreenTransition(route: .intervalDetail)
+    }
+}
+
+
+public class IntervalListViewModel: ObservableObject {
+    private let intervalUseCase: IntervalUseCaseInterface
+    
+    @Published var intervalItems: [IntervalItem] = []
+    
+    public init(intervalUseCase: IntervalUseCaseInterface) {
+        self.intervalUseCase = intervalUseCase
+    }
+    
+    func fetchIntervalItems() {
+        intervalItems = intervalUseCase.fetchIntervals().map {
+            IntervalModelMapper.toPresentationModel(entity: $0)
+        }
+    }
+    
+    func tapIntervalDetailPageButton() { }
 }
