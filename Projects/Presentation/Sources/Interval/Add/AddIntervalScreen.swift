@@ -11,8 +11,8 @@ import SwiftUI
 public struct AddIntervalScreen: View {
     @StateObject var viewModel: AddIntervalViewModel
     
-    public init(router: IntervalRouter) {
-        self._viewModel = StateObject(wrappedValue: AddIntervalViewModel(router: router))
+    public init(viewModel: AddIntervalViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
@@ -23,8 +23,4 @@ public struct AddIntervalScreen: View {
             .labelsHidden()
     }
     
-}
-
-#Preview {
-    AddIntervalScreen(router: IntervalRouter())
 }

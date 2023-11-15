@@ -9,11 +9,6 @@ import Foundation
 import SwiftUI
 
 class EditIntervalViewModel: ObservableObject {
-    private var router: IntervalRouter
-    
-    init(router: IntervalRouter) {
-        self.router = router
-    }
-
+    init() {}
 }
 

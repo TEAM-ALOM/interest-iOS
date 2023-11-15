@@ -32,6 +32,7 @@ public class IntervalListViewModel: ObservableObject {
     private let intervalUseCase: IntervalUseCaseInterface
     
     @Published var intervalItems: [IntervalItem] = []
+    @Published var showEditIntervalView: Bool = false
     
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
@@ -44,4 +45,8 @@ public class IntervalListViewModel: ObservableObject {
     }
     
     func tapIntervalDetailPageButton() { }
+    
+    func tapIntervalEditButton() {
+        showEditIntervalView = true
+    }
 }
