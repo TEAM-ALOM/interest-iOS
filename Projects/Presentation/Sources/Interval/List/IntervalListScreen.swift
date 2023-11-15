@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 import Domain
+import SharedDesignSystem
 
 public struct IntervalListScreen: View {
     @StateObject var viewModel: IntervalListViewModel
