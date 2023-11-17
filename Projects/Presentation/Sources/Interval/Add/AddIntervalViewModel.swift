@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 
-class AddIntervalViewModel: ObservableObject {
+public class AddIntervalViewModel: ObservableObject {
     private var router: IntervalRouter
     
     @Published var date = Date()
     
-    init(router: IntervalRouter) {
+    public init(router: IntervalRouter) {
         self.router = router
     }
 

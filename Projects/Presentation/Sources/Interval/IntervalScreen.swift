@@ -13,14 +13,18 @@ public struct IntervalScreen: View {
     @StateObject private var viewModel: IntervalViewModel
     
     private let intervalListScreen: IntervalListScreen
+    private let addIntervalScreen: AddIntervalScreen
     
     public init(
         intervalDIContainer: IntervalDIContainerInterface
     ) {
-        self._router = .init(wrappedValue: intervalDIContainer.intervalRouter)
-        self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies())
+        let router = intervalDIContainer.intervalRouter()
         
-        self.intervalListScreen = .init(viewModel: intervalDIContainer.intervalListDependencies())
+        self._router = .init(wrappedValue: router)
+        self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies(intervalRouter: router))
+        
+        self.intervalListScreen = .init(viewModel: intervalDIContainer.intervalListDependencies(intervalRouter: router))
+        self.addIntervalScreen = .init(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
     }
     
     public var body: some View {
@@ -39,8 +43,8 @@ public struct IntervalScreen: View {
                 .navigationDestination(for: IntervalRouter.PushRoute.self) { _ in
                     viewModel.nextScreen()
                 }
-                .sheet(isPresented: $viewModel.isBottomSheetPresent){
-                    AddIntervalScreen(router: IntervalRouter())
+                .sheet(isPresented: $viewModel.isBottomSheetPresent) {
+                    addIntervalScreen
                 }
         }
     }
