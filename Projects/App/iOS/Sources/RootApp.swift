@@ -17,7 +17,7 @@ public struct RootApp: App {
     }
     
     public var body: some Scene {
-        WindowGroup {
+        WindowGroup {            
             IntervalScreen(intervalDIContainer: compositionRoot.intervalDIContainer)
         }
     }
