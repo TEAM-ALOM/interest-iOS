@@ -9,6 +9,8 @@ import Foundation
 import WatchDomain
 import WatchShared
 import SwiftUI
+import WatchSharedDesignSystem
+
 
 public struct IntervalBurningScreen: View {
     @StateObject var viewModel: IntervalActiveViewModel

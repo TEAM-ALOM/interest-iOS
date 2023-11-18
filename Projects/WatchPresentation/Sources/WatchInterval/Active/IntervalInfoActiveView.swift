@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WatchSharedDesignSystem
 
 struct IntervalInfoActiveView: View {
     var body: some View {

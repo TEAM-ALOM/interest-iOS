@@ -9,6 +9,7 @@ import Foundation
 import WatchDomain
 import WatchShared
 import SwiftUI
+import WatchSharedDesignSystem
 
 public struct IntervalRestingScreen: View {
     @StateObject var viewModel: IntervalActiveViewModel
