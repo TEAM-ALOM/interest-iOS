@@ -10,8 +10,8 @@ import Foundation
 public protocol WatchIntervalDIContainerInterface {
     func watchIntervalRouter() -> WatchIntervalRouter
     func watchIntervalScreenDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalViewModel
-    func watchIntervalSelectDependencies(intervalRouter: WatchIntervalRouter) -> IntervalSelectViewModel
-    func watchIntervalBurningDependencies(intervalRouter: WatchIntervalRouter) -> IntervalActiveViewModel
-    func watchIntervalRestingDependencies(intervalRouter: WatchIntervalRouter) -> IntervalActiveViewModel
+    func watchIntervalSelectDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalSelectViewModel
+    func watchIntervalBurningDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalActiveViewModel
+    func watchIntervalRestingDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalActiveViewModel
     
 }

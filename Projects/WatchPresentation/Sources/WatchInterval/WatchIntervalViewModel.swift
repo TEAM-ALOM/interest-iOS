@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+
 import WatchDomain
 
 public class WatchIntervalViewModel: ObservableObject {

@@ -6,21 +6,22 @@
 //
 
 import Foundation
+import SwiftUI
+
 import WatchDomain
 import WatchShared
-import SwiftUI
 import WatchSharedDesignSystem
 
 
-public struct IntervalBurningScreen: View {
-    @StateObject var viewModel: IntervalActiveViewModel
+public struct WatchIntervalBurningScreen: View {
+    @StateObject var viewModel: WatchIntervalActiveViewModel
     
-    public init(viewModel: IntervalActiveViewModel) {
+    public init(viewModel: WatchIntervalActiveViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
     
     public var body: some View {
-        VStack{
+        VStack(alignment: .center){
             HStack{
                 Image(systemName: "flame.fill")
                     .foregroundColor(Color.burningColor)
@@ -35,7 +36,7 @@ public struct IntervalBurningScreen: View {
                     .fontWeight(.semibold)
                     .font(.system(size: 28))
                 
-                VStack{
+                VStack(alignment : .leading){
                     HStack(spacing:0){
                         Text("휴식")
                             .foregroundStyle(Color.restColor)
@@ -51,10 +52,9 @@ public struct IntervalBurningScreen: View {
                         
                     }
                 }
-                .multilineTextAlignment(.leading)
             }
             Spacer()
-            IntervalInfoActiveView()
+            WatchIntervalInfoActiveView()
         }
         .background{
             LinearGradient(

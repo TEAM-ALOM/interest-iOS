@@ -4,16 +4,17 @@
 //
 //  Created by 최유경 on 11/18/23.
 //
-
 import Foundation
-import WatchDomain
-import WatchShared
 import SwiftUI
 
-public struct IntervalSelectScreen: View {
-    @StateObject var viewModel: IntervalSelectViewModel
+import WatchDomain
+import WatchShared
+import WatchSharedDesignSystem
+
+public struct WatchIntervalSelectScreen: View {
+    @StateObject var viewModel: WatchIntervalSelectViewModel
     
-    public init(viewModel: IntervalSelectViewModel) {
+    public init(viewModel: WatchIntervalSelectViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
     
@@ -28,11 +29,14 @@ public struct IntervalSelectScreen: View {
             Spacer()
             
             Button(action: {
-                viewModel.tapIntervalStartButton()
-            }) {
-                Image(systemName: "play.circle.fill")
-                    .foregroundStyle(Color.keyColor)
-            }
+                    viewModel.tapIntervalStartButton()
+                }) {
+                    Image(systemName: "play.circle.fill")
+                        .resizable()
+                        .foregroundStyle(Color.keyColor)
+                }
+                .frame(width: 52, height: 52)
+                .buttonStyle(.plain)
         }
         .background {
             LinearGradient(

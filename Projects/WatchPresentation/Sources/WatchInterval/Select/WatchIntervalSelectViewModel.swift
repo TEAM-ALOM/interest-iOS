@@ -6,9 +6,10 @@
 //
 
 import Foundation
+
 import WatchDomain
 
-public class IntervalSelectViewModelWithRouter: IntervalSelectViewModel {
+public class WatchIntervalSelectViewModelWithRouter: WatchIntervalSelectViewModel {
     private var router: WatchIntervalRouter
     
     public init(
@@ -25,7 +26,7 @@ public class IntervalSelectViewModelWithRouter: IntervalSelectViewModel {
     }
 }
 
-public class IntervalSelectViewModel: ObservableObject {
+public class WatchIntervalSelectViewModel: ObservableObject {
     private let intervalUseCase: WatchIntervalUseCaseInterface
     
     init(intervalUseCase: WatchIntervalUseCaseInterface) {

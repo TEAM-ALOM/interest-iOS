@@ -7,14 +7,15 @@
 
 import Foundation
 import SwiftUI
+
 import WatchDomain
 
 public struct WatchIntervalScreen: View {
     @StateObject private var router: WatchIntervalRouter
     @StateObject private var viewModel: WatchIntervalViewModel
     
-    private let intervalBurningScreen: IntervalBurningScreen
-    private let intervalSelectScreen: IntervalSelectScreen
+    private let intervalBurningScreen: WatchIntervalBurningScreen
+    private let intervalSelectScreen: WatchIntervalSelectScreen
     
     public init(
         watchIntervalDIContainer: WatchIntervalDIContainerInterface

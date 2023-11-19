@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+
 import WatchDomain
 
 public final class WatchIntervalRouter: ObservableObject, WatchFlowRouter {
@@ -40,7 +41,7 @@ public extension WatchIntervalRouter {
         func nextView(watchIntervalDIContainer: WatchIntervalDIContainerInterface, router: WatchIntervalRouter) -> some View {
             switch self {
             case .intervalActive:
-                IntervalBurningScreen(viewModel: watchIntervalDIContainer.watchIntervalBurningDependencies(intervalRouter: router))
+                WatchIntervalBurningScreen(viewModel: watchIntervalDIContainer.watchIntervalBurningDependencies(intervalRouter: router))
             }
         }
     }

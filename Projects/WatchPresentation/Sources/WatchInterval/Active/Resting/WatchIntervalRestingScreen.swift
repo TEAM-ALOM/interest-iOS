@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import SwiftUI
+
 import WatchDomain
 import WatchShared
-import SwiftUI
 import WatchSharedDesignSystem
 
-public struct IntervalRestingScreen: View {
-    @StateObject var viewModel: IntervalActiveViewModel
+public struct WatchIntervalRestingScreen: View {
+    @StateObject var viewModel: WatchIntervalActiveViewModel
     
-    public init(viewModel: IntervalActiveViewModel) {
+    public init(viewModel: WatchIntervalActiveViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
     
@@ -29,7 +30,7 @@ public struct IntervalRestingScreen: View {
             }
             .padding(.horizontal,12)
             
-            IntervalInfoActiveView()
+            WatchIntervalInfoActiveView()
         }
         .background{
             LinearGradient(
