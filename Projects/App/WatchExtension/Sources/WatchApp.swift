@@ -10,9 +10,14 @@ import WatchPresentation
 
 @main
 struct WatchApp: App {
+    let compositionRoot: CompositionRootInterface
+    
+    public init() {
+        self.compositionRoot = CompositionRoot()
+    }
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            WatchFeatureView()
+            WatchIntervalScreen(watchIntervalDIContainer: compositionRoot.intervalDIContainer)
         }
     }
 }
