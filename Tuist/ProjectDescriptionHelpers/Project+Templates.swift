@@ -43,7 +43,7 @@ extension Project {
     /// Helper function to create the application target and the unit test target.
     private static func makeAppTargets(name: String, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
         let platform: Platform = platform
-        let infoPlist: [String: Plist.Value] = [
+        let infoPlist: [String: InfoPlist.Value] = [
             "CFBundleShortVersionString": "1.0",
             "CFBundleVersion": "1",
 "UIMainStoryboardFile": "",
