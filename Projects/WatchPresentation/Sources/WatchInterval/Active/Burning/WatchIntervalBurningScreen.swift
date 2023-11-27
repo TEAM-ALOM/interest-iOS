@@ -26,7 +26,6 @@ public struct WatchIntervalBurningScreen: View {
     
     
     public var body: some View {
-        TabView{
             VStack(alignment: .center){
                 HStack{
                     Image(systemName: "flame.fill")
@@ -85,8 +84,6 @@ public struct WatchIntervalBurningScreen: View {
                 }
                 
             })
-        }
-        
     }
     
     private var formattedBurningTime: String {

@@ -107,7 +107,3 @@ public struct WatchIntervalStateManageScreen: View {
         .ignoresSafeArea()
     }
 }
-//
-//#Preview {
-//    WatchIntervalStateManageScreen()
-//}
