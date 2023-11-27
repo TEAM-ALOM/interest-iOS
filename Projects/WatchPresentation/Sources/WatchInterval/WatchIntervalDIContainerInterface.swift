@@ -13,5 +13,6 @@ public protocol WatchIntervalDIContainerInterface {
     func watchIntervalSelectDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalSelectViewModel
     func watchIntervalBurningDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalActiveViewModel
     func watchIntervalRestingDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalActiveViewModel
+    func watchIntervalStateManageDependencies(intervalRouter: WatchIntervalRouter) -> WatchIntervalStateViewModel
     
 }

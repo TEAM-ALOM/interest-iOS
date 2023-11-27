@@ -29,14 +29,14 @@ public struct WatchIntervalSelectScreen: View {
             Spacer()
             
             Button(action: {
-                    viewModel.tapIntervalStartButton()
-                }) {
-                    Image(systemName: "play.circle.fill")
-                        .resizable()
-                        .foregroundStyle(Color.keyColor)
-                }
-                .frame(width: 52, height: 52)
-                .buttonStyle(.plain)
+                viewModel.tapIntervalStartButton()
+            }) {
+                Image(systemName: "play.circle.fill")
+                    .resizable()
+                    .foregroundStyle(Color.keyColor)
+            }
+            .frame(width: 52, height: 52)
+            .buttonStyle(.plain)
         }
         .background {
             LinearGradient(

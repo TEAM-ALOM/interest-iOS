@@ -11,7 +11,7 @@ import WatchDomain
 import WatchData
 
 public final class WatchIntervalDIContainer: WatchIntervalDIContainerInterface {
-    
+
     public func watchIntervalRouter() -> WatchPresentation.WatchIntervalRouter {
         return WatchIntervalRouter(watchIntervalDIContainer: self)
 
@@ -64,6 +64,19 @@ public final class WatchIntervalDIContainer: WatchIntervalDIContainerInterface {
         let intervalUseCase = WatchIntervalUseCase(watchIntervalRepository: intervalRepository)
         
         return WatchIntervalActiveViewModelWithRouter(
+            router: intervalRouter,
+            intervalUseCase: intervalUseCase
+        )
+    }
+    
+    public func watchIntervalStateManageDependencies(intervalRouter: WatchPresentation.WatchIntervalRouter) -> WatchPresentation.WatchIntervalStateViewModel {
+        let intervalDataSource = WatchIntervalDataSource()
+        
+        let intervalRepository = WatchIntervalRepository(dataSource: intervalDataSource)
+        
+        let intervalUseCase = WatchIntervalUseCase(watchIntervalRepository: intervalRepository)
+        
+        return WatchIntervalStateViewModelWithRouter(
             router: intervalRouter,
             intervalUseCase: intervalUseCase
         )
