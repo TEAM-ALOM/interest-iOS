@@ -1,15 +1,15 @@
 //
-//  IntervalActiveViewModel.swift
+//  WatchIntervalStateViewModel.swift
 //  WatchPresentation
 //
-//  Created by 최유경 on 11/18/23.
+//  Created by 민지은 on 2023/11/28.
 //
 
 import Foundation
 
 import WatchDomain
 
-public class WatchIntervalActiveViewModelWithRouter: WatchIntervalActiveViewModel {
+public class WatchIntervalStateViewModelWithRouter: WatchIntervalStateViewModel {
     private var router: WatchIntervalRouter
     
     public init(
@@ -20,22 +20,20 @@ public class WatchIntervalActiveViewModelWithRouter: WatchIntervalActiveViewMode
         super.init(intervalUseCase: intervalUseCase)
     }
     
-    override func tapIntervalStartButton() {
-        super.tapIntervalStartButton()
-        router.triggerScreenTransition(route: .intervalActive)
+    override func addNewIntervalButton() {
+        super.addNewIntervalButton()
+        router.triggerScreenTransition(route: .addNewInterval)
     }
 }
 
-public class WatchIntervalActiveViewModel: ObservableObject {
+public class WatchIntervalStateViewModel: ObservableObject {
     private let intervalUseCase: WatchIntervalUseCaseInterface
-    
-    @Published var activeTime: TimeInterval = 0
     
     init(intervalUseCase: WatchIntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
     }
     
-    func tapIntervalStartButton() {
+    func addNewIntervalButton() {
         
     }
 }

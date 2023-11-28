@@ -21,6 +21,8 @@ public final class WatchIntervalRouter: ObservableObject, WatchFlowRouter {
     
     public var nextTransitionRoute: PushRoute = .intervalActive
     
+    public var addNewIntervalRoute: PushRoute = .addNewInterval
+    
     private let watchIntervalDIContainer: WatchIntervalDIContainerInterface
     
     public func triggerScreenTransition(route: PushRoute) {
@@ -36,13 +38,18 @@ public final class WatchIntervalRouter: ObservableObject, WatchFlowRouter {
 public extension WatchIntervalRouter {
     enum PushRoute: Hashable {
         case intervalActive
+        case addNewInterval
         
         @ViewBuilder
         func nextView(watchIntervalDIContainer: WatchIntervalDIContainerInterface, router: WatchIntervalRouter) -> some View {
             switch self {
             case .intervalActive:
-                WatchIntervalBurningScreen(viewModel: watchIntervalDIContainer.watchIntervalBurningDependencies(intervalRouter: router))
+                WatchIntervalActiveScreen(viewModel: watchIntervalDIContainer.watchIntervalActiveDependencies(intervalRouter: router))
+                
+            case .addNewInterval:
+                WatchIntervalSelectScreen(viewModel: watchIntervalDIContainer.watchIntervalSelectDependencies(intervalRouter: router))
             }
+            
         }
     }
 }

@@ -14,8 +14,9 @@ public struct WatchIntervalScreen: View {
     @StateObject private var router: WatchIntervalRouter
     @StateObject private var viewModel: WatchIntervalViewModel
     
-    private let intervalBurningScreen: WatchIntervalBurningScreen
+    private let intervalActiveScreen: WatchIntervalActiveScreen
     private let intervalSelectScreen: WatchIntervalSelectScreen
+    private let intervalStateManageScreen: WatchIntervalStateManageScreen
     
     public init(
         watchIntervalDIContainer: WatchIntervalDIContainerInterface
@@ -26,14 +27,16 @@ public struct WatchIntervalScreen: View {
         
         self._viewModel = .init(wrappedValue: watchIntervalDIContainer.watchIntervalScreenDependencies(intervalRouter: router))
         
-        self.intervalBurningScreen = .init(viewModel: watchIntervalDIContainer.watchIntervalBurningDependencies(intervalRouter: router))
+        self.intervalActiveScreen = .init(viewModel: watchIntervalDIContainer.watchIntervalActiveDependencies(intervalRouter: router))
         
         self.intervalSelectScreen = .init(viewModel: watchIntervalDIContainer.watchIntervalSelectDependencies(intervalRouter: router))
+        
+        self.intervalStateManageScreen = .init(viewModel: watchIntervalDIContainer.watchIntervalStateManageDependencies(intervalRouter: router))
     }
     
     public var body: some View {
         NavigationStack(path: $router.navigationPath) {
-            intervalSelectScreen
+            intervalStateManageScreen
                 .navigationDestination(for: WatchIntervalRouter.PushRoute.self) { _ in
                     viewModel.nextScreen()
                 }
