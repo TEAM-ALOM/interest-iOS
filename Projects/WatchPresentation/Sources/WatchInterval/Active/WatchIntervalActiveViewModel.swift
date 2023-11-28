@@ -29,6 +29,8 @@ public class WatchIntervalActiveViewModelWithRouter: WatchIntervalActiveViewMode
 public class WatchIntervalActiveViewModel: ObservableObject {
     private let intervalUseCase: WatchIntervalUseCaseInterface
     
+    @Published var activeTime: TimeInterval = 0
+    
     init(intervalUseCase: WatchIntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
     }

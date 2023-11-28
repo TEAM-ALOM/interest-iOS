@@ -14,8 +14,7 @@ import WatchSharedDesignSystem
 
 public struct WatchIntervalRestingScreen: View {
     @StateObject var viewModel: WatchIntervalActiveViewModel
-    
-    @State private var restingTime: TimeInterval = 0
+
     @State private var timer: Timer?
     
     public init(viewModel: WatchIntervalActiveViewModel) {
@@ -38,7 +37,7 @@ public struct WatchIntervalRestingScreen: View {
                     Text(formattedRestingTime)
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
-                        .font(.system(size: 28))
+                        .font(.system(size: 28, design: .rounded))
                 }
                 
                 Spacer()
@@ -77,15 +76,15 @@ public struct WatchIntervalRestingScreen: View {
         }
         .onAppear(perform: {
             timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-                self.restingTime += 0.01
+                viewModel.activeTime += 0.01
             }
         })
     }
     
     private var formattedRestingTime: String {
-        let minutes = Int(restingTime / 60)
-        let seconds = Int(restingTime.truncatingRemainder(dividingBy: 60))
-        let milliseconds = Int((restingTime * 100).truncatingRemainder(dividingBy: 100))
+        let minutes = Int(viewModel.activeTime / 60)
+        let seconds = Int(viewModel.activeTime.truncatingRemainder(dividingBy: 60))
+        let milliseconds = Int((viewModel.activeTime * 100).truncatingRemainder(dividingBy: 100))
 
         return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
     }

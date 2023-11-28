@@ -46,48 +46,11 @@ public struct WatchIntervalStateManageScreen: View {
             .frame(width: 98, height: 20)
             .buttonStyle(.plain)
             .padding(.bottom, 24)
-            
-            
+
             HStack(spacing: 16){
-                VStack{
-                    Button(action: {
-                        //일시정지
-                    }) {
-                        Image(systemName: "pause.fill")
-                            .resizable()
-                            .frame(width: 20, height: 25)
-                            .foregroundStyle(Color(red: 1, green: 0.9, blue: 0))
-                    }
-                    .frame(width: 72, height: 52)
-                    .buttonStyle(.plain)
-                    .background(Color(red: 1, green: 0.9, blue: 0).opacity(0.2))
-                    .cornerRadius(20)
-                    
-                    Text("일시 정지")
-                        .font(.system(size: 12))
-                        .fontWeight(.medium)
-                        .foregroundColor(Color.textColor50)
-                }
+                stateButton(imageName: "pause.fill", color: Color(red: 1, green: 0.9, blue: 0), backgroundColor: Color(red: 1, green: 0.9, blue: 0).opacity(0.2), text: "일시 정지")
                 
-                VStack{
-                    Button(action: {
-                        //운동종료
-                    }) {
-                        Image(systemName: "xmark")
-                            .resizable()
-                            .frame(width: 19.54, height: 19.54)
-                            .foregroundStyle(Color.warningColor)
-                    }
-                    .frame(width: 72, height: 52)
-                    .buttonStyle(.plain)
-                    .background(Color.warningColor.opacity(0.2))
-                    .cornerRadius(20)
-                    
-                    Text("운동 종료")
-                        .font(.system(size: 12))
-                        .fontWeight(.medium)
-                        .foregroundColor(Color.textColor50)
-                }
+                stateButton(imageName: "xmark", color: Color.warningColor, backgroundColor: Color.warningColor.opacity(0.2), text: "운동 종료")
             }
             
             Spacer()
@@ -106,4 +69,30 @@ public struct WatchIntervalStateManageScreen: View {
         }
         .ignoresSafeArea()
     }
+    
+    @ViewBuilder
+    func stateButton(imageName: String,color: Color,backgroundColor: Color,text: String) -> some View {
+        
+        VStack{
+            Button(action: {
+                
+            }) {
+                Image(systemName: imageName)
+                    .resizable()
+                    .frame(width: 20, height: 25)
+                    .foregroundStyle(color)
+            }
+            .frame(width: 72, height: 52)
+            .buttonStyle(.plain)
+            .background(backgroundColor)
+            .cornerRadius(20)
+            
+            Text(text)
+                .font(.system(size: 12))
+                .fontWeight(.medium)
+                .foregroundColor(Color.textColor50)
+        }
+    }
+    
+    
 }

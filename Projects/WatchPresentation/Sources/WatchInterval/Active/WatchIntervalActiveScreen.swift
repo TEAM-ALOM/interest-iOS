@@ -1,10 +1,9 @@
 //
-//  WatchIntervalBurningScreen.swift
+//  WatchIntervalActiveScreen.swift
 //  WatchPresentation
 //
-//  Created by 최유경 on 11/18/23.
+//  Created by 민지은 on 2023/11/28.
 //
-
 import Foundation
 import SwiftUI
 
@@ -13,7 +12,7 @@ import WatchShared
 import WatchSharedDesignSystem
 
 
-public struct WatchIntervalBurningScreen: View {
+public struct WatchIntervalActiveScreen: View {
     @StateObject var viewModel: WatchIntervalActiveViewModel
     
     public init(viewModel: WatchIntervalActiveViewModel) {
@@ -21,14 +20,14 @@ public struct WatchIntervalBurningScreen: View {
     }
     
     @State private var timer: Timer?
-    
+
     public var body: some View {
             VStack(alignment: .center){
                 HStack{
-                    Image(systemName: "flame.fill")
-                        .foregroundColor(Color.burningColor)
-                    Text("버닝중")
-                        .foregroundColor(Color.burningColor)
+                    Image(systemName: viewModel.activeTime < 10 ? "flame.fill" : "circle.hexagonpath.fill")
+                        .foregroundColor(viewModel.activeTime < 10 ? Color.burningColor : Color.restColor)
+                    Text(viewModel.activeTime < 10 ? "버닝중" : "휴식중")
+                        .foregroundColor(viewModel.activeTime < 10 ? Color.burningColor : Color.restColor)
                     Spacer()
                 }
                 .padding(.horizontal,12)
@@ -38,15 +37,15 @@ public struct WatchIntervalBurningScreen: View {
                         Text(formattedBurningTime)
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
-                            .font(.system(size: 28, design: .rounded))
+                            .font(.system(size: 28))
                     }
                     
                     Spacer()
                     
                     VStack(alignment : .leading){
                         HStack(spacing:0){
-                            Text("휴식")
-                                .foregroundStyle(Color.restColor)
+                            Text(viewModel.activeTime < 10 ? "휴식" : "버닝")
+                                .foregroundStyle(viewModel.activeTime < 10 ? Color.restColor : Color.burningColor)
                             Text("까지")
                                 .foregroundStyle(Color.textColor50)
                         }
@@ -67,8 +66,8 @@ public struct WatchIntervalBurningScreen: View {
             .background{
                 LinearGradient(
                     stops: [
-                        Gradient.Stop(color: Color(red: 1, green: 0.13, blue: 0.02).opacity(0.2), location: 0.00),
-                        Gradient.Stop(color: Color(red: 1, green: 0.13, blue: 0.02).opacity(0), location: 1.00),
+                        Gradient.Stop(color: viewModel.activeTime < 10 ? Color(red: 1, green: 0.13, blue: 0.02).opacity(0.2) : Color(red: 0.09, green: 1, blue: 0.02).opacity(0.2), location: 0.00),
+                        Gradient.Stop(color: viewModel.activeTime < 10 ? Color(red: 1, green: 0.13, blue: 0.02).opacity(0) : Color(red: 0.09, green: 1, blue: 0.02).opacity(0), location: 1.00),
                     ],
                     startPoint: UnitPoint(x: 0.5, y: 0),
                     endPoint: UnitPoint(x: 0.5, y: 1)
@@ -77,7 +76,6 @@ public struct WatchIntervalBurningScreen: View {
             }
             .onAppear(perform: {
                 timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-//                    self.burningTime += 0.01
                     viewModel.activeTime += 0.01
                 }
                 
