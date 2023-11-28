@@ -17,7 +17,7 @@ public final class WatchIntervalDIContainer: WatchIntervalDIContainerInterface {
 
     }
     
-    public func watchIntervalScreenDependencies(intervalRouter: WatchPresentation.WatchIntervalRouter) -> WatchPresentation.WatchIntervalViewModel {
+    public func watchIntervalScreenDependencies(intervalRouter: WatchIntervalRouter) -> WatchPresentation.WatchIntervalViewModel {
         
         let intervalDataSource = WatchIntervalDataSource()
         
@@ -30,7 +30,7 @@ public final class WatchIntervalDIContainer: WatchIntervalDIContainerInterface {
             intervalUseCase: intervalUseCase
         )
     }
-    public func watchIntervalSelectDependencies(intervalRouter: WatchPresentation.WatchIntervalRouter) -> WatchPresentation.WatchIntervalSelectViewModel {
+    public func watchIntervalSelectDependencies(intervalRouter: WatchIntervalRouter) -> WatchPresentation.WatchIntervalSelectViewModel {
         let intervalDataSource = WatchIntervalDataSource()
         
         let intervalRepository = WatchIntervalRepository(dataSource: intervalDataSource)
@@ -43,7 +43,7 @@ public final class WatchIntervalDIContainer: WatchIntervalDIContainerInterface {
         )
     }
     
-    public func watchIntervalActiveDependencies(intervalRouter: WatchPresentation.WatchIntervalRouter) -> WatchPresentation.WatchIntervalActiveViewModel {
+    public func watchIntervalActiveDependencies(intervalRouter: WatchIntervalRouter) -> WatchPresentation.WatchIntervalActiveViewModel {
         
         let intervalDataSource = WatchIntervalDataSource()
         
@@ -57,34 +57,7 @@ public final class WatchIntervalDIContainer: WatchIntervalDIContainerInterface {
         )
     }
     
-    public func watchIntervalBurningDependencies(intervalRouter: WatchPresentation.WatchIntervalRouter) -> WatchPresentation.WatchIntervalActiveViewModel {
-        
-        let intervalDataSource = WatchIntervalDataSource()
-        
-        let intervalRepository = WatchIntervalRepository(dataSource: intervalDataSource)
-        
-        let intervalUseCase = WatchIntervalUseCase(watchIntervalRepository: intervalRepository)
-        
-        return WatchIntervalActiveViewModelWithRouter(
-            router: intervalRouter,
-            intervalUseCase: intervalUseCase
-        )
-    }
-    
-    public func watchIntervalRestingDependencies(intervalRouter: WatchPresentation.WatchIntervalRouter) -> WatchPresentation.WatchIntervalActiveViewModel {
-        let intervalDataSource = WatchIntervalDataSource()
-        
-        let intervalRepository = WatchIntervalRepository(dataSource: intervalDataSource)
-        
-        let intervalUseCase = WatchIntervalUseCase(watchIntervalRepository: intervalRepository)
-        
-        return WatchIntervalActiveViewModelWithRouter(
-            router: intervalRouter,
-            intervalUseCase: intervalUseCase
-        )
-    }
-    
-    public func watchIntervalStateManageDependencies(intervalRouter: WatchPresentation.WatchIntervalRouter) -> WatchPresentation.WatchIntervalStateViewModel {
+    public func watchIntervalStateManageDependencies(intervalRouter: WatchIntervalRouter) -> WatchPresentation.WatchIntervalStateViewModel {
         let intervalDataSource = WatchIntervalDataSource()
         
         let intervalRepository = WatchIntervalRepository(dataSource: intervalDataSource)

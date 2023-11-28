@@ -37,7 +37,7 @@ public struct WatchIntervalActiveScreen: View {
                         Text(formattedBurningTime)
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
-                            .font(.system(size: 28))
+                            .font(.system(size: 28, design: .rounded))
                     }
                     
                     Spacer()
