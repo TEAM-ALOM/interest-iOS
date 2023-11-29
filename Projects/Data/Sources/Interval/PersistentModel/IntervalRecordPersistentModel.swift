@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import Domain
 
 @Model
 public class IntervalRecordPersistentModel {
@@ -19,7 +20,7 @@ public class IntervalRecordPersistentModel {
     
     @Relationship public var interval: IntervalPersistentModel?
     
-    init(
+    public init(
         heartRates: [Double],
         repeatedCount: Int,
         secondTime: Int,

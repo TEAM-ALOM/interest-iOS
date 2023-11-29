@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Domain
 
-public enum HeartIntervalTypePresistentModel {
+public enum HeartIntervalTypePresistentModel: Codable, CaseIterable, Equatable {
     case one
     case two
     case three
@@ -18,11 +19,23 @@ public enum HeartIntervalTypePresistentModel {
 public extension HeartIntervalTypePresistentModel {
     func toEntity() -> HeartIntervalType {
         switch self {
-        case .one: HeartIntervalType.one
-        case .two: HeartIntervalType.two
-        case .three: HeartIntervalType.three
-        case .four: HeartIntervalType.four
-        case .five: HeartIntervalType.five
+        case .one: .one
+        case .two: .two
+        case .three: .three
+        case .four: .four
+        case .five: .five
+        }
+    }
+}
+
+public extension HeartIntervalType {
+    func toPersistentModel() -> HeartIntervalTypePresistentModel {
+        switch self {
+        case .one: .one
+        case .two: .two
+        case .three: .three
+        case .four: .four
+        case .five: .five
         }
     }
 }

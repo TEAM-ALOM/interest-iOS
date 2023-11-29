@@ -20,6 +20,6 @@ public final class IntervalUseCase: IntervalUseCaseInterface {
     }
     
     public func fetchIntervals() -> [IntervalEntity] {
-        return intervalRepository.fetchIntervals()
+        return intervalRepository.fetches()
     }
 }

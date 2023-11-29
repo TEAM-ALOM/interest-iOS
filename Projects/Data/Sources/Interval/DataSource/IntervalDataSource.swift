@@ -9,9 +9,9 @@ import Foundation
 import SwiftData
 
 public protocol IntervalDataSourceInterface {
-    func fetchInterval(id: UUID) -> IntervalPersistentModel?
-    func fetchIntervals() -> [IntervalPersistentModel]
-    func saveInterval(
+    func fetch(id: UUID) -> IntervalPersistentModel?
+    func fetches() -> [IntervalPersistentModel]
+    func save(
         title: String,
         repeatCount: Int,
         burningSecondTime: Int,
@@ -19,7 +19,7 @@ public protocol IntervalDataSourceInterface {
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
     ) -> IntervalPersistentModel
-    func updateInterval(
+    func update(
         at id: UUID,
         title: String,
         repeatCount: Int,
@@ -28,7 +28,7 @@ public protocol IntervalDataSourceInterface {
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
     ) -> IntervalPersistentModel?
-    func deleteInterval(at id: UUID) -> Bool
+    func delete(at id: UUID) -> Bool
 }
 
 public final class IntervalDataSource: IntervalDataSourceInterface {
@@ -36,7 +36,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     
     public init() {}
     
-    public func fetchInterval(id: UUID) -> IntervalPersistentModel? {
+    public func fetch(id: UUID) -> IntervalPersistentModel? {
         let predicate = #Predicate<IntervalPersistentModel> {
             $0.id == id
         }
@@ -46,14 +46,14 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         return result?.first
     }
     
-    public func fetchIntervals() -> [IntervalPersistentModel] {
+    public func fetches() -> [IntervalPersistentModel] {
         let descriptor: FetchDescriptor<IntervalPersistentModel> = .init()
         let result = try? context?.fetch(descriptor)
         
         return result ?? []
     }
     
-    public func saveInterval(
+    public func save(
         title: String,
         repeatCount: Int,
         burningSecondTime: Int,
@@ -74,7 +74,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         return interval
     }
     
-    public func updateInterval(
+    public func update(
         at id: UUID,
         title: String,
         repeatCount: Int,
@@ -83,7 +83,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
     ) -> IntervalPersistentModel? {
-        let interval = fetchInterval(id: id)
+        let interval = fetch(id: id)
         interval?.title = title
         interval?.repeatCount = repeatCount
         interval?.burningSecondTime = burningSecondTime
@@ -95,8 +95,8 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         return interval
     }
     
-    public func deleteInterval(at id: UUID) -> Bool {
-        if let interval = self.fetchInterval(id: id) {
+    public func delete(at id: UUID) -> Bool {
+        if let interval = self.fetch(id: id) {
             context?.delete(interval)
             return true
         } else {

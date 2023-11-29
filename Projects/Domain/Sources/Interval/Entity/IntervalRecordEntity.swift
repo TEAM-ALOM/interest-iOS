@@ -14,7 +14,7 @@ public struct IntervalRecordEntity {
     public var repeatedCount: Int = 0
     public var secondTime: Int = 0
     
-    init(
+    public init(
         heartRates: [Double],
         repeatedCount: Int,
         secondTime: Int

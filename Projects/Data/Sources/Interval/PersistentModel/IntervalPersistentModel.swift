@@ -9,6 +9,8 @@ import Foundation
 import SwiftData
 import SwiftUI
 
+import Domain
+
 @Model
 public class IntervalPersistentModel {
     @Attribute(.unique) public let id: UUID = UUID()

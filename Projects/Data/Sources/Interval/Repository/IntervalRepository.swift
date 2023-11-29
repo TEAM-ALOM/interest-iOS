@@ -15,10 +15,41 @@ public final class IntervalRepository: IntervalRepositoryInterface {
         self.dataSource = dataSource
     }
     
-    public func fetchIntervals() -> [IntervalEntity] {
-        return dataSource.fetchIntervals()
+    public func fetch(id: UUID) -> IntervalEntity? {
+        return dataSource.fetch(id: id)?.toEntity()
+    }
+    
+    public func fetches() -> [IntervalEntity] {
+        return dataSource.fetches()
             .map {
                 $0.toEntity()
             }
+    }
+    
+    public func save(interval: IntervalEntity) -> IntervalEntity {
+        return dataSource.save(
+            title: interval.title,
+            repeatCount: interval.repeatCount,
+            burningSecondTime: interval.burningSecondTime,
+            burningHeartIntervalType: interval.burningHeartIntervalType.toPersistentModel(),
+            restingSecondTime: interval.restingSecondTime,
+            restingHeartIntervalType: interval.restingHeartIntervalType.toPersistentModel()
+        ).toEntity()
+    }
+    
+    public func update(at id: UUID, to interval: IntervalEntity) -> IntervalEntity? {
+        return dataSource.update(
+            at: id,
+            title: interval.title,
+            repeatCount: interval.repeatCount,
+            burningSecondTime: interval.burningSecondTime,
+            burningHeartIntervalType: interval.burningHeartIntervalType.toPersistentModel(),
+            restingSecondTime: interval.restingSecondTime,
+            restingHeartIntervalType: interval.restingHeartIntervalType.toPersistentModel()
+        )?.toEntity()
+    }
+    
+    public func delete(at id: UUID) -> Bool {
+        return dataSource.delete(at: id)
     }
 }
