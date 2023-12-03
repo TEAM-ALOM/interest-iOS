@@ -34,13 +34,22 @@ public final class IntervalRouter: ObservableObject, FlowRouter {
 
 public extension IntervalRouter {
     enum PushRoute: Hashable {
+        case intervalList
         case intervalDetail
+        case intervalActive
        
         @ViewBuilder
         func nextView(intervalDIContainer: IntervalDIContainerInterface, router: IntervalRouter) -> some View {
             switch self {
+            case .intervalList:
+                let viewModel = intervalDIContainer.intervalListDependencies(intervalRouter: router)
+                IntervalListScreen(viewModel: viewModel)
             case .intervalDetail:
-                IntervalDetailScreen(viewModel: intervalDIContainer.intervalDetailDependencies(intervalRouter: router))
+                let viewModel = intervalDIContainer.intervalDetailDependencies(intervalRouter: router)
+                IntervalDetailScreen(viewModel: viewModel)
+            case .intervalActive:
+                let viewModel = intervalDIContainer.intervalActiveDependencies(intervalRouter: router)
+                IntervalActiveScreen(viewModel: viewModel)
             }
         }
     }
