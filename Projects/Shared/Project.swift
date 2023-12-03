@@ -14,7 +14,7 @@ let shared = Target(
     destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.shared",
-//    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .init(iOS: "17.0", watchOS: "10.0"),
     infoPlist: .default,
     sources: ["Sources/**"],
     dependencies: [
@@ -29,7 +29,7 @@ let thirdPartyLibTarget = Target(
     destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.shared.thirdpartylib",
-//    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .init(iOS: "17.0", watchOS: "10.0"),
     infoPlist: .default,
     sources: ["ThirdPartyLib/Sources/**"],
     dependencies: [
@@ -42,7 +42,7 @@ let designSystemTarget = Target(
     destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.shared.designSystem",
-//    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .init(iOS: "17.0", watchOS: "10.0"),
     infoPlist: .default,
     sources: ["DesignSystem/Sources/**"],
     resources: ["DesignSystem/Resources/**"],

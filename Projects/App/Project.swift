@@ -11,11 +11,10 @@ import MyPlugin
 
 let appTarget = Target(
     name: "InterestApp",
-//    platform: .iOS,
     destinations: [.iPhone, .iPad, .appleWatch],
     product: .app,
     bundleId: "interest.app",
-//    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .iOS("17.0"),
     infoPlist: .file(path: .relativeToRoot("Projects/App/iOS/Resources/InterestApp-Info.plist")),
     sources: ["iOS/Sources/**"],
     resources: ["iOS/Resources/**"],
@@ -30,10 +29,10 @@ let appTarget = Target(
 
 let watchTarget = Target(
     name: "InterestWatch",
-    platform: .watchOS,
+    destinations: [.appleWatch],
     product: .watch2App,
     bundleId: "interest.app.watch",
-    deploymentTarget: .watchOS(targetVersion: "10.0"),
+    deploymentTargets: .watchOS("10.0"),
     infoPlist: .file(path: .relativeToRoot("Projects/App/WatchExtension/Resources/InterestWatch-Info.plist")),
     sources: nil,
     resources: nil,
@@ -45,10 +44,10 @@ let watchTarget = Target(
 
 let watchExtensionTarget = Target(
     name: "InterestWatchExtension",
-    platform: .watchOS,
+    destinations: [.appleWatch],
     product: .watch2Extension,
     bundleId: "interest.app.watch.extension",
-    deploymentTarget: .watchOS(targetVersion: "10.0"),
+    deploymentTargets: .watchOS("10.0"),
     infoPlist: .file(path: .relativeToRoot("Projects/App/WatchExtension/Resources/InterestWatchExtension-Info.plist")),
     sources: ["WatchExtension/Sources/**"],
     resources: ["WatchExtension/Resources/**"],

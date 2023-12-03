@@ -14,7 +14,7 @@ let domainTarget = Target(
     destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.domain",
-//    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .init(iOS: "17.0", watchOS: "10.0"),
     infoPlist: .default,
     sources: ["Sources/**"],
     resources: ["Resources/**"],
