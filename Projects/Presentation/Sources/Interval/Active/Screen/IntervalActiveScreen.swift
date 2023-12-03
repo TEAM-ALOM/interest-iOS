@@ -23,6 +23,7 @@ public struct IntervalActiveScreen: View {
         iOS
 #elseif os(watchOS)
         watchOS
+            .navigationBarBackButtonHidden()
 #endif
     }
 }

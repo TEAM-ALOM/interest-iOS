@@ -19,9 +19,4 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
         self.router = router
         super.init(intervalUseCase: intervalUseCase)
     }
-    
-    override func tapIntervalStartButton() {
-        super.tapIntervalStartButton()
-        router.triggerScreenTransition(route: .intervalActive)
-    }
 }

@@ -10,6 +10,10 @@ import SwiftUI
 
 public extension IntervalActiveScreen {
     var watchOS: some View {
-        IntervalActiveWatchScreen(viewModel: viewModel)
+        TabView {
+            IntervalActiveWatchScreen(viewModel: viewModel)
+            
+            IntervalStateManageScreen(viewModel: viewModel)
+        }
     }
 }
