@@ -9,19 +9,32 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import MyPlugin
 
+//let presentationTarget = Target(
+//    name: "Presentation",
+//    platform: .iOS,
+//    product: .framework,
+//    bundleId: "interest.presentation",
+//    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+//    infoPlist: .default,
+//    sources: ["Sources/**"],
+//    resources: ["Resources/**"],
+//    dependencies: [
+//        .project(target: "Domain", path: .relativeToRoot("Projects/Domain")),
+//    ],
+//    settings: nil
+//)
+
 let presentationTarget = Target(
     name: "Presentation",
-    platform: .iOS,
+    destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.presentation",
-    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
-    infoPlist: .default,
+    infoPlist: .default, 
     sources: ["Sources/**"],
     resources: ["Resources/**"],
     dependencies: [
         .project(target: "Domain", path: .relativeToRoot("Projects/Domain")),
-    ],
-    settings: nil
+    ]
 )
 
 let project = Project(

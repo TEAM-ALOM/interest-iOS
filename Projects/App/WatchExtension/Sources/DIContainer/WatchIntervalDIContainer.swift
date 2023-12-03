@@ -12,6 +12,7 @@ import WatchData
 
 public final class WatchIntervalDIContainer: WatchIntervalDIContainerInterface {
 
+
     public func watchIntervalRouter() -> WatchPresentation.WatchIntervalRouter {
         return WatchIntervalRouter(watchIntervalDIContainer: self)
 

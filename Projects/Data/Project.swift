@@ -11,10 +11,10 @@ import MyPlugin
 
 let dataTarget = Target(
     name: "Data",
-    platform: .iOS,
+    destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.data",
-    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+//    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
     infoPlist: .default,
     sources: ["Sources/**"],
     resources: ["Resources/**"],

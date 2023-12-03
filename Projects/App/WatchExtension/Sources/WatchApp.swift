@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WatchPresentation
+import Presentation
 
 @main
 struct WatchApp: App {
@@ -17,7 +18,8 @@ struct WatchApp: App {
     }
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            WatchIntervalScreen(watchIntervalDIContainer: compositionRoot.intervalDIContainer)
+            IntervalScreen(intervalDIContainer: IntervalDIContainer())
+//            WatchIntervalScreen(watchIntervalDIContainer: compositionRoot.intervalDIContainer)
         }
     }
 }
