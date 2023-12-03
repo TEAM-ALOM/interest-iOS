@@ -1,16 +1,17 @@
 //
-//  IntervalListScreen+watchOS.swift
+//  IntervalListWatchScreen.swift
 //  Presentation
 //
 //  Created by 송영모 on 12/3/23.
 //
 
 import Foundation
-
 import SwiftUI
 
-public extension IntervalListScreen {
-    var watchOS: some View {
+public struct IntervalListWatchScreen: View {
+    @ObservedObject var viewModel: IntervalListViewModel
+    
+    public var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 24) {
                 ForEach(viewModel.intervalItems) { item in

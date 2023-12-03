@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Foundation
 
 import Presentation
 import Domain
@@ -28,23 +27,23 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
-    public func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel {
-        let intervalDataSource = IntervalDataSource()
-        let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
-        let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
-        
-        return IntervalListViewModelWithRouter(
-            router: intervalRouter,
-            intervalUseCase: intervalUseCase
-        )
-    }
-    
     public func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModel {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
         
         return IntervalActiveViewModelWithRouter(
+            router: intervalRouter,
+            intervalUseCase: intervalUseCase
+        )
+    }
+    
+    public func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel {
+        let intervalDataSource = IntervalDataSource()
+        let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
+        let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
+        
+        return IntervalListViewModelWithRouter(
             router: intervalRouter,
             intervalUseCase: intervalUseCase
         )

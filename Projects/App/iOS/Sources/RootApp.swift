@@ -11,15 +11,11 @@ import Data
 
 @main
 public struct RootApp: App {
-    let compositionRoot: CompositionRootInterface
-    
-    public init() {
-        self.compositionRoot = CompositionRoot()
-    }
+    public init() { }
     
     public var body: some Scene {
         WindowGroup {            
-            IntervalScreen(intervalDIContainer: compositionRoot.intervalDIContainer)
+            IntervalScreen(intervalDIContainer: IntervalDIContainer())
                 .modelContainer(for: [
                     IntervalPersistentModel.self,
                     IntervalRecordPersistentModel.self

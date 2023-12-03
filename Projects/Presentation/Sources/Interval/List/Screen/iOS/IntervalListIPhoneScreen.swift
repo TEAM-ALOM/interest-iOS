@@ -1,5 +1,5 @@
 //
-//  IntervalListScreen+iOS.swift
+//  IntervalListIPhoneScreen.swift
 //  Presentation
 //
 //  Created by 송영모 on 12/3/23.
@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
-public extension IntervalListScreen {
-    var iOS: some View {
+public struct IntervalListIPhoneScreen: View {
+    @ObservedObject var viewModel: IntervalListViewModel
+    
+    public var body: some View {
         ScrollView {
             VStack(spacing: 24) {
                 ForEach(viewModel.intervalItems) { item in

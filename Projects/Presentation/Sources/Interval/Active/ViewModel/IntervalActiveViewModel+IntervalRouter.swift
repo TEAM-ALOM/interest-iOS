@@ -25,4 +25,3 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
         router.triggerScreenTransition(route: .intervalActive)
     }
 }
-
