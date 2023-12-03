@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Presentation
+import Data
 
 @main
 public struct RootApp: App {
@@ -19,6 +20,10 @@ public struct RootApp: App {
     public var body: some Scene {
         WindowGroup {            
             IntervalScreen(intervalDIContainer: compositionRoot.intervalDIContainer)
+                .modelContainer(for: [
+                    IntervalPersistentModel.self,
+                    IntervalRecordPersistentModel.self
+                ])
         }
     }
 }
