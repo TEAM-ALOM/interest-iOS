@@ -75,6 +75,14 @@ public struct IntervalInfoCellView: View {
             Spacer()
             
             info
+            
+            Button(action: {
+                //TODO: iOS에서도 실행 창으로 넘어갈 수 있게 설계해야함.
+                intervalListViewModel.tapStartButton()
+            }) {
+                Image(systemName: "play.circle.fill")
+                    .foregroundStyle(Color.keyColor)
+            }
         }
         .padding(20)
         .background {

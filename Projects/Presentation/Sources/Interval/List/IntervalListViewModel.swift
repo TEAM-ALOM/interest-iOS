@@ -21,6 +21,11 @@ public class IntervalListViewModelWithRouter: IntervalListViewModel {
         super.init(intervalUseCase: intervalUseCase)
     }
     
+    override func tapStartButton() {
+        super.tapStartButton()
+        router.triggerScreenTransition(route: .intervalActive)
+    }
+    
     override func tapIntervalDetailPageButton() {
         super.tapIntervalDetailPageButton()
         router.triggerScreenTransition(route: .intervalDetail)
@@ -46,6 +51,8 @@ public class IntervalListViewModel: ObservableObject {
         intervalItems = IntervalItem.mocks
         
     }
+    
+    func tapStartButton() { }
     
     func tapIntervalDetailPageButton() { }
     

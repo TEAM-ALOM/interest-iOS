@@ -1,8 +1,8 @@
 //
-//  IntervalActiveViewModel.swift
-//  WatchPresentation
+//  IntervalActiveViewModel+IntervalRouter.swift
+//  Presentation
 //
-//  Created by 최유경 on 11/18/23.
+//  Created by 송영모 on 12/3/23.
 //
 
 import Foundation
@@ -26,16 +26,3 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     }
 }
 
-public class IntervalActiveViewModel: ObservableObject {
-    private let intervalUseCase: IntervalUseCaseInterface
-    
-    @Published var activeTime: TimeInterval = 0
-    
-    init(intervalUseCase: IntervalUseCaseInterface) {
-        self.intervalUseCase = intervalUseCase
-    }
-    
-    func tapIntervalStartButton() {
-        
-    }
-}
