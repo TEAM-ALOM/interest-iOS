@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WatchPresentation
+
 import Presentation
 
 @main

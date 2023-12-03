@@ -54,8 +54,6 @@ let watchExtensionTarget = Target(
     dependencies: [
         .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
         .project(target: "Data", path: .relativeToRoot("Projects/Data")),
-        .project(target: "WatchPresentation", path: .relativeToRoot("Projects/WatchPresentation")),
-        .project(target: "WatchData", path: .relativeToRoot("Projects/WatchData"))
     ],
     settings: nil
 )
