@@ -6,18 +6,14 @@
 //
 
 import SwiftUI
-import WatchPresentation
+
+import Presentation
 
 @main
 struct WatchApp: App {
-    let compositionRoot: CompositionRootInterface
-    
-    public init() {
-        self.compositionRoot = CompositionRoot()
-    }
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            WatchIntervalScreen(watchIntervalDIContainer: compositionRoot.intervalDIContainer)
+            IntervalScreen(intervalDIContainer: IntervalDIContainer())
         }
     }
 }

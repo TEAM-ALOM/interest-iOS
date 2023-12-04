@@ -11,10 +11,10 @@ import MyPlugin
 
 let shared = Target(
     name: "Shared",
-    platform: .iOS,
+    destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.shared",
-    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .init(iOS: "17.0", watchOS: "10.0"),
     infoPlist: .default,
     sources: ["Sources/**"],
     dependencies: [
@@ -26,10 +26,10 @@ let shared = Target(
 
 let thirdPartyLibTarget = Target(
     name: "SharedThirdPartyLib",
-    platform: .iOS,
+    destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.shared.thirdpartylib",
-    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .init(iOS: "17.0", watchOS: "10.0"),
     infoPlist: .default,
     sources: ["ThirdPartyLib/Sources/**"],
     dependencies: [
@@ -39,10 +39,10 @@ let thirdPartyLibTarget = Target(
 
 let designSystemTarget = Target(
     name: "SharedDesignSystem",
-    platform: .iOS,
+    destinations: [.iPhone, .iPad, .appleWatch],
     product: .framework,
     bundleId: "interest.shared.designSystem",
-    deploymentTarget: .iOS(targetVersion: "17.0", devices: [.iphone, .ipad], supportsMacDesignedForIOS: true),
+    deploymentTargets: .init(iOS: "17.0", watchOS: "10.0"),
     infoPlist: .default,
     sources: ["DesignSystem/Sources/**"],
     resources: ["DesignSystem/Resources/**"],
