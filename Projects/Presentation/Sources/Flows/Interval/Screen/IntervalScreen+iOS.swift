@@ -25,7 +25,7 @@ public extension IntervalScreen {
                     viewModel.nextScreen()
                 }
                 .sheet(isPresented: $viewModel.isBottomSheetPresent) {
-                    AddIntervalScreen(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
+                    addIntervalScreen
                 }
         }
     }

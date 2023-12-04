@@ -15,7 +15,9 @@ public struct RootApp: App {
     
     public var body: some Scene {
         WindowGroup {            
-            IntervalScreen(intervalDIContainer: IntervalDIContainer())
+            IntervalScreen(
+                intervalDIContainer: IntervalDIContainer(),
+                routerDIContainer: RouterDIContainer())
                 .modelContainer(for: [
                     IntervalPersistentModel.self,
                     IntervalRecordPersistentModel.self

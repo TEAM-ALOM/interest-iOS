@@ -12,10 +12,6 @@ import Domain
 import Data
 
 public final class IntervalDIContainer: IntervalDIContainerInterface {
-    public func intervalRouter() -> IntervalRouter {
-        return IntervalRouter(intervalDIContainer: self)
-    }
-    
     public func intervalScreenDependencies(intervalRouter: IntervalRouter) -> IntervalViewModel {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
