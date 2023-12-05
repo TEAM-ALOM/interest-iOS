@@ -17,6 +17,7 @@ public class IntervalRecordPersistentModel {
     public var heartRates: [Double] = []
     public var repeatedCount: Int = 0
     public var secondTime: Int = 0
+    public var createDate: Date = Date.now
     
     @Relationship public var interval: IntervalPersistentModel?
     
