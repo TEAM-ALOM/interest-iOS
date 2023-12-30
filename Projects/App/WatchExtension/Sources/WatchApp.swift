@@ -13,7 +13,10 @@ import Presentation
 struct WatchApp: App {
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            IntervalScreen(intervalDIContainer: IntervalDIContainer())
+//            IntervalScreen(
+//                intervalDIContainer: IntervalDIContainer(),
+//                routerDIContainer: RouterDIContainer()
+//            )
         }
     }
 }

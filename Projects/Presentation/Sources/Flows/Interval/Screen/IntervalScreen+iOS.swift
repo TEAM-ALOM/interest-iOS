@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SharedDesignSystem
 
 public extension IntervalScreen {
     var iOS: some View {
@@ -28,5 +29,6 @@ public extension IntervalScreen {
                     addIntervalScreen
                 }
         }
+        .tint(Color.keyColor)
     }
 }

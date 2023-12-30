@@ -13,7 +13,7 @@ import SharedDesignSystem
 public struct IntervalInfoCellView: View {
     @ObservedObject private var intervalListViewModel: IntervalListViewModel
     
-    @State private var cellOffsetY = CGFloat.zero
+    @State private var cellOffsetX = CGFloat.zero
     
     public var intervalItem: IntervalItem
     
@@ -46,7 +46,7 @@ public struct IntervalInfoCellView: View {
             
             Spacer()
         }
-        .scaleEffect(cellOffsetY / 90, anchor: .leading)
+        .scaleEffect(cellOffsetX / 90, anchor: .leading)
     }
     
     @ViewBuilder
@@ -88,26 +88,26 @@ public struct IntervalInfoCellView: View {
         .background {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color.shapeColor)
-                .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 0)
+                .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 0)
         }
         .gesture(
             DragGesture()
                 .onChanged({ drag in
                     let dragWidth = drag.translation.width
                     
-                    if dragWidth < 0 && cellOffsetY == .zero {
-                        cellOffsetY = .zero
+                    if dragWidth < 0 && cellOffsetX == .zero {
+                        cellOffsetX = .zero
                     } else {
-                        cellOffsetY += (cellOffsetY >= 90) ? dragWidth / 400 : dragWidth
+                        cellOffsetX += (cellOffsetX >= 90) ? dragWidth / 400 : dragWidth
                     }
                 })
                 .onEnded({ _ in
                     withAnimation(.smooth) {
-                        cellOffsetY = (cellOffsetY >= 70) ? 90 : .zero
+                        cellOffsetX = (cellOffsetX >= 70) ? 90 : .zero
                     }
                 })
         )
-        .offset(x: cellOffsetY)
+        .offset(x: cellOffsetX)
     }
     
     private var titleView: some View {

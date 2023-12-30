@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 public struct IntervalListIPhoneScreen: View {
     @ObservedObject var viewModel: IntervalListViewModel
@@ -27,17 +28,7 @@ public struct IntervalListIPhoneScreen: View {
             .padding(.horizontal, 24)
             .padding(.top, 32)
         }
-        .background {
-            LinearGradient(
-                stops: [
-                    Gradient.Stop(color: Color(red: 0.02, green: 0.7, blue: 1).opacity(0.2), location: 0.00),
-                    Gradient.Stop(color: Color(red: 0.02, green: 0.71, blue: 1).opacity(0), location: 1.00),
-                ],
-                startPoint: UnitPoint(x: 0.5, y: 0),
-                endPoint: UnitPoint(x: 0.5, y: 1)
-            )
-            .ignoresSafeArea()
-        }
+        .mainBackground()
         .sheet(isPresented: $viewModel.showEditIntervalView, content: {
             EditIntervalScreen()
         })
