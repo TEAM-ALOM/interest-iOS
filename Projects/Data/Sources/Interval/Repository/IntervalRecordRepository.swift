@@ -30,7 +30,10 @@ public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
             intervalID: intervalID,
             heartRates: record.heartRates,
             repeatedCount: record.repeatedCount,
-            secondTime: record.secondTime).toEntity()
+            secondTime: record.secondTime,
+            createDate: record.createDate,
+            calorie: record.calorie
+        ).toEntity()
     }
     
     public func delete(intervalID: UUID, at recordID: UUID) -> Bool {

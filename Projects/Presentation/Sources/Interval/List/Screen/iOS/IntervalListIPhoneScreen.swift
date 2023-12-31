@@ -14,16 +14,10 @@ public struct IntervalListIPhoneScreen: View {
     
     public var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            LazyVStack(spacing: 24) {
                 ForEach(viewModel.intervalItems) { item in
                     IntervalInfoCellView(intervalItem: item, intervalListViewModel: viewModel)
                 }
-                
-                Button(action: {
-                    viewModel.tapIntervalDetailPageButton()
-                }, label: {
-                    Text("인터벌 상세페이지 가기")
-                })
             }
             .padding(.horizontal, 24)
             .padding(.top, 32)

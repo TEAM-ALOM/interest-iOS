@@ -22,7 +22,7 @@ public class IntervalViewModel: ObservableObject {
         self.intervalUseCase = intervalUseCase
     }
     
-    func tapIntervalStartButton(item: IntervalItem) {
+    func tapIntervalStartButton(item: IntervalModel) {
         router.triggerScreenTransition(route: .intervalActive)
     }
     

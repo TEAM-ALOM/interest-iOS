@@ -15,18 +15,22 @@ public struct IntervalInfoCellView: View {
     
     @State private var cellOffsetX = CGFloat.zero
     
-    public var intervalItem: IntervalItem
+    public var intervalItem: IntervalModel
     
-    init(intervalItem: IntervalItem, intervalListViewModel: IntervalListViewModel) {
+    init(intervalItem: IntervalModel, intervalListViewModel: IntervalListViewModel) {
         self.intervalItem = intervalItem
         self.intervalListViewModel = intervalListViewModel
     }
     
     public var body: some View {
-        ZStack {
-            tool
-            
-            cell
+        Button {
+            intervalListViewModel.tapIntervalDetailPageButton(intervalModelID: intervalItem.id)
+        } label: {
+            ZStack {
+                tool
+                
+                cell
+            }
         }
     }
     
@@ -46,7 +50,7 @@ public struct IntervalInfoCellView: View {
             
             Spacer()
         }
-        .scaleEffect(cellOffsetX / 90, anchor: .leading)
+        .scaleEffect(cellOffsetX < 0 ? 0 : cellOffsetX / 90, anchor: .leading)
     }
     
     @ViewBuilder
@@ -76,13 +80,13 @@ public struct IntervalInfoCellView: View {
             
             info
             
-            Button(action: {
-                //TODO: iOS에서도 실행 창으로 넘어갈 수 있게 설계해야함.
-                intervalListViewModel.tapStartButton()
-            }) {
-                Image(systemName: "play.circle.fill")
-                    .foregroundStyle(Color.keyColor)
-            }
+//            Button(action: {
+//                //TODO: iOS에서도 실행 창으로 넘어갈 수 있게 설계해야함.
+//                intervalListViewModel.tapStartButton()
+//            }) {
+//                Image(systemName: "play.circle.fill")
+//                    .foregroundStyle(Color.keyColor)
+//            }
         }
         .padding(20)
         .background {
@@ -95,15 +99,17 @@ public struct IntervalInfoCellView: View {
                 .onChanged({ drag in
                     let dragWidth = drag.translation.width
                     
-                    if dragWidth < 0 && cellOffsetX == .zero {
-                        cellOffsetX = .zero
+                    if dragWidth < 0 && cellOffsetX <= .zero {
+                        cellOffsetX += 1 / (cellOffsetX - 1)
                     } else {
-                        cellOffsetX += (cellOffsetX >= 90) ? dragWidth / 400 : dragWidth
+                        cellOffsetX += (cellOffsetX >= 90 && dragWidth > 0) ? 90 / cellOffsetX : dragWidth
                     }
                 })
-                .onEnded({ _ in
-                    withAnimation(.smooth) {
-                        cellOffsetX = (cellOffsetX >= 70) ? 90 : .zero
+                .onEnded({ drag in
+                    withAnimation(.snappy) {
+                        print(drag.translation.width)
+                        let isEdit = cellOffsetX >= 70 || drag.translation.width > 5
+                        cellOffsetX = isEdit ? 90 : .zero
                     }
                 })
         )

@@ -9,7 +9,7 @@ import Foundation
 import Domain
 
 struct IntervalModelMapper {
-    static func toPresentationModel(entity: IntervalEntity) -> IntervalItem {
+    static func toPresentationModel(entity: IntervalEntity) -> IntervalModel {
         return .init(title: entity.title)
     }
 }

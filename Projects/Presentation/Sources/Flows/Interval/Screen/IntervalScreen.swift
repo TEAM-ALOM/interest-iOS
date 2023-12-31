@@ -32,7 +32,7 @@ public struct IntervalScreen: View {
             UIRefreshControl.appearance().tintColor = UIColor(Color.keyColor)
             
             let barAppearance = UINavigationBarAppearance()
-            let style = UITraitCollection().userInterfaceStyle
+        let style = UITraitCollection().userInterfaceStyle
             
             barAppearance.configureWithTransparentBackground()
             barAppearance.largeTitleTextAttributes = [

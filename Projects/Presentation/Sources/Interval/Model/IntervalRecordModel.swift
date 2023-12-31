@@ -1,14 +1,14 @@
 //
-//  IntervalRecord.swift
-//  Domain
+//  IntervalRecordModel.swift
+//  Presentation
 //
-//  Created by 송영모 on 11/29/23.
+//  Created by 김도형 on 12/30/23.
 //
 
 import Foundation
 
-public struct IntervalRecordEntity {
-    public let id: UUID = UUID()
+public struct IntervalRecordModel: Identifiable {
+    public var id: UUID = .init()
     
     public var heartRates: [Double] = []
     public var repeatedCount: Int = 0
@@ -30,4 +30,3 @@ public struct IntervalRecordEntity {
         self.calorie = calorie
     }
 }
-

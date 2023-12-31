@@ -12,9 +12,12 @@ public protocol IntervalRecordDataSourceInterface {
     func fetch(intervalID: UUID, at recordID: UUID) -> IntervalRecordPersistentModel?
     func fetches(intervalID id: UUID) -> [IntervalRecordPersistentModel]
     func append(intervalID id: UUID,
-              heartRates: [Double],
-              repeatedCount: Int,
-              secondTime: Int) -> IntervalRecordPersistentModel
+                heartRates: [Double],
+                repeatedCount: Int,
+                secondTime: Int,
+                createDate: Date,
+                calorie: Int
+    ) -> IntervalRecordPersistentModel
     func delete(intervalID: UUID, at recordID: UUID) -> Bool
 }
 
@@ -48,11 +51,21 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
         return records ?? []
     }
     
-    public func append(intervalID id: UUID, heartRates: [Double], repeatedCount: Int, secondTime: Int) -> IntervalRecordPersistentModel {
+    public func append(intervalID id: UUID, 
+                       heartRates: [Double],
+                       repeatedCount: Int,
+                       secondTime: Int,
+                       createDate: Date,
+                       calorie: Int
+    ) -> IntervalRecordPersistentModel {
         let interval = self.intervalFetch(at: id)
-        let record: IntervalRecordPersistentModel = .init(heartRates: heartRates,
-                           repeatedCount: repeatedCount,
-                           secondTime: secondTime)
+        let record: IntervalRecordPersistentModel = .init(
+            heartRates: heartRates,
+            repeatedCount: repeatedCount,
+            secondTime: secondTime,
+            createDate: createDate,
+            calorie: calorie
+        )
         
         interval?.records?.append(record)
         try? context?.save()
