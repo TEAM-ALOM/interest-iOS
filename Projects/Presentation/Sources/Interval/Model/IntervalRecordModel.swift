@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct IntervalRecordModel: Identifiable {
-    public var id: UUID = .init()
+public struct IntervalRecordModel: Identifiable, Hashable {
+    public let id: UUID
     
     public var heartRates: [Double] = []
     public var repeatedCount: Int = 0
@@ -17,12 +17,14 @@ public struct IntervalRecordModel: Identifiable {
     public var calorie: Int = 0
     
     public init(
+        id: UUID,
         heartRates: [Double],
         repeatedCount: Int,
         secondTime: Int,
         createDate: Date,
         calorie: Int
     ) {
+        self.id = id
         self.heartRates = heartRates
         self.repeatedCount = repeatedCount
         self.secondTime = secondTime

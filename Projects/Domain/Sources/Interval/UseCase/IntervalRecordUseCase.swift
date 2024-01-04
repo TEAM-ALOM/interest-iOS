@@ -17,7 +17,7 @@ public protocol IntervalRecordUseCaseInterface {
 public final class IntervalRecordUseCase: IntervalRecordUseCaseInterface {
     private let intervalRecordRepository: IntervalRecordRepositoryInterface
     
-    init(intervalRecordRepository: IntervalRecordRepositoryInterface) {
+    public init(intervalRecordRepository: IntervalRecordRepositoryInterface) {
         self.intervalRecordRepository = intervalRecordRepository
     }
     

@@ -14,13 +14,13 @@ public class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
     
     public init(
         router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface,
-        intervalModelID: UUID
+        intervalRecordUseCase: IntervalRecordUseCaseInterface,
+        intervalItem: IntervalModel
     ) {
         self.router = router
         super.init(
-            intervalUseCase: intervalUseCase,
-            intervalModelID: intervalModelID
+            intervalRecordUseCase: intervalRecordUseCase,
+            intervalItem: intervalItem
         )
     }
     
@@ -31,40 +31,16 @@ public class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
 }
 
 public class IntervalDetailViewModel: ObservableObject {
-    @Published var intervalModel: IntervalModel
+    @Published var intervalItem: IntervalModel
     
-    private let intervalUseCase: IntervalUseCaseInterface
+    private let intervalRecordUseCase: IntervalRecordUseCaseInterface
     
     init(
-        intervalUseCase: IntervalUseCaseInterface,
-        intervalModelID: UUID
+        intervalRecordUseCase: IntervalRecordUseCaseInterface,
+        intervalItem: IntervalModel
     ) {
-        self.intervalUseCase = intervalUseCase
-        self.intervalModel = IntervalModel.mocks.first { interval in
-            return interval.id == intervalModelID
-        } ?? .init(
-            title: "달리기 인터벌",
-            burningSecondTime: 1 * 60,
-            burningHeartIntervalType: .five,
-            restingSecondTime: 4 * 60,
-            restingHeartIntervalType: .one,
-            records: [
-                IntervalRecordModel(
-                    heartRates: [136],
-                    repeatedCount: 6,
-                    secondTime: 38 * 60,
-                    createDate: .now,
-                    calorie: 605
-                ),
-                IntervalRecordModel(
-                    heartRates: [136],
-                    repeatedCount: 6,
-                    secondTime: 38 * 60,
-                    createDate: .now,
-                    calorie: 605
-                )
-            ]
-        )
+        self.intervalRecordUseCase = intervalRecordUseCase
+        self.intervalItem = intervalItem
     }
     
     func tapIntervalStartButton() {

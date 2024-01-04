@@ -16,16 +16,8 @@ extension LinearGradient {
                 location: 0.00
             ),
             Gradient.Stop(
-                color: Color(red: 0.4, green: 0.33, blue: 1).opacity(0.2),
-                location: 0.00
-            ),
-            Gradient.Stop(
                 color: Color(red: 0.2, green: 0.53, blue: 1).opacity(0.1),
                 location: 0.52
-            ),
-            Gradient.Stop(
-                color: Color(red: 0.02, green: 0.71, blue: 1).opacity(0),
-                location: 1.00
             ),
             Gradient.Stop(
                 color: Color(red: 0.4, green: 0.33, blue: 1).opacity(0),
@@ -39,23 +31,15 @@ extension LinearGradient {
     static let lightBackground = LinearGradient(
         stops: [
             Gradient.Stop(
-                color: Color(red: 0.52, green: 0.47, blue: 1).opacity(0),
+                color: Color(red: 0.4, green: 0.33, blue: 1).opacity(0.25),
                 location: 0.00
             ),
             Gradient.Stop(
-                color: Color(red: 0.4, green: 0.33, blue: 1).opacity(0.2),
-                location: 0.00
-            ),
-            Gradient.Stop(
-                color: Color(red: 0, green: 0.41, blue: 1).opacity(0.1),
+                color: Color(red: 0, green: 0.41, blue: 1).opacity(0.15),
                 location: 0.52
             ),
             Gradient.Stop(
-                color: Color(red: 0.02, green: 0.71, blue: 1).opacity(0),
-                location: 1.00
-            ),
-            Gradient.Stop(
-                color: Color(red: 0.52, green: 0.47, blue: 1).opacity(0.2),
+                color: Color(red: 0.52, green: 0.47, blue: 1).opacity(0),
                 location: 1.00
             ),
         ],

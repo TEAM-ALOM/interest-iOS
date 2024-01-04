@@ -24,7 +24,7 @@ public struct IntervalInfoCellView: View {
     
     public var body: some View {
         Button {
-            intervalListViewModel.tapIntervalDetailPageButton(intervalModelID: intervalItem.id)
+            intervalListViewModel.tapIntervalDetailPageButton(intervalItem: intervalItem)
         } label: {
             ZStack {
                 tool
@@ -38,13 +38,13 @@ public struct IntervalInfoCellView: View {
         HStack(spacing: 12) {
             toolButton(imageName: "trash", 
                        color: .warningColor,
-                       backgroundColor: .warningColor25) {
-                
+                       backgroundColor: .warningColor) {
+                intervalListViewModel.tapIntervalDeleteButton(at: intervalItem.id)
             }
             
             toolButton(imageName: "pencil", 
                        color: .editColor,
-                       backgroundColor: .editColor25) {
+                       backgroundColor: .editColor) {
                 intervalListViewModel.tapIntervalEditButton()
             }
             
@@ -67,7 +67,7 @@ public struct IntervalInfoCellView: View {
                 .padding(8)
                 .background {
                     Circle()
-                        .foregroundStyle(backgroundColor)
+                        .foregroundStyle(backgroundColor.opacity(0.2))
                 }
         }
     }

@@ -26,9 +26,9 @@ public class IntervalListViewModelWithRouter: IntervalListViewModel {
         router.triggerScreenTransition(route: .intervalActive)
     }
     
-    override func tapIntervalDetailPageButton(intervalModelID: UUID) {
-        super.tapIntervalDetailPageButton(intervalModelID: intervalModelID)
-        router.triggerScreenTransition(route: .intervalDetail(intervalModelID))
+    override func tapIntervalDetailPageButton(intervalItem: IntervalModel) {
+        super.tapIntervalDetailPageButton(intervalItem: intervalItem)
+        router.triggerScreenTransition(route: .intervalDetail(intervalItem))
     }
 }
 
@@ -54,7 +54,11 @@ public class IntervalListViewModel: ObservableObject {
     
     func tapStartButton() { }
     
-    func tapIntervalDetailPageButton(intervalModelID: UUID) { }
+    func tapIntervalDetailPageButton(intervalItem: IntervalModel) { }
+    
+    func tapIntervalDeleteButton(at id: UUID) {
+        let _ = intervalUseCase.delete(at: id)
+    }
     
     func tapIntervalEditButton() {
         showEditIntervalView = true

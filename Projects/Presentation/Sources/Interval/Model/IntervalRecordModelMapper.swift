@@ -11,6 +11,7 @@ import Domain
 struct IntervalRecordModelMapper {
     static func toPresentationModel(entity: IntervalRecordEntity) -> IntervalRecordModel {
         return .init(
+            id: entity.id,
             heartRates: entity.heartRates,
             repeatedCount: entity.repeatedCount,
             secondTime: entity.secondTime,
@@ -21,6 +22,7 @@ struct IntervalRecordModelMapper {
     
     static func toEntity(model: IntervalRecordModel) -> IntervalRecordEntity {
         return .init(
+            id: model.id,
             heartRates: model.heartRates,
             repeatedCount: model.repeatedCount,
             secondTime: model.secondTime,

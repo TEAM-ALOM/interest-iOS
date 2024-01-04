@@ -69,6 +69,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
             restingSecondTime: restingSecondTime,
             restingHeartIntervalType: restingHeartIntervalType
         )
+        
         context?.insert(interval)
         
         return interval
@@ -90,6 +91,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         interval?.burningHeartIntervalType = burningHeartIntervalType
         interval?.restingSecondTime = restingSecondTime
         interval?.restingHeartIntervalType = restingHeartIntervalType
+        
         try? context?.save()
         
         return interval

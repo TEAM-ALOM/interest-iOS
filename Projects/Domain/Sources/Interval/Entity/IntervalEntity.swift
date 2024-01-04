@@ -8,6 +8,8 @@
 import Foundation
 
 public struct IntervalEntity {
+    public let id: UUID
+    
     public let title: String
     
     public var burningSecondTime: Int
@@ -19,6 +21,7 @@ public struct IntervalEntity {
     public var records: [IntervalRecordEntity]
     
     public init(
+        id: UUID,
         title: String = "",
         burningSecondTime: Int = 0,
         burningHeartIntervalType: HeartIntervalType = .three,
@@ -27,6 +30,7 @@ public struct IntervalEntity {
         repeatCount: Int = 0,
         records: [IntervalRecordEntity] = []
     ) {
+        self.id = id
         self.title = title
         self.burningSecondTime = burningSecondTime
         self.burningHeartIntervalType = burningHeartIntervalType
@@ -37,12 +41,12 @@ public struct IntervalEntity {
     }
 }
 
-extension IntervalEntity {
-    static let mocks: [IntervalEntity] = [
-        .init(title: "달리기 인터벌"),
-        .init(title: "자전거 인터벌"),
-        .init(title: "수영 인터벌"),
-        .init(title: "천국의 계단 인터벌"),
-        .init(title: "커스텀 인터벌"),
-    ]
-}
+//extension IntervalEntity {
+//    static let mocks: [IntervalEntity] = [
+//        .init(title: "달리기 인터벌"),
+//        .init(title: "자전거 인터벌"),
+//        .init(title: "수영 인터벌"),
+//        .init(title: "천국의 계단 인터벌"),
+//        .init(title: "커스텀 인터벌"),
+//    ]
+//}

@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct IntervalModel: Identifiable {
-    public var id: UUID = .init()
+public struct IntervalModel: Identifiable, Hashable {
+    public var id: UUID
     
     public let title: String
     
@@ -21,6 +21,7 @@ public struct IntervalModel: Identifiable {
     public var records: [IntervalRecordModel]
     
     public init(
+        id: UUID,
         title: String = "",
         burningSecondTime: Int = 0,
         burningHeartIntervalType: HeartIntervalTypeModel = .three,
@@ -29,6 +30,7 @@ public struct IntervalModel: Identifiable {
         repeatCount: Int = 0,
         records: [IntervalRecordModel] = []
     ) {
+        self.id = id
         self.title = title
         self.burningSecondTime = burningSecondTime
         self.burningHeartIntervalType = burningHeartIntervalType
@@ -42,6 +44,7 @@ public struct IntervalModel: Identifiable {
 public extension IntervalModel {
     static let mocks: [IntervalModel] = [
         .init(
+            id: .init(),
             title: "달리기 인터벌",
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
@@ -49,6 +52,7 @@ public extension IntervalModel {
             restingHeartIntervalType: .one,
             records: [
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -56,6 +60,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -63,6 +68,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -70,6 +76,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -77,6 +84,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -84,6 +92,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -91,6 +100,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -98,6 +108,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -107,6 +118,7 @@ public extension IntervalModel {
             ]
         ),
         .init(
+            id: .init(),
             title: "자전거 인터벌",
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
@@ -114,6 +126,7 @@ public extension IntervalModel {
             restingHeartIntervalType: .one,
             records: [
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -121,6 +134,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -130,6 +144,7 @@ public extension IntervalModel {
             ]
         ),
         .init(
+            id: .init(),
             title: "수영 인터벌",
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
@@ -137,6 +152,7 @@ public extension IntervalModel {
             restingHeartIntervalType: .one,
             records: [
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,
@@ -144,6 +160,7 @@ public extension IntervalModel {
                     calorie: 605
                 ),
                 IntervalRecordModel(
+                    id: .init(),
                     heartRates: [136],
                     repeatedCount: 6,
                     secondTime: 38 * 60,

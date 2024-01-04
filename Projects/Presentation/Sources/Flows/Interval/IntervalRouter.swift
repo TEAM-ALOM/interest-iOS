@@ -35,7 +35,7 @@ public final class IntervalRouter: ObservableObject, FlowRouter {
 public extension IntervalRouter {
     enum PushRoute: Hashable {
         case intervalList
-        case intervalDetail(UUID)
+        case intervalDetail(IntervalModel)
         case intervalActive
        
         @ViewBuilder
@@ -44,8 +44,8 @@ public extension IntervalRouter {
             case .intervalList:
                 let viewModel = intervalDIContainer.intervalListDependencies(intervalRouter: router)
                 IntervalListScreen(viewModel: viewModel)
-            case .intervalDetail(let intervalID):
-                let viewModel = intervalDIContainer.intervalDetailDependencies(intervalRouter: router, intervalID: intervalID)
+            case .intervalDetail(let intervalItem):
+                let viewModel = intervalDIContainer.intervalDetailDependencies(intervalRouter: router, intervalItem: intervalItem)
                 IntervalDetailScreen(viewModel: viewModel)
             case .intervalActive:
                 let viewModel = intervalDIContainer.intervalActiveDependencies(intervalRouter: router)

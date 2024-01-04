@@ -12,5 +12,5 @@ public protocol IntervalDIContainerInterface {
     func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel
     func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModel
     func addIntervalDependencies(intervalRouter: IntervalRouter) -> AddIntervalViewModel
-    func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalID: UUID) -> IntervalDetailViewModel
+    func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModel
 }
