@@ -8,10 +8,10 @@
 import Foundation
 
 public protocol IntervalRecordUseCaseInterface {
-    func fetchIntervalRecord(intervalID: UUID, at recordID: UUID) -> IntervalRecordEntity?
-    func fetchIntervalRecords(intervalID id: UUID) -> [IntervalRecordEntity]
-    func appendIntervalRecord(intervalID: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity
-    func deleteIntervalRecord(intervalID: UUID, at recordID: UUID) -> Bool
+    func fetchIntervalRecord(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity?
+    func fetchIntervalRecords(intervalId id: UUID) -> [IntervalRecordEntity]
+    func appendIntervalRecord(intervalId: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity
+    func deleteIntervalRecord(intervalId: UUID, at recordId: UUID) -> Bool
 }
 
 public final class IntervalRecordUseCase: IntervalRecordUseCaseInterface {
@@ -21,19 +21,19 @@ public final class IntervalRecordUseCase: IntervalRecordUseCaseInterface {
         self.intervalRecordRepository = intervalRecordRepository
     }
     
-    public func fetchIntervalRecord(intervalID: UUID, at recordID: UUID) -> IntervalRecordEntity? {
-        return intervalRecordRepository.fetch(intervalID: intervalID, at: recordID)
+    public func fetchIntervalRecord(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity? {
+        return intervalRecordRepository.fetch(intervalId: intervalId, at: recordId)
     }
     
-    public func fetchIntervalRecords(intervalID id: UUID) -> [IntervalRecordEntity] {
-        return intervalRecordRepository.fetches(intervalID: id)
+    public func fetchIntervalRecords(intervalId id: UUID) -> [IntervalRecordEntity] {
+        return intervalRecordRepository.fetches(intervalId: id)
     }
     
-    public func appendIntervalRecord(intervalID: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity {
-        return intervalRecordRepository.append(intervalID: intervalID, record: record)
+    public func appendIntervalRecord(intervalId: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity {
+        return intervalRecordRepository.append(intervalId: intervalId, record: record)
     }
     
-    public func deleteIntervalRecord(intervalID: UUID, at recordID: UUID) -> Bool {
-        return intervalRecordRepository.delete(intervalID: intervalID, at: recordID)
+    public func deleteIntervalRecord(intervalId: UUID, at recordId: UUID) -> Bool {
+        return intervalRecordRepository.delete(intervalId: intervalId, at: recordId)
     }
 }

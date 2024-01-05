@@ -8,8 +8,8 @@
 import Foundation
 
 public protocol IntervalRecordRepositoryInterface {
-    func fetch(intervalID: UUID, at recordID: UUID) -> IntervalRecordEntity?
-    func fetches(intervalID id: UUID) -> [IntervalRecordEntity]
-    func append(intervalID: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity
-    func delete(intervalID: UUID, at recordID: UUID) -> Bool
+    func fetch(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity?
+    func fetches(intervalId id: UUID) -> [IntervalRecordEntity]
+    func append(intervalId: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity
+    func delete(intervalId: UUID, at recordId: UUID) -> Bool
 }

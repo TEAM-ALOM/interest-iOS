@@ -15,19 +15,19 @@ public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
         self.dataSource = dataSource
     }
     
-    public func fetch(intervalID: UUID, at recordID: UUID) -> IntervalRecordEntity? {
-        return dataSource.fetch(intervalID: intervalID, at: recordID)?.toEntity()
+    public func fetch(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity? {
+        return dataSource.fetch(intervalId: intervalId, at: recordId)?.toEntity()
     }
     
-    public func fetches(intervalID id: UUID) -> [IntervalRecordEntity] {
-        return dataSource.fetches(intervalID: id).map { record in
+    public func fetches(intervalId id: UUID) -> [IntervalRecordEntity] {
+        return dataSource.fetches(intervalId: id).map { record in
             return record.toEntity()
         }
     }
     
-    public func append(intervalID: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity {
+    public func append(intervalId: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity {
         return dataSource.append(
-            intervalID: intervalID,
+            intervalId: intervalId,
             heartRates: record.heartRates,
             repeatedCount: record.repeatedCount,
             secondTime: record.secondTime,
@@ -36,7 +36,7 @@ public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
         ).toEntity()
     }
     
-    public func delete(intervalID: UUID, at recordID: UUID) -> Bool {
-        return dataSource.delete(intervalID: intervalID, at: recordID)
+    public func delete(intervalId: UUID, at recordId: UUID) -> Bool {
+        return dataSource.delete(intervalId: intervalId, at: recordId)
     }
 }

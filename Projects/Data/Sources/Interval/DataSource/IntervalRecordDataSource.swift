@@ -9,16 +9,16 @@ import Foundation
 import SwiftData
 
 public protocol IntervalRecordDataSourceInterface {
-    func fetch(intervalID: UUID, at recordID: UUID) -> IntervalRecordPersistentModel?
-    func fetches(intervalID id: UUID) -> [IntervalRecordPersistentModel]
-    func append(intervalID id: UUID,
+    func fetch(intervalId: UUID, at recordID: UUID) -> IntervalRecordPersistentModel?
+    func fetches(intervalId id: UUID) -> [IntervalRecordPersistentModel]
+    func append(intervalId id: UUID,
                 heartRates: [Double],
                 repeatedCount: Int,
                 secondTime: Int,
                 createDate: Date,
                 calorie: Int
     ) -> IntervalRecordPersistentModel
-    func delete(intervalID: UUID, at recordID: UUID) -> Bool
+    func delete(intervalId: UUID, at recordID: UUID) -> Bool
 }
 
 public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
@@ -36,8 +36,8 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
         return result?.first
     }
     
-    public func fetch(intervalID: UUID, at recordID: UUID) -> IntervalRecordPersistentModel? {
-        let records = self.intervalFetch(at: intervalID)?.records
+    public func fetch(intervalId: UUID, at recordID: UUID) -> IntervalRecordPersistentModel? {
+        let records = self.intervalFetch(at: intervalId)?.records
         let result = records?.first(where: { record in
             return record.id == recordID
         })
@@ -45,13 +45,13 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
         return result
     }
     
-    public func fetches(intervalID id: UUID) -> [IntervalRecordPersistentModel] {
+    public func fetches(intervalId id: UUID) -> [IntervalRecordPersistentModel] {
         let records = self.intervalFetch(at: id)?.records
         
         return records ?? []
     }
     
-    public func append(intervalID id: UUID, 
+    public func append(intervalId id: UUID,
                        heartRates: [Double],
                        repeatedCount: Int,
                        secondTime: Int,
@@ -73,8 +73,8 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
         return record
     }
     
-    public func delete(intervalID: UUID, at recordID: UUID) -> Bool {
-        let interval = self.intervalFetch(at: intervalID)
+    public func delete(intervalId: UUID, at recordID: UUID) -> Bool {
+        let interval = self.intervalFetch(at: intervalId)
         if let recordIndex = interval?.records?.firstIndex(where: { record in
             return record.id == recordID
         }) {
