@@ -8,10 +8,9 @@
 import Foundation
 
 public protocol IntervalDIContainerInterface {
-    func intervalRouter() -> IntervalRouter
     func intervalScreenDependencies(intervalRouter: IntervalRouter) -> IntervalViewModel
     func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel
     func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModel
     func addIntervalDependencies(intervalRouter: IntervalRouter) -> AddIntervalViewModel
-    func intervalDetailDependencies(intervalRouter: IntervalRouter) -> IntervalDetailViewModel
+    func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModel
 }

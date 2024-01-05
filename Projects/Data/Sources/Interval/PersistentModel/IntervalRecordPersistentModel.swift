@@ -17,28 +17,36 @@ public class IntervalRecordPersistentModel {
     public var heartRates: [Double] = []
     public var repeatedCount: Int = 0
     public var secondTime: Int = 0
+    public var createDate: Date = Date.now
+    public var calorie: Int = 0
     
-    @Relationship public var interval: IntervalPersistentModel?
+    @Relationship(inverse: \IntervalPersistentModel.records)
+    public var interval: IntervalPersistentModel?
     
     public init(
         heartRates: [Double],
         repeatedCount: Int,
         secondTime: Int,
-        interval: IntervalPersistentModel? = nil
+        createDate: Date,
+        calorie: Int
     ) {
         self.heartRates = heartRates
         self.repeatedCount = repeatedCount
         self.secondTime = secondTime
-        self.interval = interval
+        self.createDate = createDate
+        self.calorie = calorie
     }
 }
 
 public extension IntervalRecordPersistentModel {
     func toEntity() -> IntervalRecordEntity {
         return .init(
+            id: self.id,
             heartRates: self.heartRates,
             repeatedCount: self.repeatedCount,
-            secondTime: self.secondTime
+            secondTime: self.secondTime,
+            createDate: self.createDate,
+            calorie: self.calorie
         )
     }
 }

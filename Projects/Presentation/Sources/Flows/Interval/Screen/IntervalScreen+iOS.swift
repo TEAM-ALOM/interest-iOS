@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SharedDesignSystem
 
 public extension IntervalScreen {
     var iOS: some View {
@@ -25,8 +26,9 @@ public extension IntervalScreen {
                     viewModel.nextScreen()
                 }
                 .sheet(isPresented: $viewModel.isBottomSheetPresent) {
-                    AddIntervalScreen(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
+                    addIntervalScreen
                 }
         }
+        .tint(Color.keyColor)
     }
 }

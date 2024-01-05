@@ -13,20 +13,24 @@ import SharedDesignSystem
 public struct IntervalInfoCellView: View {
     @ObservedObject private var intervalListViewModel: IntervalListViewModel
     
-    @State private var cellOffsetY = CGFloat.zero
+    @State private var cellOffsetX = CGFloat.zero
     
-    public var intervalItem: IntervalItem
+    public var intervalItem: IntervalModel
     
-    init(intervalItem: IntervalItem, intervalListViewModel: IntervalListViewModel) {
+    init(intervalItem: IntervalModel, intervalListViewModel: IntervalListViewModel) {
         self.intervalItem = intervalItem
         self.intervalListViewModel = intervalListViewModel
     }
     
     public var body: some View {
-        ZStack {
-            tool
-            
-            cell
+        Button {
+            intervalListViewModel.tapIntervalDetailPageButton(intervalItem: intervalItem)
+        } label: {
+            ZStack {
+                tool
+                
+                cell
+            }
         }
     }
     
@@ -34,19 +38,19 @@ public struct IntervalInfoCellView: View {
         HStack(spacing: 12) {
             toolButton(imageName: "trash", 
                        color: .warningColor,
-                       backgroundColor: .warningColor25) {
-                
+                       backgroundColor: .warningColor) {
+                intervalListViewModel.tapIntervalDeleteButton(at: intervalItem.id)
             }
             
             toolButton(imageName: "pencil", 
                        color: .editColor,
-                       backgroundColor: .editColor25) {
+                       backgroundColor: .editColor) {
                 intervalListViewModel.tapIntervalEditButton()
             }
             
             Spacer()
         }
-        .scaleEffect(cellOffsetY / 90, anchor: .leading)
+        .scaleEffect(cellOffsetX < 0 ? 0 : cellOffsetX / 90, anchor: .leading)
     }
     
     @ViewBuilder
@@ -63,7 +67,7 @@ public struct IntervalInfoCellView: View {
                 .padding(8)
                 .background {
                     Circle()
-                        .foregroundStyle(backgroundColor)
+                        .foregroundStyle(backgroundColor.opacity(0.2))
                 }
         }
     }
@@ -76,38 +80,40 @@ public struct IntervalInfoCellView: View {
             
             info
             
-            Button(action: {
-                //TODO: iOS에서도 실행 창으로 넘어갈 수 있게 설계해야함.
-                intervalListViewModel.tapStartButton()
-            }) {
-                Image(systemName: "play.circle.fill")
-                    .foregroundStyle(Color.keyColor)
-            }
+//            Button(action: {
+//                //TODO: iOS에서도 실행 창으로 넘어갈 수 있게 설계해야함.
+//                intervalListViewModel.tapStartButton()
+//            }) {
+//                Image(systemName: "play.circle.fill")
+//                    .foregroundStyle(Color.keyColor)
+//            }
         }
         .padding(20)
         .background {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color.shapeColor)
-                .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 0)
+                .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 0)
         }
         .gesture(
             DragGesture()
                 .onChanged({ drag in
                     let dragWidth = drag.translation.width
                     
-                    if dragWidth < 0 && cellOffsetY == .zero {
-                        cellOffsetY = .zero
+                    if dragWidth < 0 && cellOffsetX <= .zero {
+                        cellOffsetX += 1 / (cellOffsetX - 1)
                     } else {
-                        cellOffsetY += (cellOffsetY >= 90) ? dragWidth / 400 : dragWidth
+                        cellOffsetX += (cellOffsetX >= 90 && dragWidth > 0) ? 90 / cellOffsetX : dragWidth
                     }
                 })
-                .onEnded({ _ in
-                    withAnimation(.smooth) {
-                        cellOffsetY = (cellOffsetY >= 70) ? 90 : .zero
+                .onEnded({ drag in
+                    withAnimation(.snappy) {
+                        print(drag.translation.width)
+                        let isEdit = cellOffsetX >= 70 || drag.translation.width > 5
+                        cellOffsetX = isEdit ? 90 : .zero
                     }
                 })
         )
-        .offset(x: cellOffsetY)
+        .offset(x: cellOffsetX)
     }
     
     private var titleView: some View {

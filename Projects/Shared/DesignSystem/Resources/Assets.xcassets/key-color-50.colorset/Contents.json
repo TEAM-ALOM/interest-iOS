@@ -6,8 +6,26 @@
         "components" : {
           "alpha" : "1.000",
           "blue" : "0x80",
-          "green" : "0x5A",
-          "red" : "0x02"
+          "green" : "0x2E",
+          "red" : "0x36"
+        }
+      },
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "color" : {
+        "color-space" : "display-p3",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0xFF",
+          "green" : "0xBC",
+          "red" : "0xC2"
         }
       },
       "idiom" : "universal"
@@ -24,8 +42,8 @@
         "components" : {
           "alpha" : "1.000",
           "blue" : "0x80",
-          "green" : "0x5A",
-          "red" : "0x02"
+          "green" : "0x2E",
+          "red" : "0x36"
         }
       },
       "idiom" : "universal"
