@@ -21,6 +21,7 @@ public protocol IntervalDataSourceInterface {
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
     ) -> IntervalPersistentModel
+    
     func update(
         at id: UUID,
         title: String,

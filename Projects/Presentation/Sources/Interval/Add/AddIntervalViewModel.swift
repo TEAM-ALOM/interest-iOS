@@ -27,55 +27,58 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
     
     override func tapSaveButton(at id: UUID) {
         let newInterval = IntervalEntity(
-              id: id,
-              title: name,
-              exerciseId: selectedExerciseId!,
-              burningSecondTime: burningResult,
-              burningHeartIntervalType: convertToHeartIntervalType(from: burningSelectedInterval),
-              restingSecondTime: restingResult,
-              restingHeartIntervalType: convertToHeartIntervalType(from: restSelectedInterval),
-              repeatCount: repeatCounts.counts,
-              records: .init()
-          )
+            id: id,
+            title: name,
+            exerciseId: selectedExerciseId ?? ExerciseImage.run,
+            burningSecondTime: burningResult,
+            burningHeartIntervalType: convertToHeartIntervalType(from: burningSelectedInterval),
+            restingSecondTime: restingResult,
+            restingHeartIntervalType: convertToHeartIntervalType(from: restSelectedInterval),
+            repeatCount: repeatCounts.counts,
+            records: .init()
+        )
         
         let _ = intervalUseCase.update(at: id, to: newInterval)
-
+        
         let newIntervalModel = IntervalModel(
-              id: newInterval.id,
-              title: newInterval.title, 
-              exerciseId: newInterval.exerciseId,
-              burningSecondTime: newInterval.burningSecondTime,
-              burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
-              restingSecondTime: newInterval.restingSecondTime,
-              restingHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.restingHeartIntervalType),
-              repeatCount: newInterval.repeatCount,
-              records: newInterval.records.map { IntervalRecordModelMapper.toPresentationModel(entity: $0) }
-          )
+            id: newInterval.id,
+            title: newInterval.title, 
+            exerciseId: newInterval.exerciseId,
+            burningSecondTime: newInterval.burningSecondTime,
+            burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
+            restingSecondTime: newInterval.restingSecondTime,
+            restingHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.restingHeartIntervalType),
+            repeatCount: newInterval.repeatCount,
+            records: newInterval.records.map { IntervalRecordModelMapper.toPresentationModel(entity: $0) }
+        )
         
         intervalItems.append(newIntervalModel)
-        IntervalModel.mocks.append(.init(id: .init(), title: "ff", exerciseId: .badminton, burningSecondTime: 222, burningHeartIntervalType: .five, restingSecondTime: 222, restingHeartIntervalType: .five, repeatCount: 3, records: []))
+        
         let _ = intervalUseCase.fetches()
-
+        
     }
     
 }
 public class AddIntervalViewModel: ObservableObject {
     let intervalUseCase: IntervalUseCaseInterface
+    
     var burningResult: Int = 0
     var restingResult: Int = 0
-
+    
     @Published var intervalItems: [IntervalModel] = []
     
     @Published var name: String = ""
+    @Published var repeatCounts : RepeatCount = .init(counts: 0)
+
     @Published var exercise : [ExerciseImage] = ExerciseImage.allCases
     @Published var selectedExerciseId: ExerciseImage.ID?
-
+    
+    
     @Published var burningSelectedInterval = HeartSection.section1
     @Published var burningTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
     @Published var restSelectedInterval = HeartSection.section1
     @Published var restTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
-    @Published var repeatCounts : RepeatCount = .init(counts: 0)
-        
+    
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
     }
@@ -85,6 +88,6 @@ public class AddIntervalViewModel: ObservableObject {
     func convertToHeartIntervalType(from section: HeartSection) -> HeartIntervalType {
         return section.toHeartIntervalType()
     }
-
+    
     func tapSaveButton(at id: UUID) {}
 }

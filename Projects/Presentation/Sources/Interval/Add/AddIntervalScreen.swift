@@ -15,7 +15,7 @@ public struct AddIntervalScreen: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
     @State private var isTapped: Bool = false
-
+    
     @StateObject var viewModel: AddIntervalViewModel
     
     
@@ -69,15 +69,16 @@ public struct AddIntervalScreen: View {
                 .padding(.all,12)
                 .background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
-
+            
         }
         .padding(.top,80)
     }
     private var exercise: some View {
-          HStack{
-              ExercisePicker(exerciseImage: $viewModel.exercise, selectedExerciseId: $viewModel.selectedExerciseId)
-          }
-      }
+        HStack{
+            ExercisePicker(exerciseImage: $viewModel.exercise, selectedExerciseId: $viewModel.selectedExerciseId)
+        }
+        .padding(.vertical,10)
+    }
     
     private var repeatCount: some View {
         VStack{
@@ -104,7 +105,7 @@ struct ExercisePicker: View {
     
     @ViewBuilder
     func pickExerciseView (exercise :Binding<[ExerciseImage]>) -> some View {
-        HStack(spacing : 20){
+        HStack(spacing : 30){
             ForEach(exercise.wrappedValue, id: \.self) { exerciseImage in
                 Button(action: {
                     self.selectedExerciseId = exerciseImage.id
@@ -112,12 +113,12 @@ struct ExercisePicker: View {
                     ZStack{
                         Circle()
                             .fill(self.selectedExerciseId == exerciseImage.id  ? Color.keyColor : Color.clear)
-                            .frame(width: 40,height: 40)
+                            .frame(width: 42,height: 42)
                         
                         Image(systemName: "\(exerciseImage.rawValue)")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 30, height: 28)
+                            .frame(width: 32, height: 32)
                             .foregroundColor(Color.keyColor50)
                     }
                 })

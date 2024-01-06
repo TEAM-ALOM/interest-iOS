@@ -12,7 +12,7 @@ public struct IntervalEntity {
     
     public let title: String
     public var exerciseId: ExerciseImage.ID
-
+    
     public var burningSecondTime: Int
     public var burningHeartIntervalType: HeartIntervalType
     public var restingSecondTime: Int

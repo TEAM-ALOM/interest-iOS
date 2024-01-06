@@ -29,7 +29,7 @@ struct BurningRestingPicker: View {
                 
                 Text(isBurning ? "버닝 옵션" : "휴식 옵션")
                     .fontWeight(.semibold)
-
+                
                 Spacer()
             }
             .padding(.vertical,15)
@@ -67,7 +67,7 @@ struct BurningRestingPicker: View {
             if (isTimeExpanded){
                 timePicker(time: time)
             }
-        
+            
             if (isExpanded.wrappedValue) {
                 Divider()
                     .padding(.bottom, 4)
@@ -86,7 +86,7 @@ struct BurningRestingPicker: View {
                     }
                 }
                 .pickerStyle(.wheel)
-                .frame(width: geometry.size.width/4)
+                .frame(width: geometry.size.width/4.5)
                 
                 Text("시간")
                 
@@ -97,7 +97,7 @@ struct BurningRestingPicker: View {
                     }
                 }
                 .pickerStyle(.wheel)
-                .frame(width: geometry.size.width/4)
+                .frame(width: geometry.size.width/4.5)
                 Text("분")
                 
                 Picker("초", selection: time.seconds) {
@@ -107,8 +107,8 @@ struct BurningRestingPicker: View {
                     }
                 }
                 .pickerStyle(.wheel)
-                .frame(width: geometry.size.width/4)
-
+                .frame(width: geometry.size.width/4.5)
+                
                 Text("초")
             }
         }

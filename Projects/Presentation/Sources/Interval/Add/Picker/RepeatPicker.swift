@@ -17,7 +17,7 @@ struct RepeatPicker: View {
     @Binding var repeatCount : RepeatCount
     
     @State private var isExpanded: Bool = false
-
+    
     
     var body: some View {
         VStack{
@@ -27,7 +27,7 @@ struct RepeatPicker: View {
     
     @ViewBuilder
     func pickRepeatView (count:Binding<RepeatCount>, isExpanded: Binding<Bool>) -> some View {
-    
+        
         VStack {
             Button(action: {
                 withAnimation {
@@ -41,7 +41,7 @@ struct RepeatPicker: View {
                     Text("반복 횟수")
                         .fontWeight(.semibold)
                         .foregroundStyle(Color(colorScheme == .dark ? .white: .black))
-
+                    
                     Spacer()
                     
                     Text(String(format: "%d회",count.wrappedValue.counts))

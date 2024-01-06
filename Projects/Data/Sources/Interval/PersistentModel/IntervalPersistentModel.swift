@@ -16,8 +16,8 @@ public class IntervalPersistentModel {
     @Attribute(.unique) public let id: UUID = UUID()
     
     public var title: String = ""
-    public var exerciseId: ExerciseImage = ExerciseImage.badminton
-
+    public var exerciseId: ExerciseImage = ExerciseImage.run
+    
     public var burningSecondTime: Int = 0
     public var burningHeartIntervalType: HeartIntervalTypePresistentModel = HeartIntervalTypePresistentModel.three
     public var restingSecondTime: Int = 0
@@ -49,7 +49,7 @@ public extension IntervalPersistentModel {
     func toEntity() -> IntervalEntity {
         return .init(
             id: self.id,
-            title: self.title, 
+            title: self.title,
             exerciseId: self.exerciseId,
             burningSecondTime: self.burningSecondTime,
             burningHeartIntervalType: self.burningHeartIntervalType.toEntity(),

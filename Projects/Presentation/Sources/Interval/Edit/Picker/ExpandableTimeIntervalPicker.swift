@@ -39,7 +39,7 @@ struct expandableTimeIntervalPicker: View {
     
     @ViewBuilder
     func pickTimeView (time:Binding<Time>, isExpanded: Binding<Bool>) -> some View {
-    
+        
         VStack {
             HStack {
                 Text("시간")
@@ -144,7 +144,7 @@ struct expandableTimeIntervalPicker: View {
             if (isExpanded.wrappedValue) {
                 Divider()
             }
-
+            
         }
     }
 }
