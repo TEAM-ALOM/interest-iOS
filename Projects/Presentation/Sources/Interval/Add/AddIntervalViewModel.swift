@@ -29,6 +29,7 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         let newInterval = IntervalEntity(
               id: id,
               title: name,
+              exerciseId: selectedExerciseId!,
               burningSecondTime: burningResult,
               burningHeartIntervalType: convertToHeartIntervalType(from: burningSelectedInterval),
               restingSecondTime: restingResult,
@@ -41,7 +42,8 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
 
         let newIntervalModel = IntervalModel(
               id: newInterval.id,
-              title: newInterval.title,
+              title: newInterval.title, 
+              exerciseId: newInterval.exerciseId,
               burningSecondTime: newInterval.burningSecondTime,
               burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
               restingSecondTime: newInterval.restingSecondTime,
@@ -51,7 +53,7 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
           )
         
         intervalItems.append(newIntervalModel)
-        
+        IntervalModel.mocks.append(.init(id: .init(), title: "ff", exerciseId: .badminton, burningSecondTime: 222, burningHeartIntervalType: .five, restingSecondTime: 222, restingHeartIntervalType: .five, repeatCount: 3, records: []))
         let _ = intervalUseCase.fetches()
 
     }

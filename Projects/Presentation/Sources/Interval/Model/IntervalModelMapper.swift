@@ -12,7 +12,8 @@ struct IntervalModelMapper {
     static func toPresentationModel(entity: IntervalEntity) -> IntervalModel {
         return .init(
             id: entity.id,
-            title: entity.title,
+            title: entity.title, 
+            exerciseId: entity.exerciseId,
             burningSecondTime: entity.burningSecondTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(
                 entity: entity.burningHeartIntervalType
@@ -31,7 +32,8 @@ struct IntervalModelMapper {
     static func toEntity(model: IntervalModel) -> IntervalEntity {
         return .init(
             id: model.id,
-            title: model.title,
+            title: model.title, 
+            exerciseId: model.exerciseId,
             burningSecondTime: model.burningSecondTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(
                 model: model.burningHeartIntervalType

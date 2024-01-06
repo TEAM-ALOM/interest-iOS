@@ -11,7 +11,8 @@ public struct IntervalEntity {
     public let id: UUID
     
     public let title: String
-    
+    public var exerciseId: ExerciseImage.ID
+
     public var burningSecondTime: Int
     public var burningHeartIntervalType: HeartIntervalType
     public var restingSecondTime: Int
@@ -23,6 +24,7 @@ public struct IntervalEntity {
     public init(
         id: UUID,
         title: String = "",
+        exerciseId : ExerciseImage.ID,
         burningSecondTime: Int = 0,
         burningHeartIntervalType: HeartIntervalType = .three,
         restingSecondTime: Int = 0,
@@ -32,6 +34,7 @@ public struct IntervalEntity {
     ) {
         self.id = id
         self.title = title
+        self.exerciseId = exerciseId
         self.burningSecondTime = burningSecondTime
         self.burningHeartIntervalType = burningHeartIntervalType
         self.restingSecondTime = restingSecondTime

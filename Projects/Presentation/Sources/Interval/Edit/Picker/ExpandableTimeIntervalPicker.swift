@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 struct expandableTimeIntervalPicker: View {
     var isBurning: Bool

@@ -28,7 +28,8 @@ public final class IntervalRepository: IntervalRepositoryInterface {
     
     public func save(interval: IntervalEntity) -> IntervalEntity {
         return dataSource.save(
-            title: interval.title,
+            title: interval.title, 
+            exerciseId: interval.exerciseId,
             repeatCount: interval.repeatCount,
             burningSecondTime: interval.burningSecondTime,
             burningHeartIntervalType: interval.burningHeartIntervalType.toPersistentModel(),
@@ -40,7 +41,8 @@ public final class IntervalRepository: IntervalRepositoryInterface {
     public func update(at id: UUID, to interval: IntervalEntity) -> IntervalEntity? {
         return dataSource.update(
             at: id,
-            title: interval.title,
+            title: interval.title, 
+            exerciseId: interval.exerciseId,
             repeatCount: interval.repeatCount,
             burningSecondTime: interval.burningSecondTime,
             burningHeartIntervalType: interval.burningHeartIntervalType.toPersistentModel(),

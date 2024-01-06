@@ -7,12 +7,14 @@
 
 import Foundation
 import SwiftData
+import Domain
 
 public protocol IntervalDataSourceInterface {
     func fetch(id: UUID) -> IntervalPersistentModel?
     func fetches() -> [IntervalPersistentModel]
     func save(
         title: String,
+        exerciseId : ExerciseImage.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -22,6 +24,7 @@ public protocol IntervalDataSourceInterface {
     func update(
         at id: UUID,
         title: String,
+        exerciseId : ExerciseImage.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -32,6 +35,7 @@ public protocol IntervalDataSourceInterface {
 }
 
 public final class IntervalDataSource: IntervalDataSourceInterface {
+    
     private var context: ModelContext? = PersistentContainer.shared.context
     
     public init() {}
@@ -55,6 +59,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     
     public func save(
         title: String,
+        exerciseId: Domain.ExerciseImage.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -63,6 +68,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     ) -> IntervalPersistentModel {
         let interval: IntervalPersistentModel = .init(
             title: title,
+            exerciseId: exerciseId,
             repeatCount: repeatCount,
             burningSecondTime: burningSecondTime,
             burningHeartIntervalType: burningHeartIntervalType,
@@ -78,6 +84,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     public func update(
         at id: UUID,
         title: String,
+        exerciseId : Domain.ExerciseImage.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -86,6 +93,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     ) -> IntervalPersistentModel? {
         let interval = fetch(id: id)
         interval?.title = title
+        interval?.exerciseId = exerciseId
         interval?.repeatCount = repeatCount
         interval?.burningSecondTime = burningSecondTime
         interval?.burningHeartIntervalType = burningHeartIntervalType
