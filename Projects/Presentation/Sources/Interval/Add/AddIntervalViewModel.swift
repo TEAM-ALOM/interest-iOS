@@ -19,12 +19,49 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         self.router = router
         super.init(intervalUseCase: intervalUseCase)
     }
+    
+    override func calculateTime(){
+        burningResult = Int(burningTime.hours) * 3600 + burningTime.minutes * 60 + burningTime.seconds
+        restingResult = Int(restTime.hours) * 3600 + restTime.minutes * 60 + restTime.seconds
+    }
+    
+    override func tapSaveButton(at id: UUID) {
+        let newInterval = IntervalEntity(
+              id: id,
+              title: name,
+              burningSecondTime: burningResult,
+              burningHeartIntervalType: convertToHeartIntervalType(from: burningSelectedInterval),
+              restingSecondTime: restingResult,
+              restingHeartIntervalType: convertToHeartIntervalType(from: restSelectedInterval),
+              repeatCount: repeatCounts.counts,
+              records: .init()
+          )
+        
+        let _ = intervalUseCase.update(at: id, to: newInterval)
 
+        let newIntervalModel = IntervalModel(
+              id: newInterval.id,
+              title: newInterval.title,
+              burningSecondTime: newInterval.burningSecondTime,
+              burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
+              restingSecondTime: newInterval.restingSecondTime,
+              restingHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.restingHeartIntervalType),
+              repeatCount: newInterval.repeatCount,
+              records: newInterval.records.map { IntervalRecordModelMapper.toPresentationModel(entity: $0) }
+          )
+        
+        intervalItems.append(newIntervalModel)
+        
+        let _ = intervalUseCase.fetches()
+
+    }
+    
 }
 public class AddIntervalViewModel: ObservableObject {
-    private let intervalUseCase: IntervalUseCaseInterface
-    //private let result : Int
-    
+    let intervalUseCase: IntervalUseCaseInterface
+    var burningResult: Int = 0
+    var restingResult: Int = 0
+
     @Published var intervalItems: [IntervalModel] = []
     
     @Published var name: String = ""
@@ -41,17 +78,11 @@ public class AddIntervalViewModel: ObservableObject {
         self.intervalUseCase = intervalUseCase
     }
     
-    func calculateBurningTime(){
-        let result = Int(burningTime.hours) * 3600 + burningTime.minutes * 60 + burningTime.seconds
-    }
+    func calculateTime(){}
     
-    func tapSaveButton(at id: UUID) {
-        let _ = intervalUseCase.update(at: id, to: IntervalEntity(id: id, title: name, burningSecondTime: 200, burningHeartIntervalType: .five, restingSecondTime: 200, restingHeartIntervalType: .one, repeatCount: 3, records: .init()))
+    func convertToHeartIntervalType(from section: HeartSection) -> HeartIntervalType {
+        return section.toHeartIntervalType()
     }
-    
+
+    func tapSaveButton(at id: UUID) {}
 }
-
-
-
-
-

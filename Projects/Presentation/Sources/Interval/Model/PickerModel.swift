@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Domain
 
 enum ExerciseImage: String, CaseIterable, Identifiable {
     case run = "figure.run"
@@ -16,7 +17,6 @@ enum ExerciseImage: String, CaseIterable, Identifiable {
 
     var id: Self { self }
 }
-
 
 struct RepeatCount {
     var counts : Int

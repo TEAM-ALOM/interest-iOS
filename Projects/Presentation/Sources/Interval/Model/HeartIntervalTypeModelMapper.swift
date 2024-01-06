@@ -39,3 +39,19 @@ public enum HeartIntervalTypeModelMapper {
         }
     }
 }
+extension HeartSection {
+    func toHeartIntervalType() -> HeartIntervalType {
+        switch self {
+        case .section1:
+            return .one
+        case .section2:
+            return .two
+        case .section3:
+            return .three
+        case .section4:
+            return .four
+        case .section5:
+            return .five
+        }
+    }
+}
