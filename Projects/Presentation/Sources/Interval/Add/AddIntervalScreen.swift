@@ -8,273 +8,120 @@
 import Foundation
 import SwiftUI
 import SharedDesignSystem
+import Domain
 
 public struct AddIntervalScreen: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    
+    @State private var isTapped: Bool = false
+
     @StateObject var viewModel: AddIntervalViewModel
     
-    @State private var isBurningTimer = false
-    @State private var isBurningSection = false
-    @State private var isRestingTimer = false
-    @State private var isRestingSection = false
-    
-    private var selection = ["1구간 (120BPM~135BPM)", "2구간 (135~148BPM)", "3구간 (149~162BPM)", "4구간 (163~175BPM)", "5구간 (176BPM~)"]
-    
-    @State private var selectedSection = ""
     
     public init(viewModel: AddIntervalViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
-        VStack{
-            title
-            name
-            exercise
-            reiteration
-            burning
-            resting
-            Spacer()
+        NavigationStack{
+            VStack{
+                name
+                exercise
+                repeatCount
+                burningResting
+                Spacer()
+            }
+            .padding(.horizontal,30)
+            .backgroundStyle(Color.clear)
+            .ignoresSafeArea()
+            .navigationTitle("인터벌 추가")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Text("취소")
+                    })
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        viewModel.tapSaveButton(at: UUID())
+                        dismiss()
+                    }, label: {
+                        Text("저장")
+                    })
+                }
+            }
+            .scrollIndicators(.hidden)
         }
-        .padding(.horizontal,30)
-    }
-    private var title: some View {
-        HStack{
-            Button(action:{}, label: {
-                Text("취소")
-                    .foregroundStyle(Color.keyColor75)
-            })
-            Spacer()
-            Text("인터벌 추가")
-            Spacer()
-            
-            Button(action:{}, label: {
-                Text("저장")
-                    .foregroundStyle(Color.keyColor75)
-            })
-        }
-        .padding(.top,11)
+        
     }
     private var name: some View {
-        HStack{
-            Text("이름")
-                .padding(.top,40)
-            Spacer()
+        VStack{
+            HStack{
+                Text("이름")
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            TextField("달리기 인터벌", text: $viewModel.name)
+                .padding(.all,12)
+                .background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
+                .cornerRadius(10)
+
         }
+        .padding(.top,80)
     }
     private var exercise: some View {
-        HStack{
-            Button(action: {}, label: {
-                ZStack{
-                    Circle()
-                        .fill(Color.keyColor)
-                        .frame(width: 40,height: 40)
-                    
-                    Image(systemName: "figure.run")
-                        .resizable()
-                        .frame(width: 21, height: 28)
-                        .padding(.horizontal,20)
-                }
-            })
-            
-            Button(action: {}, label: {
-                Image(systemName: "figure.outdoor.cycle")
-                    .resizable()
-                    .frame(width: 36, height: 28)
-                    .padding(.horizontal,20)
-            })
-            
-            Button(action: {}, label: {
-                Image(systemName: "figure.pool.swim")
-                    .resizable()
-                    .frame(width: 45, height: 28)
-                    .padding(.horizontal,20)
-            })
-            Button(action: {}, label: {
-                Image(systemName: "figure.stair.stepper")
-                    .resizable()
-                    .frame(width: 19, height: 28)
-                    .padding(.horizontal,20)
-            })
-            
-            Button(action: {}, label: {
-                Image(systemName: "figure.run")
-                    .resizable()
-                    .frame(width: 21, height: 28)
-                    .padding(.horizontal,20)
-            })
-        }
-        .foregroundStyle(Color.keyColor50)
-        
-    }
-    private var reiteration: some View {
-        HStack{
-            Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
-                .foregroundStyle(Color.keyColor)
-            Text("반복 횟수")
-            
-            Spacer()
-            
-            Text("4회")
-        }
-        .padding(.top,25)
-        
-    }
-    private var burning: some View {
-        
+          HStack{
+              ExercisePicker(exerciseImage: $viewModel.exercise, selectedExerciseId: $viewModel.selectedExerciseId)
+          }
+      }
+    
+    private var repeatCount: some View {
         VStack{
-            HStack{
-                Image(systemName: "flame.fill")
-                    .foregroundStyle(Color.burningColor)
-                
-                Text("버닝 옵션")
-                Spacer()
-            }
-            .padding(.vertical,15)
-            
-            Button(action: {
-                isBurningTimer.toggle()
-                isBurningSection = false
-                isRestingTimer = false
-                isRestingSection = false
-            }, label: {
-                HStack{
-                    Text("시간")
-                    Spacer()
-                    Text("00:04:30")
-                }
-                .padding(.vertical,10)
-            })
-       
-            Divider()
-            
-            if(isBurningTimer){
-                TimerPickerView()
-            }
-            Button(action: {
-                isBurningTimer = false
-                isBurningSection.toggle()
-                isRestingTimer = false
-                isRestingSection = false
-            }, label: {
-                HStack{
-                    Text("구간")
-                    Spacer()
-                    Text("5구간")
-                }
-                .padding(.vertical,10)
-            })
-
-            if(isBurningSection){
-                Picker("", selection: $selectedSection, content: {
-                    ForEach(selection, id: \.self) {
-                        Text($0)
-                    }
-                })
-                .pickerStyle(.wheel)
-            }
-            
-        }
-    }
-    private var resting: some View {
-        VStack{
-            HStack{
-                Image(systemName: "circle.hexagonpath.fill")
-                    .foregroundStyle(Color.restColor)
-                
-                Text("휴식 옵션")
-                Spacer()
-            }
-            .padding(.vertical,15)
-            
-            Button(action: {
-                isBurningTimer = false
-                isBurningSection = false
-                isRestingTimer.toggle()
-                isRestingSection = false
-            }, label: {
-                HStack{
-                    Text("시간")
-                    Spacer()
-                    Text("00:04:30")
-                }
-                .padding(.vertical,10)
-            })
-            Divider()
-            
-            if(isRestingTimer){
-                TimerPickerView()
-            }
-            
-            Button(action: {
-                isBurningTimer = false
-                isBurningSection = false
-                isRestingTimer = false
-                isRestingSection.toggle()
-            }, label: {
-                HStack{
-                    Text("구간")
-                    Spacer()
-                    Text("5구간")
-                }
-                .padding(.vertical,10)
-            })
-            
-            if(isRestingSection){
-                Picker("Select Section", selection: $selectedSection, content: {
-                    ForEach(selection, id: \.self) {
-                        Text($0)
-                    }
-                })
-                .pickerStyle(.wheel)
-            }
-        }
-    }
-    struct TimerPickerView: View {
-        @State private var selectedHour: Int = 0
-        @State private var selectedMinute: Int = 0
-        @State private var selectedSecond: Int = 0
-        
-        var body: some View {
-            GeometryReader { geometry in
-                VStack {
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Picker("", selection: $selectedHour) {
-                            ForEach(0..<24, id: \.self) { hour in
-                                Text("\(hour)")
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        .frame(width: geometry.size.width/4, height: 200)
-                        .clipped()
-                        
-                        Text("시간")
-                        
-                        Picker("", selection: $selectedMinute) {
-                            ForEach(0..<60, id: \.self) { minute in
-                                Text("\(minute)")
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        .frame(width: geometry.size.width/4, height: 200)
-                        .clipped()
-                        Text("분")
-                        
-                        
-                        Picker("", selection: $selectedSecond) {
-                            ForEach(0..<60, id: \.self) { minute in
-                                Text("\(minute)")
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        .frame(width: geometry.size.width/4, height: 200)
-                        .clipped()
-                        Text("초")
-                        Spacer()
-                    }
-                }
-            }
+            RepeatPicker(isRepeat: false, repeatCount: $viewModel.repeatCounts)
         }
     }
     
+    private var burningResting: some View {
+        VStack{
+            BurningRestingPicker(isBurning: true, time: $viewModel.burningTime, selection: $viewModel.burningSelectedInterval)
+            
+            BurningRestingPicker(isBurning: false, time: $viewModel.restTime, selection: $viewModel.restSelectedInterval)
+            
+        }
+    }
+}
+struct ExercisePicker: View {
+    @Binding var exerciseImage : [ExerciseImage]
+    @Binding var selectedExerciseId: ExerciseImage.ID?
+    
+    var body: some View {
+        pickExerciseView(exercise: $exerciseImage)
+    }
+    
+    @ViewBuilder
+    func pickExerciseView (exercise :Binding<[ExerciseImage]>) -> some View {
+        HStack(spacing : 20){
+            ForEach(exercise.wrappedValue, id: \.self) { exerciseImage in
+                Button(action: {
+                    self.selectedExerciseId = exerciseImage.id
+                }, label: {
+                    ZStack{
+                        Circle()
+                            .fill(self.selectedExerciseId == exerciseImage.id  ? Color.keyColor : Color.clear)
+                            .frame(width: 40,height: 40)
+                        
+                        Image(systemName: "\(exerciseImage.rawValue)")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 28)
+                            .foregroundColor(Color.keyColor50)
+                    }
+                })
+            }
+        }
+    }
 }
