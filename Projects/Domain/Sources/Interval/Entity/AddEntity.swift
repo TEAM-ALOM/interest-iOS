@@ -45,13 +45,3 @@ public struct Time {
         self.seconds = seconds
     }
 }
-
-public enum HeartSection: String, CaseIterable, Identifiable {
-    case section1 = "1구간"
-    case section2 = "2구간"
-    case section3 = "3구간"
-    case section4 = "4구간"
-    case section5 = "5구간"
-    
-    public var id: Self { self }
-}

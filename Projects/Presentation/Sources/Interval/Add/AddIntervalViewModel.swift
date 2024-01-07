@@ -31,9 +31,9 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
             title: name,
             exerciseId: selectedExerciseId ?? ExerciseImage.run,
             burningSecondTime: burningResult,
-            burningHeartIntervalType: convertToHeartIntervalType(from: burningSelectedInterval),
+            burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: burningSelectedInterval),
             restingSecondTime: restingResult,
-            restingHeartIntervalType: convertToHeartIntervalType(from: restSelectedInterval),
+            restingHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: restSelectedInterval),
             repeatCount: repeatCounts.counts,
             records: .init()
         )
@@ -74,9 +74,9 @@ public class AddIntervalViewModel: ObservableObject {
     @Published var selectedExerciseId: ExerciseImage.ID?
     
     
-    @Published var burningSelectedInterval = HeartSection.section1
+    @Published var burningSelectedInterval = HeartIntervalTypeModel.one
     @Published var burningTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
-    @Published var restSelectedInterval = HeartSection.section1
+    @Published var restSelectedInterval = HeartIntervalTypeModel.one
     @Published var restTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
     
     public init(intervalUseCase: IntervalUseCaseInterface) {
@@ -84,10 +84,6 @@ public class AddIntervalViewModel: ObservableObject {
     }
     
     func calculateTime(){}
-    
-    func convertToHeartIntervalType(from section: HeartSection) -> HeartIntervalType {
-        return section.toHeartIntervalType()
-    }
     
     func tapSaveButton(at id: UUID) {}
 }

@@ -12,7 +12,7 @@ struct expandableTimeIntervalPicker: View {
     var isBurning: Bool
     
     @Binding var time: Time
-    @Binding var selection: HeartSection
+    @Binding var selection: HeartIntervalTypeModel
     
     @State private var isExpanded1: Bool = false
     @State private var isExpanded2: Bool = false
@@ -108,7 +108,7 @@ struct expandableTimeIntervalPicker: View {
     }
     
     @ViewBuilder
-    func pickIntervalView (selection: Binding<HeartSection>, isExpanded: Binding<Bool>) -> some View {
+    func pickIntervalView (selection: Binding<HeartIntervalTypeModel>, isExpanded: Binding<Bool>) -> some View {
         VStack {
             HStack {
                 Text("구간")
@@ -132,11 +132,11 @@ struct expandableTimeIntervalPicker: View {
             Divider()
             
             Picker("Interval", selection: selection) {
-                Text("1구간 (123~134BPM)").tag(HeartSection.section1)
-                Text("2구간 (135~148BPM)").tag(HeartSection.section2)
-                Text("3구간 (149~162BPM)").tag(HeartSection.section3)
-                Text("4구간 (163~175BPM)").tag(HeartSection.section4)
-                Text("5구간 (176BPM~)").tag(HeartSection.section5)
+                Text("1구간 (123~134BPM)").tag(HeartIntervalTypeModel.one)
+                Text("2구간 (135~148BPM)").tag(HeartIntervalTypeModel.two)
+                Text("3구간 (149~162BPM)").tag(HeartIntervalTypeModel.three)
+                Text("4구간 (163~175BPM)").tag(HeartIntervalTypeModel.four)
+                Text("5구간 (176BPM~)").tag(HeartIntervalTypeModel.five)
             }
             .pickerStyle(.wheel)
             .frame(height: isExpanded.wrappedValue ? 213 : 0, alignment: .top)
