@@ -16,7 +16,7 @@ public class IntervalPersistentModel {
     @Attribute(.unique) public let id: UUID = UUID()
     
     public var title: String = ""
-    public var exerciseId: ExerciseTypeModelPersistentModel = ExerciseTypeModelPersistentModel.run
+    public var exerciseId: ExerciseTypePersistentModel = ExerciseTypePersistentModel.run
     
     public var burningSecondTime: Int = 0
     public var burningHeartIntervalType: HeartIntervalTypePresistentModel = HeartIntervalTypePresistentModel.three
@@ -28,7 +28,7 @@ public class IntervalPersistentModel {
     
     public init(
         title: String,
-        exerciseId : ExerciseTypeModelPersistentModel.ID,
+        exerciseId : ExerciseTypePersistentModel.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,

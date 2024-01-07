@@ -8,7 +8,7 @@
 import Foundation
 import Domain
 
-public enum ExerciseTypeModelPersistentModel : String , Codable, CaseIterable, Equatable , Identifiable{
+public enum ExerciseTypePersistentModel : String , Codable, CaseIterable, Equatable , Identifiable{
     case run = "figure.run"
     case cycle = "figure.outdoor.cycle"
     case swim = "figure.pool.swim"
@@ -18,7 +18,7 @@ public enum ExerciseTypeModelPersistentModel : String , Codable, CaseIterable, E
     public var id: Self { self }
 }
 
-public extension ExerciseTypeModelPersistentModel{
+public extension ExerciseTypePersistentModel{
     func toEntity() -> ExerciseType {
         switch self {
         case .run: .run
@@ -31,7 +31,7 @@ public extension ExerciseTypeModelPersistentModel{
 }
 
 public extension ExerciseType {
-    func toPersistentModel() -> ExerciseTypeModelPersistentModel {
+    func toPersistentModel() -> ExerciseTypePersistentModel {
         switch self {
         case .run: .run
         case .cycle: .cycle

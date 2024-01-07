@@ -19,8 +19,31 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         self.router = router
         super.init(intervalUseCase: intervalUseCase)
     }
+    
+}
 
-    override func tapSaveButton(at id: UUID) {
+public class AddIntervalViewModel: ObservableObject {
+    let intervalUseCase: IntervalUseCaseInterface
+    
+    @Published var intervalItems: [IntervalModel] = []
+    
+    @Published var name: String = ""
+    @Published var repeatCounts : Int = 0
+    
+    @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
+    @Published var selectedExerciseId: ExerciseTypeModel.ID?
+    
+    
+    @Published var burningSelectedInterval = HeartIntervalTypeModel.one
+    @Published var burningTime: Int = 0
+    @Published var restingSelectedInterval = HeartIntervalTypeModel.one
+    @Published var restingTime: Int = 0
+    
+    public init(intervalUseCase: IntervalUseCaseInterface) {
+        self.intervalUseCase = intervalUseCase
+    }
+    
+    func tapSaveButton(at id: UUID) {
         let newInterval = IntervalEntity(
             id: id,
             title: name,
@@ -37,7 +60,7 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         
         let newIntervalModel = IntervalModel(
             id: newInterval.id,
-            title: newInterval.title, 
+            title: newInterval.title,
             exerciseId: ExerciseTypeModelMapper.toPresentationModel(entity: newInterval.exerciseId),
             burningSecondTime: newInterval.burningSecondTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
@@ -53,28 +76,5 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         let _ = intervalUseCase.fetches()
         
     }
-    
 }
-public class AddIntervalViewModel: ObservableObject {
-    let intervalUseCase: IntervalUseCaseInterface
-        
-    @Published var intervalItems: [IntervalModel] = []
-    
-    @Published var name: String = ""
-    @Published var repeatCounts : Int = 0
 
-    @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
-    @Published var selectedExerciseId: ExerciseTypeModel.ID?
-    
-    
-    @Published var burningSelectedInterval = HeartIntervalTypeModel.one
-    @Published var burningTime: Int = 0
-    @Published var restingSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restingTime: Int = 0
-    
-    public init(intervalUseCase: IntervalUseCaseInterface) {
-        self.intervalUseCase = intervalUseCase
-    }
-        
-    func tapSaveButton(at id: UUID) {}
-}
