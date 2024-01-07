@@ -13,9 +13,7 @@ import Domain
 public struct AddIntervalScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-    
-    @State private var isTapped: Bool = false
-    
+        
     @StateObject var viewModel: AddIntervalViewModel
     
     
@@ -25,38 +23,40 @@ public struct AddIntervalScreen: View {
     
     public var body: some View {
         NavigationStack{
-            VStack{
-                name
-                exercise
-                repeatCount
-                burningResting
-                Spacer()
-            }
-            .padding(.horizontal,30)
-            .backgroundStyle(Color.clear)
-            .ignoresSafeArea()
-            .navigationTitle("인터벌 추가")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }, label: {
-                        Text("취소")
-                    })
+            ScrollView{
+                VStack{
+                    name
+                    exercise
+                    repeatCount
+                    burningResting
+                    Spacer()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        viewModel.tapSaveButton(at: UUID())
-                        dismiss()
-                    }, label: {
-                        Text("저장")
-                    })
+                .padding(.top,50)
+                .padding(.horizontal,30)
+                .backgroundStyle(Color.clear)
+                .ignoresSafeArea()
+                .navigationTitle("인터벌 추가")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            dismiss()
+                        }, label: {
+                            Text("취소")
+                        })
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            viewModel.tapSaveButton(at: UUID())
+                            dismiss()
+                        }, label: {
+                            Text("저장")
+                        })
+                    }
                 }
             }
             .scrollIndicators(.hidden)
         }
-        
     }
     private var name: some View {
         VStack{
@@ -71,7 +71,6 @@ public struct AddIntervalScreen: View {
                 .cornerRadius(10)
             
         }
-        .padding(.top,80)
     }
     private var exercise: some View {
         HStack{
@@ -88,41 +87,9 @@ public struct AddIntervalScreen: View {
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, time: $viewModel.burningTime, selection: $viewModel.burningSelectedInterval)
+            BurningRestingPicker(isBurning: true, selection: $viewModel.burningSelectedInterval, totalTime: $viewModel.burningTime)
             
-            BurningRestingPicker(isBurning: false, time: $viewModel.restTime, selection: $viewModel.restSelectedInterval)
-            
-        }
-    }
-}
-struct ExercisePicker: View {
-    @Binding var exerciseImage : [ExerciseImage]
-    @Binding var selectedExerciseId: ExerciseImage.ID?
-    
-    var body: some View {
-        pickExerciseView(exercise: $exerciseImage)
-    }
-    
-    @ViewBuilder
-    func pickExerciseView (exercise :Binding<[ExerciseImage]>) -> some View {
-        HStack(spacing : 30){
-            ForEach(exercise.wrappedValue, id: \.self) { exerciseImage in
-                Button(action: {
-                    self.selectedExerciseId = exerciseImage.id
-                }, label: {
-                    ZStack{
-                        Circle()
-                            .fill(self.selectedExerciseId == exerciseImage.id  ? Color.keyColor : Color.clear)
-                            .frame(width: 42,height: 42)
-                        
-                        Image(systemName: "\(exerciseImage.rawValue)")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 32, height: 32)
-                            .foregroundColor(Color.keyColor50)
-                    }
-                })
-            }
+            BurningRestingPicker(isBurning: false, selection: $viewModel.restSelectedInterval, totalTime: $viewModel.burningTime)
         }
     }
 }

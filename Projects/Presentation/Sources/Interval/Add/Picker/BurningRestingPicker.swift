@@ -14,9 +14,13 @@ struct BurningRestingPicker: View {
     
     var isBurning: Bool
     
-    @Binding var time: Time
     @Binding var selection: HeartIntervalTypeModel
     
+    @Binding var totalTime : Int
+    @State private var hours : Int = 0
+    @State private var minutes : Int = 0
+    @State private var seconds : Int = 0
+
     @State private var isTimeExpanded: Bool = false
     @State private var isSectionExpanded: Bool = false
     
@@ -34,14 +38,15 @@ struct BurningRestingPicker: View {
             }
             .padding(.vertical,15)
             
-            pickTimeView(time: $time, isExpanded: $isTimeExpanded)
+            pickTimeView(hour: $hours, minute: $minutes, second: $seconds, isExpanded: $isTimeExpanded)
+                .onAppear(perform: calculateTime)
             
             pickIntervalView(selection: $selection, isExpanded: $isSectionExpanded)
         }
     }
     
     @ViewBuilder
-    func pickTimeView (time:Binding<Time>, isExpanded: Binding<Bool>) -> some View {
+    func pickTimeView (hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
         
         VStack {
             Button(action: {
@@ -55,7 +60,7 @@ struct BurningRestingPicker: View {
                     
                     Spacer()
                     
-                    Text(String(format: "%02d:%02d:%02d", time.wrappedValue.hours, time.wrappedValue.minutes, time.wrappedValue.seconds))
+                    Text(String(format: "%02d:%02d:%02d", hours, minutes, seconds))
                         .font(.system(size: 15))
                         .foregroundStyle(Color.keyColor)
                         .bold()
@@ -65,7 +70,9 @@ struct BurningRestingPicker: View {
             Divider()
             
             if (isTimeExpanded){
-                timePicker(time: time)
+                timePicker(hour: $hours, minute: $minutes, second: $seconds)
+                    .frame(height: isExpanded.wrappedValue ? 213 : 0)
+                    .offset(y: -7)
             }
             
             if (isExpanded.wrappedValue) {
@@ -75,22 +82,25 @@ struct BurningRestingPicker: View {
         }
     }
     
+    private func calculateTime() {
+        totalTime = hours * 3600 + minutes * 60 + seconds
+    }
+    
     @ViewBuilder
-    func timePicker (time:Binding<Time>) -> some View {
+    func timePicker(hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>) -> some View {
         GeometryReader { geometry in
             HStack(){
-                Picker("시간", selection: time.hours) {
+                Picker("시간", selection: $hours) {
                     ForEach(0..<12) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
                     }
                 }
                 .pickerStyle(.wheel)
-                .frame(width: geometry.size.width/4.5)
                 
                 Text("시간")
                 
-                Picker("분", selection: time.minutes) {
+                Picker("분", selection: $minutes) {
                     ForEach(0..<59) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
@@ -100,7 +110,7 @@ struct BurningRestingPicker: View {
                 .frame(width: geometry.size.width/4.5)
                 Text("분")
                 
-                Picker("초", selection: time.seconds) {
+                Picker("초", selection: $seconds) {
                     ForEach(0..<59) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
@@ -146,6 +156,8 @@ struct BurningRestingPicker: View {
                     Text("5구간 (176BPM~)").tag(HeartIntervalTypeModel.five)
                 }
                 .pickerStyle(.wheel)
+                .frame(height: isExpanded.wrappedValue ? 213 : 0)
+                .offset(y: -7)
             }
             if (isExpanded.wrappedValue) {
                 Divider()

@@ -75,12 +75,12 @@ struct EditIntervalScreen: View {
             
             
             //버닝 픽커
-            expandableTimeIntervalPicker(isBurning: true, time: $viewModel.burningTime, selection: $viewModel.burningSelectedInterval)
+            expandableTimeIntervalPicker(isBurning: true, selection: $viewModel.burningSelectedInterval, totalTime: $viewModel.burningTime)
                 .padding(.bottom, 25)
             
-            
             //휴식 픽커
-            expandableTimeIntervalPicker(isBurning: false, time: $viewModel.restTime, selection: $viewModel.restSelectedInterval)
+            expandableTimeIntervalPicker(isBurning: false, selection: $viewModel.restSelectedInterval, totalTime: $viewModel.restTime)
+            
         }
         .padding(.horizontal, 24)
     }

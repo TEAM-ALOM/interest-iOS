@@ -12,9 +12,9 @@ import Domain
 class EditIntervalViewModel: ObservableObject {
     
     @Published var burningSelectedInterval = HeartIntervalTypeModel.one
-    @Published var burningTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
+    @Published var burningTime: Int = 0
     @Published var restSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
+    @Published var restTime: Int = 0
     
     @Published var name: String = ""
     

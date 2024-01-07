@@ -14,7 +14,7 @@ struct RepeatPicker: View {
     
     var isRepeat: Bool
     
-    @Binding var repeatCount : RepeatCount
+    @Binding var repeatCount : Int
     
     @State private var isExpanded: Bool = false
     
@@ -26,7 +26,7 @@ struct RepeatPicker: View {
     }
     
     @ViewBuilder
-    func pickRepeatView (count:Binding<RepeatCount>, isExpanded: Binding<Bool>) -> some View {
+    func pickRepeatView (count:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
         
         VStack {
             Button(action: {
@@ -44,7 +44,7 @@ struct RepeatPicker: View {
                     
                     Spacer()
                     
-                    Text(String(format: "%d회",count.wrappedValue.counts))
+                    Text(String(format: "%d회",count.wrappedValue))
                         .font(.system(size: 15))
                         .foregroundStyle(Color.keyColor)
                         .bold()
@@ -67,10 +67,10 @@ struct RepeatPicker: View {
     
     
     @ViewBuilder
-    func repeatCountPicker (count:Binding<RepeatCount>) -> some View {
+    func repeatCountPicker (count:Binding<Int>) -> some View {
         GeometryReader { geometry in
-            Picker("", selection: count.counts, content: {
-                ForEach(0..<20) { i in
+            Picker("", selection: count, content: {
+                ForEach(0..<21) { i in
                     Text(String(format: "%2d", i))
                         .tag(i)
                 }

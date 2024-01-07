@@ -19,12 +19,7 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         self.router = router
         super.init(intervalUseCase: intervalUseCase)
     }
-    
-    override func calculateTime(){
-        burningResult = Int(burningTime.hours) * 3600 + burningTime.minutes * 60 + burningTime.seconds
-        restingResult = Int(restTime.hours) * 3600 + restTime.minutes * 60 + restTime.seconds
-    }
-    
+
     override func tapSaveButton(at id: UUID) {
         let newInterval = IntervalEntity(
             id: id,
@@ -34,7 +29,7 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: burningSelectedInterval),
             restingSecondTime: restingResult,
             restingHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: restSelectedInterval),
-            repeatCount: repeatCounts.counts,
+            repeatCount: repeatCounts,
             records: .init()
         )
         
@@ -68,22 +63,20 @@ public class AddIntervalViewModel: ObservableObject {
     @Published var intervalItems: [IntervalModel] = []
     
     @Published var name: String = ""
-    @Published var repeatCounts : RepeatCount = .init(counts: 0)
+    @Published var repeatCounts : Int = 0
 
     @Published var exercise : [ExerciseImage] = ExerciseImage.allCases
     @Published var selectedExerciseId: ExerciseImage.ID?
     
     
     @Published var burningSelectedInterval = HeartIntervalTypeModel.one
-    @Published var burningTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
+    @Published var burningTime: Int = 0
     @Published var restSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restTime: Time = .init(hours: 0, minutes: 0, seconds: 0)
+    @Published var restTime: Int = 0
     
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
     }
-    
-    func calculateTime(){}
-    
+        
     func tapSaveButton(at id: UUID) {}
 }

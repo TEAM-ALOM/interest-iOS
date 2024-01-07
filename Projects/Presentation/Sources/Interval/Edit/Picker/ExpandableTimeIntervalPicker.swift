@@ -11,13 +11,16 @@ import Domain
 struct expandableTimeIntervalPicker: View {
     var isBurning: Bool
     
-    @Binding var time: Time
     @Binding var selection: HeartIntervalTypeModel
-    
+
     @State private var isExpanded1: Bool = false
     @State private var isExpanded2: Bool = false
     
-    
+    @State private var hours : Int = 0
+    @State private var minutes : Int = 0
+    @State private var seconds : Int = 0
+    @Binding var totalTime : Int
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 7) {
@@ -31,15 +34,16 @@ struct expandableTimeIntervalPicker: View {
                     .font(.system(size: 16))
             }
             
-            pickTimeView(time: $time, isExpanded: $isExpanded1)
-            
+            pickTimeView(hour: $hours, minute: $minutes, second: $seconds, isExpanded: $isExpanded1)
+                .onAppear(perform: calculateTime)
+
             pickIntervalView(selection: $selection, isExpanded: $isExpanded2)
         }
     }
     
     @ViewBuilder
-    func pickTimeView (time:Binding<Time>, isExpanded: Binding<Bool>) -> some View {
-        
+    func pickTimeView (hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
+
         VStack {
             HStack {
                 Text("시간")
@@ -53,7 +57,7 @@ struct expandableTimeIntervalPicker: View {
                         isExpanded.wrappedValue.toggle()
                     }
                 }) {
-                    Text(String(format: "%02d:%02d:%02d", time.wrappedValue.hours, time.wrappedValue.minutes, time.wrappedValue.seconds))
+                    Text(String(format: "%02d:%02d:%02d", hours, minutes, seconds))
                         .font(.system(size: 15))
                         .foregroundStyle(Color.keyColor)
                         .bold()
@@ -62,7 +66,7 @@ struct expandableTimeIntervalPicker: View {
             
             Divider()
             
-            timePicker(time: time)
+            timePicker(hour: $hours, minute: $minutes, second: $seconds)
                 .frame(height: isExpanded.wrappedValue ? 213 : 0)
                 .offset(y: -7)
             
@@ -74,10 +78,10 @@ struct expandableTimeIntervalPicker: View {
     }
     
     @ViewBuilder
-    func timePicker (time:Binding<Time>) -> some View {
+    func timePicker(hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>) -> some View {
         GeometryReader { geometry in
             HStack(){
-                Picker("시간", selection: time.hours) {
+                Picker("시간", selection: $hours) {
                     ForEach(0..<12) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
@@ -86,7 +90,7 @@ struct expandableTimeIntervalPicker: View {
                 .pickerStyle(.wheel)
                 .frame(width: geometry.size.width / 3)
                 
-                Picker("분", selection: time.minutes) {
+                Picker("분", selection: $minutes) {
                     ForEach(0..<59) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
@@ -95,7 +99,7 @@ struct expandableTimeIntervalPicker: View {
                 .pickerStyle(.wheel)
                 .frame(width: geometry.size.width / 3)
                 
-                Picker("초", selection: time.seconds) {
+                Picker("초", selection: $seconds) {
                     ForEach(0..<59) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
@@ -105,6 +109,9 @@ struct expandableTimeIntervalPicker: View {
                 .frame(width: geometry.size.width / 3)
             }
         }
+    }
+    private func calculateTime() {
+        totalTime = hours * 3600 + minutes * 60 + seconds
     }
     
     @ViewBuilder

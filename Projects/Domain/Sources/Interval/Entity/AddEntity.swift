@@ -25,23 +25,3 @@ public enum ExerciseImage: String, CaseIterable, Identifiable, Codable {
     }
     public var id: Self { self }
 }
-
-public struct RepeatCount {
-    public var counts : Int
-    
-    public init(counts: Int) {
-        self.counts = counts
-    }
-}
-
-public struct Time {
-    public var hours: Int
-    public var minutes: Int
-    public var seconds: Int
-    
-    public init(hours: Int, minutes: Int, seconds: Int) {
-        self.hours = hours
-        self.minutes = minutes
-        self.seconds = seconds
-    }
-}
