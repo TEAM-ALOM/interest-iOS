@@ -13,7 +13,7 @@ public struct IntervalModel: Identifiable, Hashable {
     
     public let title: String
     
-    public var exerciseId: ExerciseImage.ID
+    public var exerciseId: ExerciseTypeModel.ID
     
     public var burningSecondTime: Int
     public var burningHeartIntervalType: HeartIntervalTypeModel
@@ -26,7 +26,7 @@ public struct IntervalModel: Identifiable, Hashable {
     public init(
         id: UUID,
         title: String = "",
-        exerciseId : ExerciseImage.ID,
+        exerciseId : ExerciseTypeModel.ID,
         burningSecondTime: Int = 0,
         burningHeartIntervalType: HeartIntervalTypeModel = .three,
         restingSecondTime: Int = 0,

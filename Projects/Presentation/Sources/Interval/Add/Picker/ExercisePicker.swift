@@ -10,15 +10,15 @@ import SwiftUI
 import Domain
 
 struct ExercisePicker: View {
-    @Binding var exerciseImage : [ExerciseImage]
-    @Binding var selectedExerciseId: ExerciseImage.ID?
+    @Binding var exerciseImage : [ExerciseTypeModel]
+    @Binding var selectedExerciseId: ExerciseTypeModel.ID?
     
     var body: some View {
         pickExerciseView(exercise: $exerciseImage)
     }
     
     @ViewBuilder
-    func pickExerciseView (exercise :Binding<[ExerciseImage]>) -> some View {
+    func pickExerciseView (exercise :Binding<[ExerciseTypeModel]>) -> some View {
         HStack(spacing : 30){
             ForEach(exercise.wrappedValue, id: \.self) { exerciseImage in
                 Button(action: {

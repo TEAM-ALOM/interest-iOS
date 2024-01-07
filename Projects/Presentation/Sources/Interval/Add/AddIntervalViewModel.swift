@@ -24,11 +24,11 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         let newInterval = IntervalEntity(
             id: id,
             title: name,
-            exerciseId: selectedExerciseId ?? ExerciseImage.run,
-            burningSecondTime: burningResult,
+            exerciseId: ExerciseTypeModelMapper.toEntity(model: selectedExerciseId ?? ExerciseTypeModel.run),
+            burningSecondTime: burningTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: burningSelectedInterval),
-            restingSecondTime: restingResult,
-            restingHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: restSelectedInterval),
+            restingSecondTime: restingTime,
+            restingHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: restingSelectedInterval),
             repeatCount: repeatCounts,
             records: .init()
         )
@@ -38,7 +38,7 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         let newIntervalModel = IntervalModel(
             id: newInterval.id,
             title: newInterval.title, 
-            exerciseId: newInterval.exerciseId,
+            exerciseId: ExerciseTypeModelMapper.toPresentationModel(entity: newInterval.exerciseId),
             burningSecondTime: newInterval.burningSecondTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
             restingSecondTime: newInterval.restingSecondTime,
@@ -48,6 +48,7 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         )
         
         intervalItems.append(newIntervalModel)
+        IntervalModel.mocks.append(newIntervalModel)
         
         let _ = intervalUseCase.fetches()
         
@@ -56,23 +57,20 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
 }
 public class AddIntervalViewModel: ObservableObject {
     let intervalUseCase: IntervalUseCaseInterface
-    
-    var burningResult: Int = 0
-    var restingResult: Int = 0
-    
+        
     @Published var intervalItems: [IntervalModel] = []
     
     @Published var name: String = ""
     @Published var repeatCounts : Int = 0
 
-    @Published var exercise : [ExerciseImage] = ExerciseImage.allCases
-    @Published var selectedExerciseId: ExerciseImage.ID?
+    @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
+    @Published var selectedExerciseId: ExerciseTypeModel.ID?
     
     
     @Published var burningSelectedInterval = HeartIntervalTypeModel.one
     @Published var burningTime: Int = 0
-    @Published var restSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restTime: Int = 0
+    @Published var restingSelectedInterval = HeartIntervalTypeModel.one
+    @Published var restingTime: Int = 0
     
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase

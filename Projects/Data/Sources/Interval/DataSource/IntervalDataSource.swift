@@ -14,7 +14,7 @@ public protocol IntervalDataSourceInterface {
     func fetches() -> [IntervalPersistentModel]
     func save(
         title: String,
-        exerciseId : ExerciseImage.ID,
+        exerciseId : ExerciseTypeModelPersistentModel.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -25,7 +25,7 @@ public protocol IntervalDataSourceInterface {
     func update(
         at id: UUID,
         title: String,
-        exerciseId : ExerciseImage.ID,
+        exerciseId : ExerciseTypeModelPersistentModel.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -60,7 +60,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     
     public func save(
         title: String,
-        exerciseId: Domain.ExerciseImage.ID,
+        exerciseId: ExerciseTypeModelPersistentModel.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -85,7 +85,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     public func update(
         at id: UUID,
         title: String,
-        exerciseId : Domain.ExerciseImage.ID,
+        exerciseId : ExerciseTypeModelPersistentModel.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ExerciseImage: String, CaseIterable, Identifiable, Codable {
+public enum ExerciseType: String, CaseIterable, Identifiable, Codable {
     case run = "figure.run"
     case cycle = "figure.outdoor.cycle"
     case swim = "figure.pool.swim"
@@ -15,13 +15,13 @@ public enum ExerciseImage: String, CaseIterable, Identifiable, Codable {
     case badminton = "figure.badminton"
     
     public init?(value: String = "") {
-        let tmp = ExerciseImage(rawValue:value)
+        let tmp = ExerciseType(rawValue:value)
         if let out = tmp {
             self = out
             return
         }
         
-        self = ExerciseImage.run
+        self = ExerciseType.run
     }
     public var id: Self { self }
 }

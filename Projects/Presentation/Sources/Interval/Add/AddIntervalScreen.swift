@@ -89,7 +89,7 @@ public struct AddIntervalScreen: View {
         VStack{
             BurningRestingPicker(isBurning: true, selection: $viewModel.burningSelectedInterval, totalTime: $viewModel.burningTime)
             
-            BurningRestingPicker(isBurning: false, selection: $viewModel.restSelectedInterval, totalTime: $viewModel.burningTime)
+            BurningRestingPicker(isBurning: false, selection: $viewModel.restingSelectedInterval, totalTime: $viewModel.restingTime)
         }
     }
 }
