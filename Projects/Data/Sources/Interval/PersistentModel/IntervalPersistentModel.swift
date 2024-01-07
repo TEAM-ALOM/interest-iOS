@@ -16,6 +16,8 @@ public class IntervalPersistentModel {
     @Attribute(.unique) public let id: UUID = UUID()
     
     public var title: String = ""
+    public var exerciseId: ExerciseTypePersistentModel = ExerciseTypePersistentModel.run
+    
     public var burningSecondTime: Int = 0
     public var burningHeartIntervalType: HeartIntervalTypePresistentModel = HeartIntervalTypePresistentModel.three
     public var restingSecondTime: Int = 0
@@ -26,6 +28,7 @@ public class IntervalPersistentModel {
     
     public init(
         title: String,
+        exerciseId : ExerciseTypePersistentModel.ID,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -33,6 +36,7 @@ public class IntervalPersistentModel {
         restingHeartIntervalType: HeartIntervalTypePresistentModel
     ) {
         self.title = title
+        self.exerciseId = exerciseId
         self.repeatCount = repeatCount
         self.burningSecondTime = burningSecondTime
         self.burningHeartIntervalType = burningHeartIntervalType
@@ -46,6 +50,7 @@ public extension IntervalPersistentModel {
         return .init(
             id: self.id,
             title: self.title,
+            exerciseId: self.exerciseId.toEntity(),
             burningSecondTime: self.burningSecondTime,
             burningHeartIntervalType: self.burningHeartIntervalType.toEntity(),
             restingSecondTime: self.restingSecondTime,

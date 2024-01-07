@@ -26,8 +26,9 @@ public struct IntervalScreen: View {
         self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies(intervalRouter: router))
         
         self.intervalListScreen = .init(viewModel: intervalDIContainer.intervalListDependencies(intervalRouter: router))
-        self.addIntervalScreen = .init(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
         
+        self.addIntervalScreen = .init(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
+                
 #if os(iOS)
         UIRefreshControl.appearance().tintColor = UIColor(Color.keyColor)
             

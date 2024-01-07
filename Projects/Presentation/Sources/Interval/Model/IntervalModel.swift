@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import Domain
 
 public struct IntervalModel: Identifiable, Hashable {
     public var id: UUID
     
     public let title: String
+    
+    public var exerciseId: ExerciseTypeModel.ID
     
     public var burningSecondTime: Int
     public var burningHeartIntervalType: HeartIntervalTypeModel
@@ -23,6 +26,7 @@ public struct IntervalModel: Identifiable, Hashable {
     public init(
         id: UUID,
         title: String = "",
+        exerciseId : ExerciseTypeModel.ID,
         burningSecondTime: Int = 0,
         burningHeartIntervalType: HeartIntervalTypeModel = .three,
         restingSecondTime: Int = 0,
@@ -32,6 +36,7 @@ public struct IntervalModel: Identifiable, Hashable {
     ) {
         self.id = id
         self.title = title
+        self.exerciseId = exerciseId
         self.burningSecondTime = burningSecondTime
         self.burningHeartIntervalType = burningHeartIntervalType
         self.restingSecondTime = restingSecondTime
@@ -42,10 +47,11 @@ public struct IntervalModel: Identifiable, Hashable {
 }
 
 public extension IntervalModel {
-    static let mocks: [IntervalModel] = [
+    static var mocks: [IntervalModel] = [
         .init(
             id: .init(),
-            title: "달리기 인터벌",
+            title: "달리기 인터벌", 
+            exerciseId: .run,
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
             restingSecondTime: 4 * 60,
@@ -119,7 +125,8 @@ public extension IntervalModel {
         ),
         .init(
             id: .init(),
-            title: "자전거 인터벌",
+            title: "자전거 인터벌", 
+            exerciseId: .cycle,
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
             restingSecondTime: 4 * 60,
@@ -146,6 +153,7 @@ public extension IntervalModel {
         .init(
             id: .init(),
             title: "수영 인터벌",
+            exerciseId: .swim,
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
             restingSecondTime: 4 * 60,
