@@ -7,21 +7,10 @@
 
 import Foundation
 
-public enum ExerciseType: String, CaseIterable, Identifiable, Codable {
-    case run = "figure.run"
-    case cycle = "figure.outdoor.cycle"
-    case swim = "figure.pool.swim"
-    case stepper = "figure.stair.stepper"
-    case badminton = "figure.badminton"
-    
-    public init?(value: String = "") {
-        let tmp = ExerciseType(rawValue:value)
-        if let out = tmp {
-            self = out
-            return
-        }
-        
-        self = ExerciseType.run
-    }
-    public var id: Self { self }
+public enum ExerciseType: CaseIterable {
+    case run
+    case cycle
+    case swim
+    case stepper
+    case badminton
 }

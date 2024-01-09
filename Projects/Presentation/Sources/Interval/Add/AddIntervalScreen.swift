@@ -13,7 +13,7 @@ import Domain
 public struct AddIntervalScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-        
+    
     @StateObject var viewModel: AddIntervalViewModel
     
     
@@ -22,9 +22,9 @@ public struct AddIntervalScreen: View {
     }
     
     public var body: some View {
-        NavigationStack{
-            ScrollView{
-                VStack{
+        NavigationStack {
+            ScrollView {
+                VStack {
                     name
                     exercise
                     repeatCount
@@ -58,6 +58,7 @@ public struct AddIntervalScreen: View {
             .scrollIndicators(.hidden)
         }
     }
+    
     private var name: some View {
         VStack{
             HStack{
@@ -74,7 +75,7 @@ public struct AddIntervalScreen: View {
     }
     private var exercise: some View {
         HStack{
-            ExercisePicker(exerciseImage: $viewModel.exercise, selectedExerciseId: $viewModel.selectedExerciseId)
+            ExercisePickerView(selectedExerciseType: $viewModel.selectedExerciseType)
         }
         .padding(.vertical,10)
     }

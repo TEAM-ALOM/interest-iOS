@@ -7,21 +7,20 @@
 
 import Foundation
 
-public enum ExerciseTypeModel: String, CaseIterable, Identifiable, Codable {
-    case run = "figure.run"
-    case cycle = "figure.outdoor.cycle"
-    case swim = "figure.pool.swim"
-    case stepper = "figure.stair.stepper"
-    case badminton = "figure.badminton"
+public enum ExerciseTypeModel: CaseIterable {
+    case run
+    case cycle
+    case swim
+    case stepper
+    case badminton
     
-    public init?(value: String = "") {
-        let tmp = ExerciseTypeModel(rawValue:value)
-        if let out = tmp {
-            self = out
-            return
+    public var systemImageName: String {
+        switch self {
+        case .run: "figure.run"
+        case .cycle: "figure.outdoor.cycle"
+        case .swim: "figure.pool.swim"
+        case .stepper: "figure.stair.stepper"
+        case .badminton: "figure.badminton"
         }
-        
-        self = ExerciseTypeModel.run
     }
-    public var id: Self { self }
 }

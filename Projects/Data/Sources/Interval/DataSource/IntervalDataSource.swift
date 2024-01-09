@@ -14,7 +14,7 @@ public protocol IntervalDataSourceInterface {
     func fetches() -> [IntervalPersistentModel]
     func save(
         title: String,
-        exerciseId : ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -25,7 +25,7 @@ public protocol IntervalDataSourceInterface {
     func update(
         at id: UUID,
         title: String,
-        exerciseId : ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -60,7 +60,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     
     public func save(
         title: String,
-        exerciseId: ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -69,7 +69,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     ) -> IntervalPersistentModel {
         let interval: IntervalPersistentModel = .init(
             title: title,
-            exerciseId: exerciseId,
+            exerciseType: exerciseType,
             repeatCount: repeatCount,
             burningSecondTime: burningSecondTime,
             burningHeartIntervalType: burningHeartIntervalType,
@@ -85,7 +85,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     public func update(
         at id: UUID,
         title: String,
-        exerciseId : ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -94,7 +94,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     ) -> IntervalPersistentModel? {
         let interval = fetch(id: id)
         interval?.title = title
-        interval?.exerciseId = exerciseId
+        interval?.exerciseType = exerciseType
         interval?.repeatCount = repeatCount
         interval?.burningSecondTime = burningSecondTime
         interval?.burningHeartIntervalType = burningHeartIntervalType

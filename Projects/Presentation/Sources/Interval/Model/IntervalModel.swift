@@ -13,7 +13,7 @@ public struct IntervalModel: Identifiable, Hashable {
     
     public let title: String
     
-    public var exerciseId: ExerciseTypeModel.ID
+    public var exerciseType: ExerciseTypeModel
     
     public var burningSecondTime: Int
     public var burningHeartIntervalType: HeartIntervalTypeModel
@@ -26,7 +26,7 @@ public struct IntervalModel: Identifiable, Hashable {
     public init(
         id: UUID,
         title: String = "",
-        exerciseId : ExerciseTypeModel.ID,
+        exerciseType: ExerciseTypeModel,
         burningSecondTime: Int = 0,
         burningHeartIntervalType: HeartIntervalTypeModel = .three,
         restingSecondTime: Int = 0,
@@ -36,7 +36,7 @@ public struct IntervalModel: Identifiable, Hashable {
     ) {
         self.id = id
         self.title = title
-        self.exerciseId = exerciseId
+        self.exerciseType = exerciseType
         self.burningSecondTime = burningSecondTime
         self.burningHeartIntervalType = burningHeartIntervalType
         self.restingSecondTime = restingSecondTime
@@ -51,7 +51,7 @@ public extension IntervalModel {
         .init(
             id: .init(),
             title: "달리기 인터벌", 
-            exerciseId: .run,
+            exerciseType: .run,
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
             restingSecondTime: 4 * 60,
@@ -126,7 +126,7 @@ public extension IntervalModel {
         .init(
             id: .init(),
             title: "자전거 인터벌", 
-            exerciseId: .cycle,
+            exerciseType: .cycle,
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
             restingSecondTime: 4 * 60,
@@ -153,7 +153,7 @@ public extension IntervalModel {
         .init(
             id: .init(),
             title: "수영 인터벌",
-            exerciseId: .swim,
+            exerciseType: .swim,
             burningSecondTime: 1 * 60,
             burningHeartIntervalType: .five,
             restingSecondTime: 4 * 60,

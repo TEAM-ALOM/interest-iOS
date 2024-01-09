@@ -7,29 +7,26 @@
 
 import Foundation
 import SwiftUI
-import Domain
 
-struct ExercisePicker: View {
-    @Binding var exerciseImage : [ExerciseTypeModel]
-    @Binding var selectedExerciseId: ExerciseTypeModel.ID?
+struct ExercisePickerView: View {
+    @Binding var selectedExerciseType: ExerciseTypeModel?
     
     var body: some View {
-        pickExerciseView(exercise: $exerciseImage)
+        pickerView
     }
     
-    @ViewBuilder
-    func pickExerciseView (exercise :Binding<[ExerciseTypeModel]>) -> some View {
-        HStack(spacing : 30){
-            ForEach(exercise.wrappedValue, id: \.self) { exerciseImage in
+    var pickerView: some View {
+        HStack(spacing: 30) {
+            ForEach(ExerciseTypeModel.allCases, id: \.self) { exerciseType in
                 Button(action: {
-                    self.selectedExerciseId = exerciseImage.id
+                    self.selectedExerciseType = exerciseType
                 }, label: {
                     ZStack{
                         Circle()
-                            .fill(self.selectedExerciseId == exerciseImage.id  ? Color.keyColor : Color.clear)
+                            .fill(self.selectedExerciseType == exerciseType  ? Color.keyColor : Color.clear)
                             .frame(width: 42,height: 42)
                         
-                        Image(systemName: "\(exerciseImage.rawValue)")
+                        Image(systemName: exerciseType.systemImageName)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 32, height: 32)

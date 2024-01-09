@@ -10,7 +10,6 @@ import SwiftUI
 import Domain
 
 class EditIntervalViewModel: ObservableObject {
-    
     @Published var burningSelectedInterval = HeartIntervalTypeModel.one
     @Published var burningTime: Int = 0
     @Published var restSelectedInterval = HeartIntervalTypeModel.one

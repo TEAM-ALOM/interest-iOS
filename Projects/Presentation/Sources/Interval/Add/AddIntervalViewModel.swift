@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+
 import Domain
 
 public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
@@ -31,7 +32,7 @@ public class AddIntervalViewModel: ObservableObject {
     @Published var repeatCounts : Int = 0
     
     @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
-    @Published var selectedExerciseId: ExerciseTypeModel.ID?
+    @Published var selectedExerciseType: ExerciseTypeModel?
     
     
     @Published var burningSelectedInterval = HeartIntervalTypeModel.one
@@ -47,7 +48,7 @@ public class AddIntervalViewModel: ObservableObject {
         let newInterval = IntervalEntity(
             id: id,
             title: name,
-            exerciseId: ExerciseTypeModelMapper.toEntity(model: selectedExerciseId ?? ExerciseTypeModel.run),
+            exerciseType: ExerciseTypeModelMapper.toEntity(model: selectedExerciseType ?? ExerciseTypeModel.run),
             burningSecondTime: burningTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: burningSelectedInterval),
             restingSecondTime: restingTime,
@@ -61,7 +62,7 @@ public class AddIntervalViewModel: ObservableObject {
         let newIntervalModel = IntervalModel(
             id: newInterval.id,
             title: newInterval.title,
-            exerciseId: ExerciseTypeModelMapper.toPresentationModel(entity: newInterval.exerciseId),
+            exerciseType: ExerciseTypeModelMapper.toPresentationModel(entity: newInterval.exerciseType),
             burningSecondTime: newInterval.burningSecondTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
             restingSecondTime: newInterval.restingSecondTime,

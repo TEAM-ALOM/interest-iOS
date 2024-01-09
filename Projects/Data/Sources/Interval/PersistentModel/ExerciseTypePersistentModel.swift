@@ -8,14 +8,12 @@
 import Foundation
 import Domain
 
-public enum ExerciseTypePersistentModel : String , Codable, CaseIterable, Equatable , Identifiable{
-    case run = "figure.run"
-    case cycle = "figure.outdoor.cycle"
-    case swim = "figure.pool.swim"
-    case stepper = "figure.stair.stepper"
-    case badminton = "figure.badminton"
-    
-    public var id: Self { self }
+public enum ExerciseTypePersistentModel: Codable {
+    case run
+    case cycle
+    case swim
+    case stepper
+    case badminton
 }
 
 public extension ExerciseTypePersistentModel{
