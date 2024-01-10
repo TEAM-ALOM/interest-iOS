@@ -24,7 +24,7 @@ public class IntervalPersistentModel {
     public var restingHeartIntervalType: HeartIntervalTypePresistentModel = HeartIntervalTypePresistentModel.three
     public var repeatCount: Int = 0
     
-    @Relationship(deleteRule: .cascade) public var records: [IntervalRecordPersistentModel]? = []
+    @Relationship(deleteRule: .cascade, inverse: \IntervalRecordPersistentModel.interval) public var records: [IntervalRecordPersistentModel]? = []
     
     public init(
         title: String,

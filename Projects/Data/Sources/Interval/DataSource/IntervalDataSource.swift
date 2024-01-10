@@ -36,7 +36,7 @@ public protocol IntervalDataSourceInterface {
 }
 
 public final class IntervalDataSource: IntervalDataSourceInterface {
-    
+
     private var context: ModelContext? = PersistentContainer.shared.context
     
     public init() {}
@@ -46,16 +46,21 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
             $0.id == id
         }
         let descriptor: FetchDescriptor<IntervalPersistentModel> = .init(predicate: predicate)
-        let result = try? context?.fetch(descriptor)
+        let result = try? self.context?.fetch(descriptor)
         
         return result?.first
     }
     
     public func fetches() -> [IntervalPersistentModel] {
         let descriptor: FetchDescriptor<IntervalPersistentModel> = .init()
-        let result = try? context?.fetch(descriptor)
-        
-        return result ?? []
+        let result: [IntervalPersistentModel]
+        do {
+            result = try self.context?.fetch(descriptor) ?? []
+            return result
+        } catch {
+            print(error)
+        }
+        return []
     }
     
     public func save(
@@ -76,8 +81,8 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
             restingSecondTime: restingSecondTime,
             restingHeartIntervalType: restingHeartIntervalType
         )
-        
-        context?.insert(interval)
+
+        self.context?.insert(interval)
         
         return interval
     }
@@ -101,14 +106,14 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         interval?.restingSecondTime = restingSecondTime
         interval?.restingHeartIntervalType = restingHeartIntervalType
         
-        try? context?.save()
+        try? self.context?.save()
         
         return interval
     }
     
     public func delete(at id: UUID) -> Bool {
         if let interval = self.fetch(id: id) {
-            context?.delete(interval)
+            self.context?.delete(interval)
             return true
         } else {
             return false

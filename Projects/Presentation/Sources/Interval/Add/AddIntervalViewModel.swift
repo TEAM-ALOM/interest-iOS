@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 import Domain
 
@@ -21,12 +22,14 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         super.init(intervalUseCase: intervalUseCase)
     }
     
+    override func tapSaveButton() {
+        super.tapSaveButton()
+    }
+    
 }
 
 public class AddIntervalViewModel: ObservableObject {
     let intervalUseCase: IntervalUseCaseInterface
-    
-    @Published var intervalItems: [IntervalModel] = []
     
     @Published var name: String = ""
     @Published var repeatCounts : Int = 0
@@ -44,9 +47,9 @@ public class AddIntervalViewModel: ObservableObject {
         self.intervalUseCase = intervalUseCase
     }
     
-    func tapSaveButton(at id: UUID) {
+    func tapSaveButton() {
         let newInterval = IntervalEntity(
-            id: id,
+            id: .init(),
             title: name,
             exerciseType: ExerciseTypeModelMapper.toEntity(model: selectedExerciseType ?? ExerciseTypeModel.run),
             burningSecondTime: burningTime,
@@ -54,28 +57,10 @@ public class AddIntervalViewModel: ObservableObject {
             restingSecondTime: restingTime,
             restingHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: restingSelectedInterval),
             repeatCount: repeatCounts,
-            records: .init()
+            records: []
         )
         
-        let _ = intervalUseCase.update(at: id, to: newInterval)
-        
-        let newIntervalModel = IntervalModel(
-            id: newInterval.id,
-            title: newInterval.title,
-            exerciseType: ExerciseTypeModelMapper.toPresentationModel(entity: newInterval.exerciseType),
-            burningSecondTime: newInterval.burningSecondTime,
-            burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.burningHeartIntervalType),
-            restingSecondTime: newInterval.restingSecondTime,
-            restingHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(entity: newInterval.restingHeartIntervalType),
-            repeatCount: newInterval.repeatCount,
-            records: newInterval.records.map { IntervalRecordModelMapper.toPresentationModel(entity: $0) }
-        )
-        
-        intervalItems.append(newIntervalModel)
-        IntervalModel.mocks.append(newIntervalModel)
-        
-        let _ = intervalUseCase.fetches()
-        
+        intervalUseCase.save(interval: newInterval)
     }
 }
 

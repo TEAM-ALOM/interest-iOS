@@ -14,14 +14,18 @@ public struct RootApp: App {
     public init() { }
     
     public var body: some Scene {
-        WindowGroup {            
+        WindowGroup {
             IntervalScreen(
                 intervalDIContainer: IntervalDIContainer(),
-                routerDIContainer: RouterDIContainer())
-                .modelContainer(for: [
-                    IntervalPersistentModel.self,
-                    IntervalRecordPersistentModel.self
-                ])
+                routerDIContainer: RouterDIContainer()
+            )
+            .modelContainer(for: [
+                IntervalPersistentModel.self,
+                IntervalRecordPersistentModel.self
+            ])
+            .onAppear {
+//                IntervalDataSource().save(title: "test1", exerciseType: .badminton, repeatCount: 0, burningSecondTime: 0, burningHeartIntervalType: .five, restingSecondTime: 0, restingHeartIntervalType: .four)
+            }
         }
     }
 }
