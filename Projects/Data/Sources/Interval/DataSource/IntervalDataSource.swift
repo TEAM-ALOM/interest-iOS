@@ -20,7 +20,7 @@ public protocol IntervalDataSourceInterface {
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
-    ) -> IntervalPersistentModel
+    ) -> Bool
     
     func update(
         at id: UUID,
@@ -37,7 +37,7 @@ public protocol IntervalDataSourceInterface {
 
 public final class IntervalDataSource: IntervalDataSourceInterface {
 
-    private var context: ModelContext? = PersistentContainer.shared.context
+    private var context: ModelContext? { PersistentContainer.shared.context }
     
     public init() {}
     
@@ -71,8 +71,8 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
-    ) -> IntervalPersistentModel {
-        let interval: IntervalPersistentModel = .init(
+    ) -> Bool {
+        self.context?.insert(IntervalPersistentModel.init(
             title: title,
             exerciseType: exerciseType,
             repeatCount: repeatCount,
@@ -80,11 +80,9 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
             burningHeartIntervalType: burningHeartIntervalType,
             restingSecondTime: restingSecondTime,
             restingHeartIntervalType: restingHeartIntervalType
-        )
-
-        self.context?.insert(interval)
+        ))
         
-        return interval
+        return true
     }
     
     public func update(
