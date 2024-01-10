@@ -23,9 +23,6 @@ public struct RootApp: App {
                 IntervalPersistentModel.self,
                 IntervalRecordPersistentModel.self
             ])
-            .onAppear {
-//                IntervalDataSource().save(title: "test1", exerciseType: .badminton, repeatCount: 0, burningSecondTime: 0, burningHeartIntervalType: .five, restingSecondTime: 0, restingHeartIntervalType: .four)
-            }
         }
     }
 }
