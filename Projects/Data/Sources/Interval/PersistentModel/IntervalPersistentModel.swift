@@ -16,7 +16,7 @@ public class IntervalPersistentModel {
     @Attribute(.unique) public let id: UUID = UUID()
     
     public var title: String = ""
-    public var exerciseId: ExerciseTypePersistentModel = ExerciseTypePersistentModel.run
+    public var exerciseType: ExerciseTypePersistentModel = ExerciseTypePersistentModel.run
     
     public var burningSecondTime: Int = 0
     public var burningHeartIntervalType: HeartIntervalTypePresistentModel = HeartIntervalTypePresistentModel.three
@@ -24,11 +24,11 @@ public class IntervalPersistentModel {
     public var restingHeartIntervalType: HeartIntervalTypePresistentModel = HeartIntervalTypePresistentModel.three
     public var repeatCount: Int = 0
     
-    @Relationship(deleteRule: .cascade) public var records: [IntervalRecordPersistentModel]? = []
+    @Relationship(deleteRule: .cascade, inverse: \IntervalRecordPersistentModel.interval) public var records: [IntervalRecordPersistentModel]? = []
     
     public init(
         title: String,
-        exerciseId : ExerciseTypePersistentModel.ID,
+        exerciseType : ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -36,7 +36,7 @@ public class IntervalPersistentModel {
         restingHeartIntervalType: HeartIntervalTypePresistentModel
     ) {
         self.title = title
-        self.exerciseId = exerciseId
+        self.exerciseType = exerciseType
         self.repeatCount = repeatCount
         self.burningSecondTime = burningSecondTime
         self.burningHeartIntervalType = burningHeartIntervalType
@@ -50,7 +50,7 @@ public extension IntervalPersistentModel {
         return .init(
             id: self.id,
             title: self.title,
-            exerciseId: self.exerciseId.toEntity(),
+            exerciseType: self.exerciseType.toEntity(),
             burningSecondTime: self.burningSecondTime,
             burningHeartIntervalType: self.burningHeartIntervalType.toEntity(),
             restingSecondTime: self.restingSecondTime,

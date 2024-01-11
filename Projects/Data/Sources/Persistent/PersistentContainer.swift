@@ -10,18 +10,14 @@ import SwiftData
 
 public class PersistentContainer {
     public static let shared = PersistentContainer()
-    
-    private var container: ModelContainer?
-    public var context: ModelContext?
-    
-    private init() {
-        do {
-            container = try ModelContainer(for: IntervalPersistentModel.self, IntervalRecordPersistentModel.self)
-            if let container {
-                context = ModelContext(container)
-            }
-        } catch {
-            print(error)
+
+    public var context: ModelContext? {
+        if let container = try? ModelContainer(for: IntervalPersistentModel.self, IntervalRecordPersistentModel.self) {
+            return ModelContext(container)
+        } else {
+            return nil
         }
     }
+    
+    private init() { }
 }

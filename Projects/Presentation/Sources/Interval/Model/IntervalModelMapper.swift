@@ -13,7 +13,7 @@ struct IntervalModelMapper {
         return .init(
             id: entity.id,
             title: entity.title, 
-            exerciseId: ExerciseTypeModelMapper.toPresentationModel(entity: entity.exerciseId),
+            exerciseType: ExerciseTypeModelMapper.toPresentationModel(entity: entity.exerciseType),
             burningSecondTime: entity.burningSecondTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toPresentationModel(
                 entity: entity.burningHeartIntervalType
@@ -33,7 +33,7 @@ struct IntervalModelMapper {
         return .init(
             id: model.id,
             title: model.title, 
-            exerciseId: ExerciseTypeModelMapper.toEntity(model: model.exerciseId),
+            exerciseType: ExerciseTypeModelMapper.toEntity(model: model.exerciseType),
             burningSecondTime: model.burningSecondTime,
             burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(
                 model: model.burningHeartIntervalType

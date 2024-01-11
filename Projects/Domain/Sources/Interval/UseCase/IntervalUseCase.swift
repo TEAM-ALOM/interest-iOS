@@ -11,7 +11,7 @@ import Combine
 public protocol IntervalUseCaseInterface {
     func fetch(id: UUID) -> IntervalEntity?
     func fetches() -> [IntervalEntity]
-    func save(interval: IntervalEntity) -> IntervalEntity
+    func save(interval: IntervalEntity) -> Bool
     func update(at id: UUID, to interval: IntervalEntity) -> IntervalEntity?
     func delete(at id: UUID) -> Bool
 }
@@ -31,7 +31,7 @@ public final class IntervalUseCase: IntervalUseCaseInterface {
         return intervalRepository.fetches()
     }
     
-    public func save(interval: IntervalEntity) -> IntervalEntity {
+    public func save(interval: IntervalEntity) -> Bool {
         return intervalRepository.save(interval: interval)
     }
     

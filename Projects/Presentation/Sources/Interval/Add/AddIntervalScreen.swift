@@ -7,57 +7,53 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 import SharedDesignSystem
 import Domain
 
 public struct AddIntervalScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-        
-    @StateObject var viewModel: AddIntervalViewModel
     
+    @StateObject var viewModel: AddIntervalViewModel
     
     public init(viewModel: AddIntervalViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
-        NavigationStack{
-            ScrollView{
-                VStack{
-                    name
-                    exercise
-                    repeatCount
-                    burningResting
-                    Spacer()
+        NavigationStack {
+            ScrollView {
+                name
+                exercise
+                repeatCount
+                burningResting
+                Spacer()
+            }
+            .padding(.horizontal, 30)
+            .padding(.top, 10)
+            .navigationTitle("인터벌 추가")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Text("취소")
+                    })
                 }
-                .padding(.top,50)
-                .padding(.horizontal,30)
-                .backgroundStyle(Color.clear)
-                .ignoresSafeArea()
-                .navigationTitle("인터벌 추가")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: {
-                            dismiss()
-                        }, label: {
-                            Text("취소")
-                        })
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            viewModel.tapSaveButton(at: UUID())
-                            dismiss()
-                        }, label: {
-                            Text("저장")
-                        })
-                    }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        viewModel.tapSaveButton()
+                        dismiss()
+                    }, label: {
+                        Text("저장")
+                    })
                 }
             }
-            .scrollIndicators(.hidden)
         }
     }
+    
     private var name: some View {
         VStack{
             HStack{
@@ -74,7 +70,7 @@ public struct AddIntervalScreen: View {
     }
     private var exercise: some View {
         HStack{
-            ExercisePicker(exerciseImage: $viewModel.exercise, selectedExerciseId: $viewModel.selectedExerciseId)
+            ExercisePickerView(selectedExerciseType: $viewModel.selectedExerciseType)
         }
         .padding(.vertical,10)
     }

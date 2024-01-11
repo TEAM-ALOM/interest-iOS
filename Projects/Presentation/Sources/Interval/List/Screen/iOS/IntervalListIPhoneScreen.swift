@@ -26,7 +26,7 @@ public struct IntervalListIPhoneScreen: View {
         .sheet(isPresented: $viewModel.showEditIntervalView, content: {
             EditIntervalScreen()
         })
-        .onAppear() {
+        .onAppear {
             viewModel.fetchIntervalItems()
         }
     }

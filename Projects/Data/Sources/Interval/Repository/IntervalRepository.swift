@@ -26,23 +26,23 @@ public final class IntervalRepository: IntervalRepositoryInterface {
             }
     }
     
-    public func save(interval: IntervalEntity) -> IntervalEntity {
+    public func save(interval: IntervalEntity) -> Bool {
         return dataSource.save(
             title: interval.title, 
-            exerciseId: interval.exerciseId.toPersistentModel(),
+            exerciseType: interval.exerciseType.toPersistentModel(),
             repeatCount: interval.repeatCount,
             burningSecondTime: interval.burningSecondTime,
             burningHeartIntervalType: interval.burningHeartIntervalType.toPersistentModel(),
             restingSecondTime: interval.restingSecondTime,
             restingHeartIntervalType: interval.restingHeartIntervalType.toPersistentModel()
-        ).toEntity()
+        )
     }
     
     public func update(at id: UUID, to interval: IntervalEntity) -> IntervalEntity? {
         return dataSource.update(
             at: id,
             title: interval.title, 
-            exerciseId: interval.exerciseId.toPersistentModel(),
+            exerciseType: interval.exerciseType.toPersistentModel(),
             repeatCount: interval.repeatCount,
             burningSecondTime: interval.burningSecondTime,
             burningHeartIntervalType: interval.burningHeartIntervalType.toPersistentModel(),

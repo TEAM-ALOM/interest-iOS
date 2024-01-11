@@ -44,12 +44,9 @@ public class IntervalListViewModel: ObservableObject {
     }
     
     func fetchIntervalItems() {
-        // TODO: 실제 데이터 생성 이후에 사용
-//        intervalItems = intervalUseCase.fetchIntervals().map {
-//            IntervalModelMapper.toPresentationModel(entity: $0)
-//        }
-        intervalItems = IntervalModel.mocks
-        
+        intervalItems = intervalUseCase.fetches().map {
+            IntervalModelMapper.toPresentationModel(entity: $0)
+        }
     }
     
     func tapStartButton() { }

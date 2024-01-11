@@ -14,18 +14,18 @@ public protocol IntervalDataSourceInterface {
     func fetches() -> [IntervalPersistentModel]
     func save(
         title: String,
-        exerciseId : ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
-    ) -> IntervalPersistentModel
+    ) -> Bool
     
     func update(
         at id: UUID,
         title: String,
-        exerciseId : ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -36,8 +36,8 @@ public protocol IntervalDataSourceInterface {
 }
 
 public final class IntervalDataSource: IntervalDataSourceInterface {
-    
-    private var context: ModelContext? = PersistentContainer.shared.context
+
+    private var context: ModelContext? { PersistentContainer.shared.context }
     
     public init() {}
     
@@ -46,46 +46,49 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
             $0.id == id
         }
         let descriptor: FetchDescriptor<IntervalPersistentModel> = .init(predicate: predicate)
-        let result = try? context?.fetch(descriptor)
+        let result = try? self.context?.fetch(descriptor)
         
         return result?.first
     }
     
     public func fetches() -> [IntervalPersistentModel] {
         let descriptor: FetchDescriptor<IntervalPersistentModel> = .init()
-        let result = try? context?.fetch(descriptor)
-        
-        return result ?? []
+        let result: [IntervalPersistentModel]
+        do {
+            result = try self.context?.fetch(descriptor) ?? []
+            return result
+        } catch {
+            print(error)
+        }
+        return []
     }
     
     public func save(
         title: String,
-        exerciseId: ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
         restingSecondTime: Int,
         restingHeartIntervalType: HeartIntervalTypePresistentModel
-    ) -> IntervalPersistentModel {
-        let interval: IntervalPersistentModel = .init(
+    ) -> Bool {
+        self.context?.insert(IntervalPersistentModel.init(
             title: title,
-            exerciseId: exerciseId,
+            exerciseType: exerciseType,
             repeatCount: repeatCount,
             burningSecondTime: burningSecondTime,
             burningHeartIntervalType: burningHeartIntervalType,
             restingSecondTime: restingSecondTime,
             restingHeartIntervalType: restingHeartIntervalType
-        )
+        ))
         
-        context?.insert(interval)
-        
-        return interval
+        return true
     }
     
     public func update(
         at id: UUID,
         title: String,
-        exerciseId : ExerciseTypePersistentModel.ID,
+        exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
         burningSecondTime: Int,
         burningHeartIntervalType: HeartIntervalTypePresistentModel,
@@ -94,21 +97,21 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     ) -> IntervalPersistentModel? {
         let interval = fetch(id: id)
         interval?.title = title
-        interval?.exerciseId = exerciseId
+        interval?.exerciseType = exerciseType
         interval?.repeatCount = repeatCount
         interval?.burningSecondTime = burningSecondTime
         interval?.burningHeartIntervalType = burningHeartIntervalType
         interval?.restingSecondTime = restingSecondTime
         interval?.restingHeartIntervalType = restingHeartIntervalType
         
-        try? context?.save()
+        try? self.context?.save()
         
         return interval
     }
     
     public func delete(at id: UUID) -> Bool {
         if let interval = self.fetch(id: id) {
-            context?.delete(interval)
+            self.context?.delete(interval)
             return true
         } else {
             return false

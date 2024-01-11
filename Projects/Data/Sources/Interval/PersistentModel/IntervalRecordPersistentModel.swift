@@ -20,7 +20,6 @@ public class IntervalRecordPersistentModel {
     public var createDate: Date = Date.now
     public var calorie: Int = 0
     
-    @Relationship(inverse: \IntervalPersistentModel.records)
     public var interval: IntervalPersistentModel?
     
     public init(

@@ -8,8 +8,8 @@
 import Foundation
 import Domain
 
-public enum ExerciseTypeModelMapper{
-    static func toPresentationModel(entity : ExerciseType) -> ExerciseTypeModel{
+public enum ExerciseTypeModelMapper {
+    static func toPresentationModel(entity: ExerciseType) -> ExerciseTypeModel {
         switch entity{
         case .run :
             return .run
@@ -24,7 +24,7 @@ public enum ExerciseTypeModelMapper{
         }
     }
     
-    static func toEntity(model : ExerciseTypeModel) -> ExerciseType{
+    static func toEntity(model: ExerciseTypeModel) -> ExerciseType {
         switch model {
         case .run:
             return .run
