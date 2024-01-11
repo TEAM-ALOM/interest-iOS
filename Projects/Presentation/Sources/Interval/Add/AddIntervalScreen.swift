@@ -10,7 +10,6 @@ import SwiftUI
 import SwiftData
 import SharedDesignSystem
 import Domain
-import Data
 
 public struct AddIntervalScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -46,6 +45,7 @@ public struct AddIntervalScreen: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         viewModel.tapSaveButton()
+                        dismiss()
                     }, label: {
                         Text("저장")
                     })
