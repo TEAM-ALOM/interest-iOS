@@ -45,7 +45,7 @@ public struct IntervalInfoCellView: View {
             toolButton(imageName: "pencil", 
                        color: .editColor,
                        backgroundColor: .editColor) {
-                intervalListViewModel.tapIntervalEditButton()
+                intervalListViewModel.tapIntervalEditButton(selectedItem: intervalItem)
             }
             
             Spacer()
