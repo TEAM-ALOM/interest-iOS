@@ -7,23 +7,15 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 public struct IntervalListWatchScreen: View {
     @ObservedObject var viewModel: IntervalListViewModel
     
     public var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 24) {
-                ForEach(viewModel.intervalItems) { item in
-                    //TODO: 셀로 변경 해야함
-                    Text(item.title)
-                }
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 32)
-        }
-        .onAppear() {
-            viewModel.fetchIntervalItems()
-        }
+        WatchSelectedView(viewModel: viewModel)
+            .mainBackground()
     }
+
+    
 }

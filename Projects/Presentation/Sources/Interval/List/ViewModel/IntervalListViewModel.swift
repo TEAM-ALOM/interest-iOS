@@ -39,6 +39,9 @@ public class IntervalListViewModel: ObservableObject {
     @Published var intervalItems: [IntervalModel] = []
     @Published var showEditIntervalView: Bool = false
     
+    @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
+    @Published var selectedExerciseType: ExerciseTypeModel?
+    
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
     }
