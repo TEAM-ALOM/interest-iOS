@@ -16,11 +16,29 @@ public struct IntervalActiveWatchScreen: View {
     
     public var body: some View {
         VStack(alignment: .center){
+            intervalChange
+            
+            Spacer()
+            
+            healthInfo
+        }
+        .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
+      
+        .onAppear(perform: {
+            timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+                viewModel.activeTime += 0.01
+            }
+            
+        })
+    }
+    
+    private var intervalChange: some View {
+        VStack{
             HStack{
-                Image(systemName: viewModel.activeTime < 10 ? "flame.fill" : "circle.hexagonpath.fill")
-                    .foregroundColor(viewModel.activeTime < 10 ? Color.burningColor : Color.restColor)
-                Text(viewModel.activeTime < 10 ? "버닝중" : "휴식중")
-                    .foregroundColor(viewModel.activeTime < 10 ? Color.burningColor : Color.restColor)
+                Image(systemName: viewModel.isBurning ? "flame.fill" : "circle.hexagonpath.fill")
+                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
+                Text(viewModel.isBurning ? "버닝중" : "휴식중")
+                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
                 Spacer()
             }
             .padding(.horizontal,12)
@@ -37,8 +55,8 @@ public struct IntervalActiveWatchScreen: View {
                 
                 VStack(alignment : .leading){
                     HStack(spacing:0){
-                        Text(viewModel.activeTime < 10 ? "휴식" : "버닝")
-                            .foregroundStyle(viewModel.activeTime < 10 ? Color.restColor : Color.burningColor)
+                        Text(viewModel.isBurning ? "휴식" : "버닝")
+                            .foregroundStyle(viewModel.isBurning ? Color.restColor : Color.burningColor)
                         Text("까지")
                             .foregroundStyle(Color.textColor50)
                     }
@@ -53,28 +71,34 @@ public struct IntervalActiveWatchScreen: View {
                 }
             }
             .frame(width: 161, height: 28)
-            Spacer()
-            
-            HStack{
-                VStack(alignment: .leading){
-                    Text("인터벌")
-                    Text("심박수")
-                    Text("칼로리")
-                    Text("진행시간")
-                }
-                .foregroundColor(Color.textColor50)
-                .padding(.horizontal,12)
-                Spacer()
-            }
         }
-        .exerciseBackground(mode: viewModel.activeTime < 10 ? .burning : .rest)
-      
-        .onAppear(perform: {
-            timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-                viewModel.activeTime += 0.01
+    }
+    private var healthInfo : some View {
+        VStack{
+            HStack{
+                Text("인터벌")
+                    .foregroundColor(Color.textColor50)
+                Spacer()
+                Text(String(format : "%d", 2))
             }
+            HStack{
+                Text("심박수")
+                    .foregroundColor(Color.textColor50)
+
+            }
+            HStack{
+                Text("칼로리")
+                    .foregroundColor(Color.textColor50)
+
+            }
+            HStack{
+                Text("진행시간")
+                    .foregroundColor(Color.textColor50)
+
+            }
+            .padding(.horizontal,12)
             
-        })
+        }
     }
     
     private var formattedBurningTime: String {

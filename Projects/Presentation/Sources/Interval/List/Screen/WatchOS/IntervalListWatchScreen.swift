@@ -13,9 +13,16 @@ public struct IntervalListWatchScreen: View {
     @ObservedObject var viewModel: IntervalListViewModel
     
     public var body: some View {
-        WatchSelectedView(viewModel: viewModel)
-            .mainBackground()
+        VStack{
+            WatchListView(viewModel: viewModel)
+                .padding(.top,5)
+            Spacer()
+            HStack{
+                Spacer()
+                StartButton(viewModel: viewModel, intervalItem: viewModel.selectedItem)
+                Spacer()
+            }
+        }
+        .mainBackground()
     }
-
-    
 }

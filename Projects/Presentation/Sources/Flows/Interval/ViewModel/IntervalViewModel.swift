@@ -22,8 +22,8 @@ public class IntervalViewModel: ObservableObject {
         self.intervalUseCase = intervalUseCase
     }
     
-    func tapIntervalStartButton(item: IntervalModel) {
-        router.triggerScreenTransition(route: .intervalActive)
+    func tapIntervalStartButton(intervalItem: IntervalModel) {
+        router.triggerScreenTransition(route: .intervalActive(intervalItem))
     }
     
     func triggerTransition(route: IntervalRouter.PushRoute) {

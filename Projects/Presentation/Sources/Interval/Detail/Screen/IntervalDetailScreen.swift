@@ -43,7 +43,7 @@ struct IntervalDetailScreen: View {
     
     private var startButton: some View {
         Button(action: {
-            viewModel.tapIntervalStartButton()
+            viewModel.tapIntervalStartButton(intervalItem: viewModel.intervalItem)
         }, label: {
             HStack {
                 Spacer()

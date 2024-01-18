@@ -24,10 +24,10 @@ public class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
         )
     }
     
-    override func tapIntervalStartButton() {
-        super.tapIntervalStartButton()
+    override func tapIntervalStartButton(intervalItem: IntervalModel) {
+        super.tapIntervalStartButton(intervalItem: intervalItem)
         router.removeScreenTransition()
-        router.triggerScreenTransition(route: .intervalActive)
+        router.triggerScreenTransition(route: .intervalActive(intervalItem))
     }
 }
 
@@ -44,7 +44,7 @@ public class IntervalDetailViewModel: ObservableObject {
         self.intervalItem = intervalItem
     }
     
-    func tapIntervalStartButton() {
+    func tapIntervalStartButton(intervalItem: IntervalModel) {
         
     }
 }

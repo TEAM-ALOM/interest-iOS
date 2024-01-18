@@ -19,33 +19,31 @@ public struct IntervalStateManageScreen: View {
         VStack{
             Spacer()
             
-            HStack{
-                Text("달리기")
-                    .foregroundStyle(Color.keyColor)
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 10)
-            
+            intervalName
             
             HStack(spacing: 16){
-                stateButton(isPause: true)
-                stateButton(isPause: false)
+                stateButton(isPause: true, action: viewModel.tapPauseButton)
+                stateButton(isPause: false, action: viewModel.tapEndButton)
             }
-            
             Spacer()
-            
         }
         .mainBackground()
     }
     
+    private var intervalName: some View {
+        HStack{
+            Text(viewModel.intervalItem.title)
+                .foregroundStyle(Color.keyColor)
+            Spacer()
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 10)
+    }
     
     @ViewBuilder
-    func stateButton(isPause : Bool) -> some View {
+    func stateButton(isPause : Bool, action: @escaping () -> Void) -> some View {
         VStack{
-            Button(action: {
-                //일시 정지, 운동 종료 만들어야함
-            }) {
+            Button(action: action) {
                 Image(systemName: isPause ? "pause.fill" : "xmark")
                     .resizable()
                     .frame(width: 20, height: 25)

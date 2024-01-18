@@ -21,9 +21,9 @@ public class IntervalListViewModelWithRouter: IntervalListViewModel {
         super.init(intervalUseCase: intervalUseCase)
     }
     
-    override func tapStartButton() {
-        super.tapStartButton()
-        router.triggerScreenTransition(route: .intervalActive)
+    override func tapStartButton(intervalItem: IntervalModel) {
+        super.tapStartButton(intervalItem: intervalItem)
+        router.triggerScreenTransition(route: .intervalActive(intervalItem))
     }
     
     override func tapIntervalDetailPageButton(intervalItem: IntervalModel) {
@@ -39,11 +39,14 @@ public class IntervalListViewModel: ObservableObject {
     @Published var intervalItems: [IntervalModel] = []
     @Published var showEditIntervalView: Bool = false
     
-    @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
-    @Published var selectedExerciseType: ExerciseTypeModel?
+    @Published var selectedItem : IntervalModel = .init(id: UUID(), exerciseType: .run)
     
-    public init(intervalUseCase: IntervalUseCaseInterface) {
+    public init(
+        intervalUseCase: IntervalUseCaseInterface
+        //selectedItem : IntervalModel
+    ) {
         self.intervalUseCase = intervalUseCase
+        //self.selectedItem = selectedItem
     }
     
     func fetchIntervalItems() {
@@ -52,7 +55,7 @@ public class IntervalListViewModel: ObservableObject {
         }
     }
     
-    func tapStartButton() { }
+    func tapStartButton(intervalItem: IntervalModel) { }
     
     func tapIntervalDetailPageButton(intervalItem: IntervalModel) { }
     

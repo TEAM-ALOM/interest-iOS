@@ -23,14 +23,15 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
-    public func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModel {
+    public func intervalActiveDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalActiveViewModel {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
         
         return IntervalActiveViewModelWithRouter(
             router: intervalRouter,
-            intervalUseCase: intervalUseCase
+            intervalUseCase: intervalUseCase, 
+            intervalItem: intervalItem
         )
     }
     

@@ -10,6 +10,6 @@ import SwiftUI
 
 public extension IntervalListScreen {
     var iOS: some View {
-        IntervalListIPhoneScreen(viewModel: viewModel)
+        IntervalListIPhoneScreen(viewModel: listViewModel)
     }
 }
