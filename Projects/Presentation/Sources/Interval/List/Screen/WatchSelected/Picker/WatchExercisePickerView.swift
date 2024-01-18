@@ -18,7 +18,7 @@ struct WatchExercisePickerView: View {
         VStack{
             NavigationStack{
                 ZStack {
-                    //IntervalModel을 가져와야함
+                    //intervalitems을 가져와야함
                     ForEach(0..<IntervalModel.mocks.count, id: \.self) { index in
                         itemView(index)
                     }
@@ -36,6 +36,7 @@ struct WatchExercisePickerView: View {
         Button(action: {
             withAnimation{
                 currentIndex = index
+                viewModel.selectedItem = IntervalModel.mocks[currentIndex]
             }
         }, label: {
             ZStack {

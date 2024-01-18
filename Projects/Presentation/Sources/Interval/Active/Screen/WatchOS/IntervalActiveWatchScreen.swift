@@ -79,6 +79,7 @@ public struct IntervalActiveWatchScreen: View {
                 Text("인터벌")
                     .foregroundColor(Color.textColor50)
                 Spacer()
+                Text(viewModel.intervalItem.title)
                 Text(String(format : "%d", 2))
             }
             HStack{
