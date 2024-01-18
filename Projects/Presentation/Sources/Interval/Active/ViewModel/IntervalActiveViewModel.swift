@@ -29,7 +29,7 @@ public class IntervalActiveViewModel: ObservableObject {
     private let intervalUseCase: IntervalUseCaseInterface
     
     @Published var intervalItem: IntervalModel
-    
+
     @Published var heartRate : Int = 157
     @Published var calorie : Int = 423
     @Published var currentCount : Int = 0
@@ -46,10 +46,12 @@ public class IntervalActiveViewModel: ObservableObject {
     
     
     func tapPauseButton() {
-        
+        //타이머 정지
     }
     
     func tapEndButton() {
-        
+        //타이머 정지
+        //기록 저장
+        //List페이지로 이동
     }
 }
