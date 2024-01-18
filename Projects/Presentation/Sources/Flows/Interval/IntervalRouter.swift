@@ -27,6 +27,10 @@ public final class IntervalRouter: ObservableObject, FlowRouter {
         nextTransitionRoute = route
     }
     
+    public func removeScreenTransition() {
+        navigationPath.removeLast()
+    }
+    
     public func nextTransitionScreen() -> some View {
         nextTransitionRoute.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
     }

@@ -18,9 +18,6 @@ public class IntervalActiveViewModel: ObservableObject {
         self.intervalUseCase = intervalUseCase
     }
     
-    func tapAddNewIntervalButton() {
-        
-    }
     
     func tapStopButton() {
         

@@ -26,7 +26,8 @@ public class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
     
     override func tapIntervalStartButton() {
         super.tapIntervalStartButton()
-//        router.triggerScreenTransition(route: .intervalDetail())
+        router.removeScreenTransition()
+        router.triggerScreenTransition(route: .intervalActive)
     }
 }
 

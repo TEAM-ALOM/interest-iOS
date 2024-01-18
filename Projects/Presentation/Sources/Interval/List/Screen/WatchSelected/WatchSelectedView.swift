@@ -33,7 +33,7 @@ struct WatchSelectedView: View {
     private var start: some View {
         Button(action: {
             // TODO: 실제 인터벌을 고르고 startButton을 누르는것으로 변경해야함
-            //viewModel.tapIntervalStartButton(item: )
+            viewModel.tapStartButton()
             //viewModel.tapIntervalStartButton(item: .init(title: "테스트 인터벌"))
         }) {
             Image(systemName: "play.circle.fill")

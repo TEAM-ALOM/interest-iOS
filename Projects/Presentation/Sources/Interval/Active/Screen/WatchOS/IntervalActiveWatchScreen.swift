@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 public struct IntervalActiveWatchScreen: View {
     @ObservedObject var viewModel: IntervalActiveViewModel
@@ -66,17 +67,8 @@ public struct IntervalActiveWatchScreen: View {
                 Spacer()
             }
         }
-        .background{
-            LinearGradient(
-                stops: [
-                    Gradient.Stop(color: viewModel.activeTime < 10 ? Color(red: 1, green: 0.13, blue: 0.02).opacity(0.2) : Color(red: 0.09, green: 1, blue: 0.02).opacity(0.2), location: 0.00),
-                    Gradient.Stop(color: viewModel.activeTime < 10 ? Color(red: 1, green: 0.13, blue: 0.02).opacity(0) : Color(red: 0.09, green: 1, blue: 0.02).opacity(0), location: 1.00),
-                ],
-                startPoint: UnitPoint(x: 0.5, y: 0),
-                endPoint: UnitPoint(x: 0.5, y: 1)
-            )
-            .ignoresSafeArea()
-        }
+        .exerciseBackground(mode: viewModel.activeTime < 10 ? .burning : .rest)
+      
         .onAppear(perform: {
             timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
                 viewModel.activeTime += 0.01
