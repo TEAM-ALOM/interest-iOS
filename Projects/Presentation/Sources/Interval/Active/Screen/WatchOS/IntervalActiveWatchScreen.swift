@@ -12,6 +12,7 @@ import SharedDesignSystem
 public struct IntervalActiveWatchScreen: View {
     @ObservedObject var viewModel: IntervalActiveViewModel
     
+    @State private var isBounce = true
     @State private var timer: Timer?
     
     public var body: some View {
@@ -27,8 +28,8 @@ public struct IntervalActiveWatchScreen: View {
         .onAppear(perform: {
             timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
                 viewModel.activeTime += 0.01
+                isBounce.toggle()
             }
-            
         })
     }
     
@@ -45,7 +46,7 @@ public struct IntervalActiveWatchScreen: View {
             
             HStack{
                 HStack{
-                    Text(formattedBurningTime)
+                    Text("")
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 28, design: .rounded))
@@ -73,41 +74,72 @@ public struct IntervalActiveWatchScreen: View {
             .frame(width: 161, height: 28)
         }
     }
+    
     private var healthInfo : some View {
-        VStack{
+        VStack(spacing : 5){
             HStack{
                 Text("인터벌")
                     .foregroundColor(Color.textColor50)
+                
                 Spacer()
-                Text(viewModel.intervalItem.title)
-                Text(String(format : "%d", 2))
+                
+                Text(String(format: "%d / %d",viewModel.currentCount , viewModel.intervalItem.repeatCount))
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .font(.system(size: 16, design: .rounded))
+
             }
             HStack{
                 Text("심박수")
                     .foregroundColor(Color.textColor50)
+                
+                Spacer()
 
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16,height: 16)
+                    .foregroundColor(Color.heartColor)
+                    .symbolEffect(.bounce, options: .speed(1), value: isBounce)
+                
+                Text(String(viewModel.heartRate))
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .font(.system(size: 16, design: .rounded))
             }
             HStack{
                 Text("칼로리")
                     .foregroundColor(Color.textColor50)
+                
+                Spacer()
 
+                Text(String(format: "%dKcal", viewModel.calorie))
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .font(.system(size: 16, design: .rounded))
             }
             HStack{
                 Text("진행시간")
                     .foregroundColor(Color.textColor50)
-
+                
+                Spacer()
+                
+                Text(formattedBurningTime)
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 16, design: .rounded))
             }
-            .padding(.horizontal,12)
-            
         }
+        .padding(.horizontal,12)
     }
     
     private var formattedBurningTime: String {
+        let hours = Int(viewModel.activeTime / 3600)
         let minutes = Int(viewModel.activeTime / 60)
         let seconds = Int(viewModel.activeTime.truncatingRemainder(dividingBy: 60))
         let milliseconds = Int((viewModel.activeTime * 100).truncatingRemainder(dividingBy: 100))
         
-        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
+        return String(format: "%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds)
     }
 
 }

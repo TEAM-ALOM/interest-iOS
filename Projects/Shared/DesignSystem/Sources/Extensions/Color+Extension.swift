@@ -73,4 +73,6 @@ public extension Color {
     static let noticeColor50 = SharedDesignSystemAsset.noticeColor50.swiftUIColor
     
     static let noticeColor25 = SharedDesignSystemAsset.noticeColor25.swiftUIColor
+    
+    static let heartColor = SharedDesignSystemAsset.heartColor.swiftUIColor
 }

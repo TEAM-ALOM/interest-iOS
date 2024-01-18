@@ -53,9 +53,10 @@ public extension IntervalModel {
             title: "달리기 인터벌", 
             exerciseType: .run,
             burningSecondTime: 1 * 60,
-            burningHeartIntervalType: .five,
-            restingSecondTime: 4 * 60,
+            burningHeartIntervalType: .two,
+            restingSecondTime: 1 * 60,
             restingHeartIntervalType: .one,
+            repeatCount: 4,
             records: [
                 IntervalRecordModel(
                     id: .init(),
@@ -128,9 +129,10 @@ public extension IntervalModel {
             title: "자전거 인터벌", 
             exerciseType: .cycle,
             burningSecondTime: 1 * 60,
-            burningHeartIntervalType: .five,
+            burningHeartIntervalType: .three,
             restingSecondTime: 4 * 60,
             restingHeartIntervalType: .one,
+            repeatCount: 3,
             records: [
                 IntervalRecordModel(
                     id: .init(),
@@ -155,9 +157,10 @@ public extension IntervalModel {
             title: "수영 인터벌",
             exerciseType: .swim,
             burningSecondTime: 1 * 60,
-            burningHeartIntervalType: .five,
+            burningHeartIntervalType: .four,
             restingSecondTime: 4 * 60,
             restingHeartIntervalType: .one,
+            repeatCount: 2,
             records: [
                 IntervalRecordModel(
                     id: .init(),

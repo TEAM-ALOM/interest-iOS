@@ -30,6 +30,9 @@ public class IntervalActiveViewModel: ObservableObject {
     
     @Published var intervalItem: IntervalModel
     
+    @Published var heartRate : Int = 157
+    @Published var calorie : Int = 423
+    @Published var currentCount : Int = 0
     @Published var activeTime: TimeInterval = 0
     @Published var isBurning : Bool = true
     

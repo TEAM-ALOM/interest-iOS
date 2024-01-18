@@ -55,6 +55,9 @@ struct WatchExercisePickerView: View {
             }
         })
         .buttonStyle(.plain)
+        .onAppear(perform: {
+            viewModel.selectedItem = IntervalModel.mocks[currentIndex]
+        })
     }
     
     private var dragGesture: some Gesture {
