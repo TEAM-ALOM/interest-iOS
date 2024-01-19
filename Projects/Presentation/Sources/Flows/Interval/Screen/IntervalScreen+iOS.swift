@@ -25,7 +25,9 @@ public extension IntervalScreen {
                 .navigationDestination(for: IntervalRouter.PushRoute.self) { _ in
                     viewModel.nextScreen()
                 }
-                .sheet(isPresented: $viewModel.isBottomSheetPresent) {
+                .sheet(isPresented: $viewModel.isBottomSheetPresent, 
+                       onDismiss: { viewModel.refreshScreen(screen: intervalListScreen) })
+                {
                     addIntervalScreen
                 }
         }

@@ -30,6 +30,10 @@ public final class IntervalRouter: ObservableObject, FlowRouter {
     public func nextTransitionScreen() -> some View {
         nextTransitionRoute.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
     }
+    
+    public func sheetScreen(route: PushRoute) -> some View {
+        route.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
+    }
 }
 
 public extension IntervalRouter {
@@ -37,6 +41,8 @@ public extension IntervalRouter {
         case intervalList
         case intervalDetail(IntervalModel)
         case intervalActive
+        case addInterval
+        case editInterval(IntervalModel)
        
         @ViewBuilder
         func nextView(intervalDIContainer: IntervalDIContainerInterface, router: IntervalRouter) -> some View {
@@ -50,6 +56,12 @@ public extension IntervalRouter {
             case .intervalActive:
                 let viewModel = intervalDIContainer.intervalActiveDependencies(intervalRouter: router)
                 IntervalActiveScreen(viewModel: viewModel)
+            case .addInterval:
+                let viewModel = intervalDIContainer.addIntervalDependencies(intervalRouter: router)
+                AddIntervalScreen(viewModel: viewModel)
+            case .editInterval(let intervalItem):
+                let viewModel = intervalDIContainer.addIntervalDependencies(intervalRouter: router, intervalItem: intervalItem)
+                AddIntervalScreen(viewModel: viewModel)
             }
         }
     }

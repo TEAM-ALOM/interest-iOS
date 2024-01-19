@@ -32,7 +32,9 @@ public struct AddIntervalScreen: View {
             }
             .padding(.horizontal, 30)
             .padding(.top, 10)
-            .navigationTitle("인터벌 추가")
+            .navigationTitle(
+                "인터벌 추가"
+            )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

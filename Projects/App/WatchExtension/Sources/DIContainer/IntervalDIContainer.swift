@@ -12,6 +12,7 @@ import Domain
 import Data
 
 public final class IntervalDIContainer: IntervalDIContainerInterface {
+    
     public func intervalRouter() -> IntervalRouter {
         return IntervalRouter(intervalDIContainer: self)
     }
@@ -27,7 +28,7 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
-    public func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModel {
+    public func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModelWithRouter {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
@@ -38,7 +39,7 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
-    public func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel {
+    public func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModelWithRouter {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
@@ -49,16 +50,28 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
-    public func addIntervalDependencies(intervalRouter: IntervalRouter) -> AddIntervalViewModel {
+    public func addIntervalDependencies(intervalRouter: IntervalRouter) -> AddIntervalViewModelWithRouter {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
-        
+    
         return AddIntervalViewModelWithRouter(router: intervalRouter, intervalUseCase: intervalUseCase)
 
     }
     
-    public func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModel {
+    public func addIntervalDependencies(intervalRouter:IntervalRouter, intervalItem: IntervalModel) -> AddIntervalViewModelWithRouter {
+        let intervalDataSource = IntervalDataSource()
+        let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
+        let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
+    
+        return AddIntervalViewModelWithRouter(
+            router: intervalRouter,
+            intervalUseCase: intervalUseCase,
+            intervalItem: intervalItem
+        )
+    }
+    
+    public func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModelWithRouter {
         let intervalRecordDataSource = IntervalRecordDataSource()
         let intervalRecordRepository = IntervalRecordRepository(dataSource: intervalRecordDataSource)
         let intervalRecordUseCase = IntervalRecordUseCase(intervalRecordRepository: intervalRecordRepository)

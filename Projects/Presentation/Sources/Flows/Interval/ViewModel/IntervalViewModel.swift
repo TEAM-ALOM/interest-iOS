@@ -33,4 +33,8 @@ public class IntervalViewModel: ObservableObject {
     public func nextScreen() -> some View {
         router.nextTransitionScreen()
     }
+    
+    func refreshScreen(screen: IntervalListScreen) {
+        screen.viewModel.fetchIntervalItems()
+    }
 }

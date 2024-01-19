@@ -30,6 +30,10 @@ public class IntervalListViewModelWithRouter: IntervalListViewModel {
         super.tapIntervalDetailPageButton(intervalItem: intervalItem)
         router.triggerScreenTransition(route: .intervalDetail(intervalItem))
     }
+    
+    func editIntervalScreen(selectedItem: IntervalModel) -> some View {
+        return router.sheetScreen(route: .editInterval(selectedItem))
+    }
 }
 
 
@@ -38,6 +42,7 @@ public class IntervalListViewModel: ObservableObject {
     
     @Published var intervalItems: [IntervalModel] = []
     @Published var showEditIntervalView: Bool = false
+    @Published var selectedItem: IntervalModel? = nil
     
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
@@ -55,9 +60,12 @@ public class IntervalListViewModel: ObservableObject {
     
     func tapIntervalDeleteButton(at id: UUID) {
         let _ = intervalUseCase.delete(at: id)
+        
+        self.fetchIntervalItems()
     }
     
-    func tapIntervalEditButton() {
+    func tapIntervalEditButton(selectedItem: IntervalModel) {
         showEditIntervalView = true
+        self.selectedItem = selectedItem
     }
 }
