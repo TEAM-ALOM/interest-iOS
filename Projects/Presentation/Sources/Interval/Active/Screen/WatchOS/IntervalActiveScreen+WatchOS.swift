@@ -13,7 +13,7 @@ public extension IntervalActiveScreen {
         TabView {
             IntervalActiveWatchScreen(viewModel: viewModel)
             
-            IntervalStateManageScreen(viewModel: viewModel)
+            WatchStateManageView(viewModel: viewModel)
         }
     }
 }

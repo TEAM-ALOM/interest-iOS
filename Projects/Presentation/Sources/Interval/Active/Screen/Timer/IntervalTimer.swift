@@ -16,7 +16,7 @@ public struct IntervalTimer {
     
     @Binding var totalTime : Double
 
-    public var untilTime : String {
+    public var calculateUntilTime : String {
         var time = 0.0
 
         if(viewModel.isBurning){
@@ -36,7 +36,7 @@ public struct IntervalTimer {
         
     }
     
-    public var formattedBurningTime: String {
+    public var calculateActiveTime: String {
         let hours = Int(viewModel.activeTime / 3600)
         let minutes = Int(viewModel.activeTime / 60)
         let seconds = Int(viewModel.activeTime.truncatingRemainder(dividingBy: 60))

@@ -7,11 +7,42 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 public struct IntervalActiveIPhoneScreen: View {
     @ObservedObject var viewModel: IntervalActiveViewModel
     
+    @State private var isBounce = true
+    @State private var timer: Timer?
+    @State private var totalTime = 0.0
+    
     public var body: some View {
-        Text("여기는 아이폰")
+        VStack(alignment: .center){
+            IntervalChangeView(viewModel: viewModel, totalTime: $totalTime)
+                        
+            HealthInfoView(viewModel: viewModel, isBounce: $isBounce, totalTime: $totalTime)
+        }
+        .padding(.horizontal,16)
+        .navigationTitle(viewModel.intervalItem.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
+
+//        .onAppear(perform: {
+//            if(viewModel.isTimePass){
+//                totalTime = Double(viewModel.intervalItem.burningSecondTime)
+//                
+//                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: viewModel.isTimePass) { _ in
+//                    viewModel.activeTime += 0.01
+//                    isBounce.toggle()
+//                    
+//                    if(viewModel.activeTime == totalTime){
+//                        viewModel.currentCount += 1
+//                        viewModel.isBurning.toggle()
+//                        
+//                        totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+//                    }
+//                }
+//            }
+//        })
     }
 }

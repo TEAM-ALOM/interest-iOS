@@ -12,7 +12,7 @@ import Domain
 import Shared
 import SharedDesignSystem
 
-public struct IntervalStateManageScreen: View {
+public struct WatchStateManageView: View {
     @ObservedObject var viewModel: IntervalActiveViewModel
     
     public var body: some View {

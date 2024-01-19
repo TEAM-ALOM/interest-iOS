@@ -19,11 +19,11 @@ public struct IntervalActiveWatchScreen: View {
     
     public var body: some View {
         VStack(alignment: .center){
-            IntervalChangedView(viewModel: viewModel, totalTime: $totalTime)
+            WatchIntervalChangeView(viewModel: viewModel, totalTime: $totalTime)
             
             Spacer()
             
-            HealthInfoView(viewModel: viewModel, isBounce: $isBounce, totalTime: $totalTime)
+            WatchHealthInfoView(viewModel: viewModel, isBounce: $isBounce, totalTime: $totalTime)
         }
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
       
