@@ -22,6 +22,10 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
             intervalUseCase: intervalUseCase,
             intervalItem: intervalItem)
     }
+    override func tapEndButton(){
+        super.tapEndButton()
+        router.removeScreenTransition()
+    }
 }
 
 
@@ -35,6 +39,7 @@ public class IntervalActiveViewModel: ObservableObject {
     @Published var currentCount : Int = 0
     @Published var activeTime: TimeInterval = 0
     @Published var isBurning : Bool = true
+    @Published var isTimePass : Bool = true
     
     init(
         intervalUseCase: IntervalUseCaseInterface,
@@ -46,12 +51,15 @@ public class IntervalActiveViewModel: ObservableObject {
     
     
     func tapPauseButton() {
-        //타이머 정지
+        isTimePass = false
+    }
+    
+    func tapReStartButton() {
+        isTimePass = true
     }
     
     func tapEndButton() {
-        //타이머 정지
+        isTimePass = false
         //기록 저장
-        //List페이지로 이동
     }
 }

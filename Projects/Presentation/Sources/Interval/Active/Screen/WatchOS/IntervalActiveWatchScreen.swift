@@ -16,6 +16,7 @@ public struct IntervalActiveWatchScreen: View {
     @State private var timer: Timer?
     @State private var totalTime = 0.0
     
+    
     public var body: some View {
         VStack(alignment: .center){
             IntervalChangedView(viewModel: viewModel, totalTime: $totalTime)
@@ -27,17 +28,19 @@ public struct IntervalActiveWatchScreen: View {
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
       
         .onAppear(perform: {
-            totalTime = Double(viewModel.intervalItem.burningSecondTime)
-            
-            timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-                viewModel.activeTime += 0.01
-                isBounce.toggle()
+            if(viewModel.isTimePass){
+                totalTime = Double(viewModel.intervalItem.burningSecondTime)
                 
-                if(viewModel.activeTime == totalTime){
-                    viewModel.currentCount += 1
-                    viewModel.isBurning.toggle()
+                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: viewModel.isTimePass) { _ in
+                    viewModel.activeTime += 0.01
+                    isBounce.toggle()
                     
-                    totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+                    if(viewModel.activeTime == totalTime){
+                        viewModel.currentCount += 1
+                        viewModel.isBurning.toggle()
+                        
+                        totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+                    }
                 }
             }
         })
