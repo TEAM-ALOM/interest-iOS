@@ -9,21 +9,21 @@ import SwiftUI
 
 struct IntervalChangeView: View {
     @ObservedObject var viewModel: IntervalActiveViewModel
-        
+    
     var body: some View {
         VStack{
             HStack{
-                Image(systemName: $viewModel.isBurning.wrappedValue ? "flame.fill" : "circle.hexagonpath.fill")
+                Image(systemName: viewModel.isBurning ? "flame.fill" : "circle.hexagonpath.fill")
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor($viewModel.isBurning.wrappedValue ? Color.burningColor : Color.restColor)
+                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
                     .frame(width: 30,height: 30)
                 
-                Text($viewModel.isBurning.wrappedValue ? "버닝중" : "휴식중")
-                    .foregroundColor($viewModel.isBurning.wrappedValue ? Color.burningColor : Color.restColor)
+                Text(viewModel.isBurning ? "버닝중" : "휴식중")
+                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
                     .fontWeight(.bold)
                     .font(.system(size: 34))
-                    
+                
                 Spacer()
             }
             
@@ -34,11 +34,11 @@ struct IntervalChangeView: View {
                         .fontWeight(.semibold)
                         .font(.system(size: 52, design: .rounded))
                 }
-                                
+                
                 VStack(alignment : .leading){
                     HStack(spacing:0){
-                        Text($viewModel.isBurning.wrappedValue ? "휴식" : "버닝")
-                            .foregroundStyle($viewModel.isBurning.wrappedValue ? Color.restColor : Color.burningColor)
+                        Text(viewModel.isBurning ? "휴식" : "버닝")
+                            .foregroundStyle(viewModel.isBurning ? Color.restColor : Color.burningColor)
                         Text("까지")
                             .foregroundStyle(Color.textColor50)
                     }

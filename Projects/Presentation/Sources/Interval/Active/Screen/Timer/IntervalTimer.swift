@@ -10,19 +10,19 @@ import SwiftUI
 
 public struct IntervalTimer {
     @ObservedObject var viewModel: IntervalActiveViewModel
-
+    
     @State private var untilResting : TimeInterval = 0
     @State private var untilBurning : TimeInterval = 0
     
     public var calculateUntilTime : String {
         var time = 0.0
-
+        
         if(viewModel.isBurning){
-            untilResting = $viewModel.totalTime.wrappedValue  - $viewModel.activeTime.wrappedValue
+            untilResting = viewModel.totalTime - viewModel.activeTime
             time = untilResting
         }
         else{
-            untilBurning = $viewModel.totalTime.wrappedValue - $viewModel.activeTime.wrappedValue
+            untilBurning = viewModel.totalTime - viewModel.activeTime
             time = untilBurning
         }
         

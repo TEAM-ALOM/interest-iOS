@@ -33,6 +33,7 @@ public struct IntervalActiveIPhoneScreen: View {
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
         .onAppear(perform: {
             viewModel.totalTime =  Double(viewModel.intervalItem.burningSecondTime)
+            //Error : intervalItem.burningSecondTime이 자꾸 0으로 뜸.
         })
         .onReceive(
             viewModel.$isTimePass, perform: { isTimePassing in
@@ -41,13 +42,13 @@ public struct IntervalActiveIPhoneScreen: View {
                         viewModel.activeTime += 0.01
                         isBounce.toggle()
                         
-                        if(viewModel.activeTime == $viewModel.totalTime.wrappedValue){
+                        if(viewModel.activeTime == viewModel.totalTime){
                             if(viewModel.isBurning){
                                 viewModel.currentCount += 1
                             }
                             viewModel.isBurning.toggle()
                             
-                            $viewModel.totalTime.wrappedValue += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+                            viewModel.totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
                         }                    
                     }
                 } 

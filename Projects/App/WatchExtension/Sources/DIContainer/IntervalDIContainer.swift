@@ -32,10 +32,15 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
         
+        let intervalRecordDataSource = IntervalRecordDataSource()
+        let intervalRecordRepository = IntervalRecordRepository(dataSource: intervalRecordDataSource)
+        let intervalRecordUseCase = IntervalRecordUseCase(intervalRecordRepository: intervalRecordRepository)
+        
         return IntervalActiveViewModelWithRouter(
             router: intervalRouter,
             intervalUseCase: intervalUseCase,
-            intervalItem: intervalItem
+            intervalItem: intervalItem,
+            intervalRecordUseCase: intervalRecordUseCase
         )
     }
     

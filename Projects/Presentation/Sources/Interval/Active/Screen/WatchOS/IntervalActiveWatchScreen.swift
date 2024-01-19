@@ -24,23 +24,30 @@ public struct IntervalActiveWatchScreen: View {
             WatchHealthInfoView(viewModel: viewModel, isBounce: $isBounce)
         }
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
-      
         .onAppear(perform: {
-            if(viewModel.isTimePass){
-                $viewModel.totalTime.wrappedValue = Double(viewModel.intervalItem.burningSecondTime)
-                
-                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: viewModel.isTimePass) { _ in
-                    viewModel.activeTime += 0.01
-                    isBounce.toggle()
-                    
-                    if(viewModel.activeTime == $viewModel.totalTime.wrappedValue){
-                        viewModel.currentCount += 1
-                        viewModel.isBurning.toggle()
+            viewModel.totalTime =  Double(viewModel.intervalItem.burningSecondTime)
+        })
+        .onReceive(
+            viewModel.$isTimePass, perform: { isTimePassing in
+                if isTimePassing {
+                    timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+                        viewModel.activeTime += 0.01
+                        isBounce.toggle()
                         
-                        $viewModel.totalTime.wrappedValue += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+                        if(viewModel.activeTime == viewModel.totalTime){
+                            if(viewModel.isBurning){
+                                viewModel.currentCount += 1
+                            }
+                            viewModel.isBurning.toggle()
+                            
+                            viewModel.totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+                        }
                     }
                 }
-            }
-        })
+                else {
+                    timer?.invalidate()
+                    timer = nil
+                }
+            })
     }
 }

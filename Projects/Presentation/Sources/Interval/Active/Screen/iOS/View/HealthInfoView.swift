@@ -9,12 +9,12 @@ import SwiftUI
 
 struct HealthInfoView: View {
     @ObservedObject var viewModel: IntervalActiveViewModel
-
+    
     @Binding var isBounce : Bool
     
     var body: some View {
         VStack(spacing : 30){
-           repeatCount
+            repeatCount
             calorie
             heartBpm
             currentSection
@@ -28,7 +28,7 @@ struct HealthInfoView: View {
                 .foregroundColor(.white)
                 .font(.system(size: 36, design: .rounded))
                 .padding(.trailing,7)
-
+            
             VStack{
                 Spacer()
                 Text("진행중")

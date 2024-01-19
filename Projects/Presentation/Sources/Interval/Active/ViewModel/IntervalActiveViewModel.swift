@@ -15,12 +15,15 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     public init(
         router: IntervalRouter,
         intervalUseCase: IntervalUseCaseInterface,
-        intervalItem : IntervalModel
+        intervalItem : IntervalModel,
+        intervalRecordUseCase : IntervalRecordUseCaseInterface
     ) {
         self.router = router
         super.init(
             intervalUseCase: intervalUseCase,
-            intervalItem: intervalItem)
+            intervalItem: intervalItem,
+            intervalRecordUseCase: intervalRecordUseCase
+        )
     }
     
     override func removeScreen() {
@@ -37,9 +40,10 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
 
 public class IntervalActiveViewModel: ObservableObject {
     private let intervalUseCase: IntervalUseCaseInterface
+    private let intervalRecordUseCase : IntervalRecordUseCaseInterface
     
     @Published var intervalItem: IntervalModel
-
+    
     @Published var currentCount : Int = 0
     @Published var heartRate : Int = 157
     @Published var calorie : Int = 423
@@ -48,14 +52,16 @@ public class IntervalActiveViewModel: ObservableObject {
     @Published var isTimePass : Bool = true
     @Published var activeTime: TimeInterval = 0
     @Published var totalTime : Double = 0.0
-
+    
     
     init(
         intervalUseCase: IntervalUseCaseInterface,
-        intervalItem : IntervalModel
+        intervalItem : IntervalModel,
+        intervalRecordUseCase : IntervalRecordUseCaseInterface
     ) {
         self.intervalUseCase = intervalUseCase
         self.intervalItem = intervalItem
+        self.intervalRecordUseCase = intervalRecordUseCase
     }
     
     func removeScreen() {}
@@ -70,6 +76,19 @@ public class IntervalActiveViewModel: ObservableObject {
     
     func tapEndButton() {
         isTimePass = false
-        //기록 저장
+        saveRecord(intervalRecordItem: intervalItem)
     }
+    
+    func saveRecord(intervalRecordItem : IntervalModel){
+        let newIntervalrecord = IntervalRecordEntity(
+            id: intervalRecordItem.id,
+            heartRates: [136.0, 130.0], //HealthKit의 평균심박수
+            repeatedCount: currentCount,
+            secondTime: Int(activeTime),
+            createDate: .now,
+            calorie: calorie)
+        
+        _ = intervalRecordUseCase.appendIntervalRecord(intervalId: newIntervalrecord.id, record: newIntervalrecord)
+    }
+    
 }

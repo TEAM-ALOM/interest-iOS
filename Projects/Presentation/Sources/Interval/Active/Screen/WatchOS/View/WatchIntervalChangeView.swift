@@ -10,7 +10,7 @@ import SwiftUI
 
 struct WatchIntervalChangeView : View {
     @ObservedObject var viewModel: IntervalActiveViewModel
-
+    
     var body: some View {
         VStack{
             HStack{

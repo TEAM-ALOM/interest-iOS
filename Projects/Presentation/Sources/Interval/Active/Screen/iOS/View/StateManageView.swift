@@ -18,16 +18,16 @@ struct StateManageView: View {
                 .fontWeight(.semibold)
                 .font(.system(size: 52, design: .rounded))
                 .frame(width: 330, height: 52)
-                
+            
             Spacer(minLength: 150)
-
+            
         }
         .overlay(alignment: .bottom) {
             stateButton(isPause: true, action: viewModel.tapPauseButton)
         }
         .overlay(alignment: .bottomTrailing){
             stateButton(isPause: false, action: viewModel.tapEndButton)
-
+            
         }
     }
     
