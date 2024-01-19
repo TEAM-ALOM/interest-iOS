@@ -11,10 +11,9 @@ struct HealthInfoView: View {
     @ObservedObject var viewModel: IntervalActiveViewModel
 
     @Binding var isBounce : Bool
-    @Binding var totalTime : Double
     
     var body: some View {
-        VStack(alignment: .leading, spacing : 5){
+        VStack(spacing : 30){
            repeatCount
             calorie
             heartBpm
@@ -28,12 +27,16 @@ struct HealthInfoView: View {
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .font(.system(size: 36, design: .rounded))
-                .padding(.trailing,8)
+                .padding(.trailing,7)
 
-            Text("진행중")
-                .foregroundColor(Color.textColor50)
-                .fontWeight(.medium)
-                .font(.system(size: 20))
+            VStack{
+                Spacer()
+                Text("진행중")
+                    .foregroundColor(Color.textColor50)
+                    .fontWeight(.medium)
+                    .font(.system(size: 20))
+            }
+            Spacer()
         }
     }
     
@@ -42,13 +45,17 @@ struct HealthInfoView: View {
             Text(String(format: "%d", viewModel.calorie))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
-                .font(.system(size: 16, design: .rounded))
-                .padding(.trailing,8)
-
-            Text("Kcal")
-                .foregroundColor(Color.textColor50)
-                .fontWeight(.medium)
-                .font(.system(size: 20))
+                .font(.system(size: 36, design: .rounded))
+                .padding(.trailing,7)
+            
+            VStack{
+                Spacer()
+                Text("Kcal")
+                    .foregroundColor(Color.textColor50)
+                    .fontWeight(.medium)
+                    .font(.system(size: 20))
+            }
+            Spacer()
         }
     }
     
@@ -65,28 +72,41 @@ struct HealthInfoView: View {
             Text(String(viewModel.heartRate))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
-                .font(.system(size: 16, design: .rounded))
-                .padding(.trailing,8)
+                .font(.system(size: 36, design: .rounded))
+                .padding(.trailing,7)
             
-            Text("bpm")
-                .foregroundColor(Color.textColor50)
-                .fontWeight(.medium)
-                .font(.system(size: 20))
+            VStack{
+                Spacer()
+                Text("bpm")
+                    .foregroundColor(Color.textColor50)
+                    .fontWeight(.medium)
+                    .font(.system(size: 20))
+            }
+            Spacer()
         }
     }
     
     private var currentSection: some View {
         HStack{
+            //HealthKit에서 가져와야함
             Text("5")
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
-                .font(.system(size: 16, design: .rounded))
-                .padding(.trailing,8)
+                .font(.system(size: 36, design: .rounded))
+                .padding(.trailing,7)
             
-            Text(viewModel.isBurning ? viewModel.intervalItem.burningHeartIntervalType.rawValue.prefix(1) : viewModel.intervalItem.restingHeartIntervalType.rawValue.prefix(1))
+            VStack{
+                Spacer()
+                HStack(spacing : 0) {
+                    Text("현재 구간 (목표 : ")
+                    Text(viewModel.isBurning ? viewModel.intervalItem.burningHeartIntervalType.rawValue.prefix(1) : viewModel.intervalItem.restingHeartIntervalType.rawValue.prefix(1))
+                    Text(")")
+                }
                 .foregroundColor(Color.textColor50)
                 .fontWeight(.medium)
                 .font(.system(size: 20))
+            }
+            Spacer()
         }
     }
     

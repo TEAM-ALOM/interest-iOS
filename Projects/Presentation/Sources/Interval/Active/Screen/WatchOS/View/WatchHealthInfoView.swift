@@ -12,7 +12,6 @@ struct WatchHealthInfoView : View{
     @ObservedObject var viewModel: IntervalActiveViewModel
 
     @Binding var isBounce : Bool
-    @Binding var totalTime : Double
 
     var body : some View {
         VStack(alignment: .leading, spacing : 5){
@@ -52,7 +51,7 @@ struct WatchHealthInfoView : View{
             }
             HStack{
                             
-                Text(IntervalTimer(viewModel: viewModel, totalTime: $totalTime).calculateActiveTime)
+                Text(IntervalTimer(viewModel: viewModel).calculateActiveTime)
                     .foregroundColor(.white)
                     .fontWeight(.semibold)
                     .font(.system(size: 16, design: .rounded))

@@ -11,8 +11,6 @@ import SwiftUI
 struct WatchIntervalChangeView : View {
     @ObservedObject var viewModel: IntervalActiveViewModel
 
-    @Binding var totalTime : Double
-
     var body: some View {
         VStack{
             HStack{
@@ -26,7 +24,7 @@ struct WatchIntervalChangeView : View {
             
             HStack{
                 HStack{
-                    Text(IntervalTimer(viewModel: viewModel, totalTime: $totalTime).calculateUntilTime)
+                    Text(IntervalTimer(viewModel: viewModel).calculateUntilTime)
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 28, design: .rounded))

@@ -14,35 +14,47 @@ public struct IntervalActiveIPhoneScreen: View {
     
     @State private var isBounce = true
     @State private var timer: Timer?
-    @State private var totalTime = 0.0
     
     public var body: some View {
-        VStack(alignment: .center){
-            IntervalChangeView(viewModel: viewModel, totalTime: $totalTime)
-                        
-            HealthInfoView(viewModel: viewModel, isBounce: $isBounce, totalTime: $totalTime)
+        VStack(){
+            IntervalChangeView(viewModel: viewModel)
+                .padding(.bottom,30)
+            
+            HealthInfoView(viewModel: viewModel, isBounce: $isBounce)
+                .padding(.bottom,30)
+            
+            StateManageView(viewModel: viewModel)
+            
+            Spacer()
         }
         .padding(.horizontal,16)
         .navigationTitle(viewModel.intervalItem.title)
         .navigationBarTitleDisplayMode(.inline)
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
-
-//        .onAppear(perform: {
-//            if(viewModel.isTimePass){
-//                totalTime = Double(viewModel.intervalItem.burningSecondTime)
-//                
-//                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: viewModel.isTimePass) { _ in
-//                    viewModel.activeTime += 0.01
-//                    isBounce.toggle()
-//                    
-//                    if(viewModel.activeTime == totalTime){
-//                        viewModel.currentCount += 1
-//                        viewModel.isBurning.toggle()
-//                        
-//                        totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
-//                    }
-//                }
-//            }
-//        })
+        .onAppear(perform: {
+            viewModel.totalTime =  Double(viewModel.intervalItem.burningSecondTime)
+        })
+        .onReceive(
+            viewModel.$isTimePass, perform: { isTimePassing in
+                if isTimePassing {
+                    timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+                        viewModel.activeTime += 0.01
+                        isBounce.toggle()
+                        
+                        if(viewModel.activeTime == $viewModel.totalTime.wrappedValue){
+                            if(viewModel.isBurning){
+                                viewModel.currentCount += 1
+                            }
+                            viewModel.isBurning.toggle()
+                            
+                            $viewModel.totalTime.wrappedValue += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+                        }                    
+                    }
+                } 
+                else {
+                    timer?.invalidate()
+                    timer = nil
+                }
+            })
     }
 }

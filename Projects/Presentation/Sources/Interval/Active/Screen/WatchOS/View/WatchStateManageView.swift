@@ -22,8 +22,8 @@ public struct WatchStateManageView: View {
             intervalName
             
             HStack(spacing: 16){
-                stateButton(isPause: true, action: viewModel.tapPauseButton)
-                stateButton(isPause: false, action: viewModel.tapEndButton)
+                watchStateButton(isPause: true, action: viewModel.tapPauseButton)
+                watchStateButton(isPause: false, action: viewModel.tapEndButton)
             }
             Spacer()
         }
@@ -41,7 +41,7 @@ public struct WatchStateManageView: View {
     }
     
     @ViewBuilder
-    func stateButton(isPause : Bool, action: @escaping () -> Void) -> some View {
+    func watchStateButton(isPause : Bool, action: @escaping () -> Void) -> some View {
         VStack{
             Button(action: action) {
                 Image(systemName: isPause ? "pause.fill" : "xmark")

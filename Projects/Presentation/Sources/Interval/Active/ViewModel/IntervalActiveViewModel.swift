@@ -22,6 +22,12 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
             intervalUseCase: intervalUseCase,
             intervalItem: intervalItem)
     }
+    
+    override func removeScreen() {
+        super.removeScreen()
+        router.removeScreenTransition()
+    }
+    
     override func tapEndButton(){
         super.tapEndButton()
         router.removeScreenTransition()
@@ -34,12 +40,15 @@ public class IntervalActiveViewModel: ObservableObject {
     
     @Published var intervalItem: IntervalModel
 
+    @Published var currentCount : Int = 0
     @Published var heartRate : Int = 157
     @Published var calorie : Int = 423
-    @Published var currentCount : Int = 0
-    @Published var activeTime: TimeInterval = 0
+    
     @Published var isBurning : Bool = true
     @Published var isTimePass : Bool = true
+    @Published var activeTime: TimeInterval = 0
+    @Published var totalTime : Double = 0.0
+
     
     init(
         intervalUseCase: IntervalUseCaseInterface,
@@ -49,9 +58,10 @@ public class IntervalActiveViewModel: ObservableObject {
         self.intervalItem = intervalItem
     }
     
+    func removeScreen() {}
     
     func tapPauseButton() {
-        isTimePass = false
+        isTimePass.toggle()
     }
     
     func tapReStartButton() {

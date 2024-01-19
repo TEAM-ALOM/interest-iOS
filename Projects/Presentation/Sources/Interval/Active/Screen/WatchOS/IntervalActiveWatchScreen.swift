@@ -14,32 +14,30 @@ public struct IntervalActiveWatchScreen: View {
     
     @State private var isBounce = true
     @State private var timer: Timer?
-    @State private var totalTime = 0.0
-    
     
     public var body: some View {
         VStack(alignment: .center){
-            WatchIntervalChangeView(viewModel: viewModel, totalTime: $totalTime)
+            WatchIntervalChangeView(viewModel: viewModel)
             
             Spacer()
             
-            WatchHealthInfoView(viewModel: viewModel, isBounce: $isBounce, totalTime: $totalTime)
+            WatchHealthInfoView(viewModel: viewModel, isBounce: $isBounce)
         }
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
       
         .onAppear(perform: {
             if(viewModel.isTimePass){
-                totalTime = Double(viewModel.intervalItem.burningSecondTime)
+                $viewModel.totalTime.wrappedValue = Double(viewModel.intervalItem.burningSecondTime)
                 
                 timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: viewModel.isTimePass) { _ in
                     viewModel.activeTime += 0.01
                     isBounce.toggle()
                     
-                    if(viewModel.activeTime == totalTime){
+                    if(viewModel.activeTime == $viewModel.totalTime.wrappedValue){
                         viewModel.currentCount += 1
                         viewModel.isBurning.toggle()
                         
-                        totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
+                        $viewModel.totalTime.wrappedValue += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
                     }
                 }
             }

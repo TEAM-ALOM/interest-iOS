@@ -14,17 +14,15 @@ public struct IntervalTimer {
     @State private var untilResting : TimeInterval = 0
     @State private var untilBurning : TimeInterval = 0
     
-    @Binding var totalTime : Double
-
     public var calculateUntilTime : String {
         var time = 0.0
 
         if(viewModel.isBurning){
-            untilResting = totalTime  - viewModel.activeTime
+            untilResting = $viewModel.totalTime.wrappedValue  - $viewModel.activeTime.wrappedValue
             time = untilResting
         }
         else{
-            untilBurning = totalTime - viewModel.activeTime
+            untilBurning = $viewModel.totalTime.wrappedValue - $viewModel.activeTime.wrappedValue
             time = untilBurning
         }
         
