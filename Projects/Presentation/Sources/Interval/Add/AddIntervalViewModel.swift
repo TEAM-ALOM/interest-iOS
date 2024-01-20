@@ -26,6 +26,8 @@ import Domain
 
     override func tapSaveButton() {
         super.tapSaveButton()
+
+        router.triggerPresentationScreen(presentationRoute: nil)
     }
 
 }

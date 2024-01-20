@@ -31,6 +31,11 @@ import Domain
         router.triggerNavigationScreen(navigationRoute: .intervalDetail(intervalItem))
     }
 
+    override func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
+        super.tapIntervalEditButton(selectedItem: selectedItem)
+        router.triggerPresentationScreen(presentationRoute: .editInterval(selectedItem))
+    }
+
     func editIntervalScreen(selectedItem: IntervalModel) -> some View {
         return router.nextPresentationScreen()
 //        return router.sheetScreen(route: .editInterval(selectedItem))

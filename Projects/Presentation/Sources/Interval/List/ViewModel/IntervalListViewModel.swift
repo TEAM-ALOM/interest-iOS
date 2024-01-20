@@ -14,9 +14,7 @@ import Domain
     private let intervalUseCase: IntervalUseCaseInterface
     
     var intervalItems: [IntervalModel] = []
-    var selectedItem: IntervalModel? = nil
-
-    var isShowEditIntervalView: Bool = false
+//    var selectedItem: IntervalModel? = nil
 
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
@@ -38,8 +36,7 @@ import Domain
         self.fetchIntervalItems()
     }
     
-    func tapIntervalEditButton(selectedItem: IntervalModel) {
-        isShowEditIntervalView = true
-        self.selectedItem = selectedItem
+    func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
+//        self.selectedItem = selectedItem
     }
 }

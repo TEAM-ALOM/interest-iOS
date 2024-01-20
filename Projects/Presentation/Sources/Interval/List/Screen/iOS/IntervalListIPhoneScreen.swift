@@ -23,10 +23,6 @@ public struct IntervalListIPhoneScreen: View {
             .padding(.top, 32)
         }
         .mainBackground()
-//        .sheet(isPresented: $viewModel.isShowEditIntervalView){
-//            viewModel.editIntervalScreen(selectedItem: viewModel.selectedItem!)
-//            AddIntervalScreen(viewModel: .init(intervalUseCase: <#T##IntervalUseCaseInterface#>))
-//        }
         .onAppear {
             viewModel.fetchIntervalItems()
         }
