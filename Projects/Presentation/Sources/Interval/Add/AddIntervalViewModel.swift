@@ -11,21 +11,13 @@ import SwiftData
 
 import Domain
 
-public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
+@Observable public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
     private var router: IntervalRouter
-
-    public init(
-        router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface
-    ) {
-        self.router = router
-        super.init(intervalUseCase: intervalUseCase)
-    }
     
     public init(
         router: IntervalRouter,
         intervalUseCase: IntervalUseCaseInterface,
-        intervalItem: IntervalModel
+        intervalItem: Binding<IntervalModel>?
     ) {
         self.router = router
         super.init(intervalUseCase: intervalUseCase, intervalItem: intervalItem)
@@ -38,71 +30,47 @@ public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
 
 }
 
-public class AddIntervalViewModel: ObservableObject {
+@Observable public class AddIntervalViewModel {
     let intervalUseCase: IntervalUseCaseInterface
-    
-    @State var mode: Mode = .add
-    
-    enum Mode {
-        case add
-        case edit
+
+    public let mode: Mode
+
+    public var intervalItem: Binding<IntervalModel> {
+        if let intervalItem = intervalItemOrNil {
+            return intervalItem
+        } else {
+            return .init(get: { self._intervalItem }, set: { self._intervalItem = $0 })
+        }
     }
-    
-    var selectedItemId: UUID? = nil
-    
-    @Published var name: String = ""
-    @Published var repeatCounts : Int = 0
-    
-    @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
-    @Published var selectedExerciseType: ExerciseTypeModel?
-    
-    
-    @Published var burningSelectedInterval = HeartIntervalTypeModel.one
-    @Published var burningTime: Int = 0
-    @Published var restingSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restingTime: Int = 0
-    
-    public init(intervalUseCase: IntervalUseCaseInterface) {
+
+    private var _intervalItem: IntervalModel = .init()
+    private var intervalItemOrNil: Binding<IntervalModel>?
+
+    public init(
+        intervalUseCase: IntervalUseCaseInterface,
+        intervalItem: Binding<IntervalModel>?
+    ) {
         self.intervalUseCase = intervalUseCase
-    }
-    
-    public init(intervalUseCase: IntervalUseCaseInterface, intervalItem: IntervalModel) {
-        self.intervalUseCase = intervalUseCase
-        
-        self.mode = .edit
-        self.selectedItemId = intervalItem.id
-        
-        self.name = intervalItem.title
-        self.repeatCounts = intervalItem.repeatCount
-        
-        self.selectedExerciseType = intervalItem.exerciseType
-        
-        self.burningSelectedInterval = intervalItem.burningHeartIntervalType
-        self.burningTime = intervalItem.burningSecondTime
-        self.restingSelectedInterval = intervalItem.restingHeartIntervalType
-        self.restingTime = intervalItem.restingSecondTime
+        self.intervalItemOrNil = intervalItem
+
+        self.mode = intervalItem == nil ? .add : .edit
     }
     
     func tapSaveButton() {
-        let newInterval = IntervalEntity(
-            id: .init(),
-            title: name,
-            exerciseType: ExerciseTypeModelMapper.toEntity(model: selectedExerciseType ?? ExerciseTypeModel.run),
-            burningSecondTime: burningTime,
-            burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: burningSelectedInterval),
-            restingSecondTime: restingTime,
-            restingHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: restingSelectedInterval),
-            repeatCount: repeatCounts,
-            records: []
-        )
-        
+        let entity = IntervalModelMapper.toEntity(model: intervalItem.wrappedValue)
+
         switch self.mode {
         case .add:
-            intervalUseCase.save(interval: newInterval)
+            intervalUseCase.save(interval: entity)
         case .edit:
-            intervalUseCase.update(at: self.selectedItemId!, to: newInterval)
+            intervalUseCase.update(at: entity.id, to: entity)
         }
-        
     }
+}
 
+extension AddIntervalViewModel {
+    public enum Mode {
+        case add
+        case edit
+    }
 }

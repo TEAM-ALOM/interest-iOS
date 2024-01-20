@@ -11,8 +11,8 @@ import SwiftUI
 import SharedDesignSystem
 
 public struct IntervalInfoCellView: View {
-    @ObservedObject private var intervalListViewModel: IntervalListViewModel
-    
+    private var intervalListViewModel: IntervalListViewModel
+
     @State private var cellOffsetX = CGFloat.zero
     
     public var intervalItem: IntervalModel

@@ -10,11 +10,12 @@ import Domain
 import SharedDesignSystem
 
 public struct IntervalScreen: View {
-    @StateObject var router: IntervalRouter
-    @StateObject var viewModel: IntervalViewModel
-    
+    let intervalDIContainer: IntervalDIContainerInterface
+    @State var router: IntervalRouter
+    @State var viewModel: IntervalViewModel
+
     let intervalListScreen: IntervalListScreen
-    let addIntervalScreen: AddIntervalScreen
+//    let addIntervalScreen: AddIntervalScreen
     
     public init(
         intervalDIContainer: IntervalDIContainerInterface,
@@ -22,12 +23,13 @@ public struct IntervalScreen: View {
     ) {
         let router = routerDIContainer.intervalRouter(intervalDIContainer: intervalDIContainer)
         
+        self.intervalDIContainer = intervalDIContainer
         self._router = .init(wrappedValue: router)
         self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies(intervalRouter: router))
         
         self.intervalListScreen = .init(viewModel: intervalDIContainer.intervalListDependencies(intervalRouter: router))
         
-        self.addIntervalScreen = .init(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
+//        self.addIntervalScreen = .init(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
                 
 #if os(iOS)
         UIRefreshControl.appearance().tintColor = UIColor(Color.keyColor)

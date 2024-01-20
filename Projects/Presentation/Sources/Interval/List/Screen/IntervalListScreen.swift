@@ -12,8 +12,8 @@ import Domain
 import SharedDesignSystem
 
 public struct IntervalListScreen: View {
-    @StateObject var viewModel: IntervalListViewModelWithRouter
-    
+    @State var viewModel: IntervalListViewModelWithRouter
+
     public init(viewModel: IntervalListViewModelWithRouter) {
         self._viewModel = .init(wrappedValue: viewModel)
     }

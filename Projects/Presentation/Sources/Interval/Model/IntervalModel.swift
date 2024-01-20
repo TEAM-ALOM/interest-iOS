@@ -8,10 +8,10 @@
 import Foundation
 import Domain
 
-public struct IntervalModel: Identifiable, Hashable {
+public struct IntervalModel: Identifiable, Hashable, Equatable {
     public var id: UUID
     
-    public let title: String
+    public var title: String
     
     public var exerciseType: ExerciseTypeModel
     
@@ -24,9 +24,9 @@ public struct IntervalModel: Identifiable, Hashable {
     public var records: [IntervalRecordModel]
     
     public init(
-        id: UUID,
+        id: UUID = .init(),
         title: String = "",
-        exerciseType: ExerciseTypeModel,
+        exerciseType: ExerciseTypeModel = .run,
         burningSecondTime: Int = 0,
         burningHeartIntervalType: HeartIntervalTypeModel = .three,
         restingSecondTime: Int = 0,

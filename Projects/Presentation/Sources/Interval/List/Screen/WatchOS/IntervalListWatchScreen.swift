@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 public struct IntervalListWatchScreen: View {
-    @ObservedObject var viewModel: IntervalListViewModel
+    @State var viewModel: IntervalListViewModel
     
     public var body: some View {
         ScrollView(.horizontal) {
