@@ -18,6 +18,7 @@ let appTarget = Target(
     infoPlist: .file(path: .relativeToRoot("Projects/App/iOS/Resources/InterestApp-Info.plist")),
     sources: ["iOS/Sources/**"],
     resources: ["iOS/Resources/**"],
+    entitlements: .file(path: .relativeToRoot("Projects/App/iOS/Resources/InterestApp.entitlements")),
     dependencies: [
         .target(name: "InterestWatch"),
         .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
