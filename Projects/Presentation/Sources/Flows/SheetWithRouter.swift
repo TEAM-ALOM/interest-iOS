@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SheetWithRouterViewModifier<Router: FlowRouter>: ViewModifier {
-    @Binding var router: Router
+    var router: Router
 
     @ViewBuilder func body(content: Content) -> some View {
         content
@@ -31,7 +31,7 @@ struct SheetWithRouterViewModifier<Router: FlowRouter>: ViewModifier {
 
 extension View {
     @ViewBuilder 
-    func sheetWithRouter<Router: FlowRouter>(router: Binding<Router>) -> some View {
+    func sheetWithRouter<Router: FlowRouter>(router: Router) -> some View {
         self.modifier(SheetWithRouterViewModifier(router: router))
     }
 }

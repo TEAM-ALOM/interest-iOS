@@ -25,7 +25,7 @@ public extension IntervalScreen {
                 .navigationDestination(for: IntervalRouter.NavigationRoute.self) { _ in
                     viewModel.nextScreen()
                 }
-                .sheetWithRouter(router: self.$router)
+                .sheetWithRouter(router: self.router)
         }
         .tint(Color.keyColor)
     }

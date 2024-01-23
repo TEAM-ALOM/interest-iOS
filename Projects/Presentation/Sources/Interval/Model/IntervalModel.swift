@@ -8,7 +8,7 @@
 import Foundation
 import Domain
 
-public struct IntervalModel: Identifiable, Hashable, Equatable {
+public struct IntervalModel: Identifiable, Hashable {
     public var id: UUID
     
     public var title: String
