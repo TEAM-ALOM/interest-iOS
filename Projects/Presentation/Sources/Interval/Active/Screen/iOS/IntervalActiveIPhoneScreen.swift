@@ -11,9 +11,7 @@ import SharedDesignSystem
 
 public struct IntervalActiveIPhoneScreen: View {
     @State var viewModel: IntervalActiveViewModel
-    
-    @State private var timer: Timer?
-    
+        
     public var body: some View {
         VStack(){
             IntervalChangeView(viewModel: $viewModel)
@@ -33,32 +31,8 @@ public struct IntervalActiveIPhoneScreen: View {
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
         .onAppear(perform: {
             viewModel.totalTime =  Double(viewModel.intervalItem.burningSecondTime)
-            print(viewModel.intervalItem.burningSecondTime)
-            print(viewModel.intervalItem.restingSecondTime)
-            
-            //Error : intervalItem.burningSecondTime이 자꾸 0으로 뜸.
+            viewModel.setupTimer()
         })
-//        .onReceive(
-//            viewModel.isTimePass, perform: { isTimePassing in
-//                if isTimePassing {
-//                    timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-//                        viewModel.activeTime += 0.01
-//                        isBounce.toggle()
-//                        
-//                        if(viewModel.activeTime == viewModel.totalTime){
-//                            if(viewModel.isBurning){
-//                                viewModel.currentCount += 1
-//                            }
-//                            viewModel.isBurning.toggle()
-//                            
-//                            viewModel.totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
-//                        }                    
-//                    }
-//                } 
-//                else {
-//                    timer?.invalidate()
-//                    timer = nil
-//                }
-//            })
+        
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 import Domain
+import Combine
 
 @Observable
 public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
@@ -56,10 +57,13 @@ public class IntervalActiveViewModel: ObservableObject {
     var isBurning : Bool = true
     var isTimePass : Bool = true
     var activeTime: TimeInterval = 0
-    var totalTime : Double = 0.0
+    var totalTime : TimeInterval = 0
     
     var untilResting : TimeInterval = 0
     var untilBurning : TimeInterval = 0
+    
+    private var timerSubscription: AnyCancellable?
+    private let timerPublisher = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     
     init(
         intervalUseCase: IntervalUseCaseInterface,
@@ -110,21 +114,62 @@ public class IntervalActiveViewModel: ObservableObject {
             untilBurning = totalTime - activeTime
             time = untilBurning
         }
+        time = (time * 100).rounded() / 100
         
-        let minutes = time / 60
+        var tmp = (time * 100).truncatingRemainder(dividingBy: 100)
+        tmp = (tmp * 10).rounded() / 10
+        
+        let minutes = Int(time / 60)
         let seconds = Int(time.truncatingRemainder(dividingBy: 60))
-        let milliseconds = Int((time * 100).truncatingRemainder(dividingBy: 100))
+        let milliseconds = Int(tmp)
         
         return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
         
     }
     
     func calculateActiveTime() -> String {
+        var tmp = (activeTime * 100).truncatingRemainder(dividingBy: 100)
+        tmp = (tmp * 10).rounded() / 10
+        
         let hours = Int(activeTime / 3600)
         let minutes = Int(activeTime / 60)
         let seconds = Int(activeTime.truncatingRemainder(dividingBy: 60))
-        let milliseconds = Int((activeTime * 100).truncatingRemainder(dividingBy: 100))
+        let milliseconds = Int(tmp)
         
         return String(format: "%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds)
     }
+    
+    func setupTimer() {
+            timerSubscription = timerPublisher
+                .sink { [weak self] _ in
+                    guard let self = self else { return }
+
+                    if self.isTimePass {
+                        self.activeTime += 0.01
+                        self.activeTime = (self.activeTime * 100).rounded() / 100
+                        self.totalTime = (self.totalTime * 100).rounded() / 100
+                        isBounce.toggle()
+                        
+                        if(activeTime == totalTime){
+                            if(!isBurning){
+                                currentCount += 1
+                            }
+                            isBurning.toggle()
+                            
+                            totalTime += Double(isBurning ?  intervalItem.burningSecondTime : intervalItem.restingSecondTime)
+                        }
+                        
+                        if(currentCount == intervalItem.repeatCount + 1){
+                            currentCount = currentCount - 1
+                            tapEndButton()
+                        }
+                    }
+                    else {
+                        timer?.invalidate()
+                        timer = nil
+                    }
+                }
+        }
+    
+    
 }
