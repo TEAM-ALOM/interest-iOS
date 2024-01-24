@@ -33,11 +33,13 @@ struct IntervalChangeView: View {
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 52, design: .rounded))
+                        .frame(width: 235, height: 52 , alignment: .leading)
                 }
                 
                 VStack(alignment : .leading){
                     HStack(spacing:0){
                         Text(viewModel.isBurning ? "휴식" : "버닝")
+                            .offset(y : viewModel.isBurning ? 0 : 1)
                             .foregroundStyle(viewModel.isBurning ? Color.restColor : Color.burningColor)
                         Text("까지")
                             .foregroundStyle(Color.textColor50)
@@ -52,7 +54,7 @@ struct IntervalChangeView: View {
                             .fontWeight(.semibold)
                     }
                 }
-                .padding(.leading,16)
+                .padding(.leading,13)
                 
                 Spacer()
             }

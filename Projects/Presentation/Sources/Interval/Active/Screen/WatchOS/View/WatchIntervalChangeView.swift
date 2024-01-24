@@ -21,20 +21,21 @@ struct WatchIntervalChangeView : View {
                 Spacer()
             }
             .padding(.horizontal,12)
-            
+            .padding(.bottom, 5)
+            Spacer()
             HStack{
+                Spacer()
                 HStack{
                     Text(viewModel.calculateUntilTime())
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 28, design: .rounded))
+                        .frame(width: 112, height: 28, alignment: .leading)
                 }
-                
-                Spacer()
-                
                 VStack(alignment : .leading){
                     HStack(spacing:0){
                         Text(viewModel.isBurning ? "휴식" : "버닝")
+                            .offset(y : viewModel.isBurning ? 0 : 1)
                             .foregroundStyle(viewModel.isBurning ? Color.restColor : Color.burningColor)
                         Text("까지")
                             .foregroundStyle(Color.textColor50)
@@ -48,6 +49,7 @@ struct WatchIntervalChangeView : View {
                         
                     }
                 }
+                Spacer()
             }
             .frame(width: 161, height: 28)
         }

@@ -9,12 +9,15 @@ import SwiftUI
 
 struct HealthInfoView: View {
     @Binding var viewModel: IntervalActiveViewModel
-        
+    
     var body: some View {
-        VStack(spacing : 30){
+        VStack(){
             repeatCount
+            Spacer()
             calorie
+            Spacer()
             heartBpm
+            Spacer()
             currentSection
         }
     }
@@ -34,6 +37,7 @@ struct HealthInfoView: View {
                     .fontWeight(.medium)
                     .font(.system(size: 20))
             }
+            .frame(height: 36)
             Spacer()
         }
     }
@@ -53,6 +57,7 @@ struct HealthInfoView: View {
                     .fontWeight(.medium)
                     .font(.system(size: 20))
             }
+            .frame(height: 36)
             Spacer()
         }
     }
@@ -80,6 +85,7 @@ struct HealthInfoView: View {
                     .fontWeight(.medium)
                     .font(.system(size: 20))
             }
+            .frame(height: 36)
             Spacer()
         }
     }
@@ -104,6 +110,7 @@ struct HealthInfoView: View {
                 .fontWeight(.medium)
                 .font(.system(size: 20))
             }
+            .frame(height: 36)
             Spacer()
         }
     }

@@ -49,15 +49,15 @@ public class IntervalActiveViewModel: ObservableObject {
     
     var timer: Timer?
     var isBounce : Bool = true
-
-    var currentCount : Int = 0
+    
+    var currentCount : Int = 1
     var heartRate : Int = 157
     var calorie : Int = 423
     
     var isBurning : Bool = true
     var isTimePass : Bool = true
     var activeTime: TimeInterval = 0
-    var totalTime : TimeInterval = 0
+    var totalTime : TimeInterval
     
     var untilResting : TimeInterval = 0
     var untilBurning : TimeInterval = 0
@@ -73,6 +73,7 @@ public class IntervalActiveViewModel: ObservableObject {
         self.intervalUseCase = intervalUseCase
         self.intervalItem = intervalItem
         self.intervalRecordUseCase = intervalRecordUseCase
+        self.totalTime = TimeInterval(intervalItem.burningSecondTime)
     }
     
     func removeScreen() {}
@@ -115,6 +116,7 @@ public class IntervalActiveViewModel: ObservableObject {
             time = untilBurning
         }
         time = (time * 100).rounded() / 100
+        print(time)
         
         var tmp = (time * 100).truncatingRemainder(dividingBy: 100)
         tmp = (tmp * 10).rounded() / 10
@@ -140,36 +142,36 @@ public class IntervalActiveViewModel: ObservableObject {
     }
     
     func setupTimer() {
-            timerSubscription = timerPublisher
-                .sink { [weak self] _ in
-                    guard let self = self else { return }
-
-                    if self.isTimePass {
-                        self.activeTime += 0.01
-                        self.activeTime = (self.activeTime * 100).rounded() / 100
-                        self.totalTime = (self.totalTime * 100).rounded() / 100
-                        isBounce.toggle()
-                        
-                        if(activeTime == totalTime){
-                            if(!isBurning){
-                                currentCount += 1
-                            }
-                            isBurning.toggle()
-                            
-                            totalTime += Double(isBurning ?  intervalItem.burningSecondTime : intervalItem.restingSecondTime)
+        timerSubscription = timerPublisher
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                
+                if self.isTimePass {
+                    self.activeTime += 0.01
+                    self.activeTime = (self.activeTime * 100).rounded() / 100
+                    self.totalTime = (self.totalTime * 100).rounded() / 100
+                    isBounce.toggle()
+                    
+                    if(activeTime == totalTime){
+                        if(!isBurning){
+                            currentCount += 1
                         }
+                        isBurning.toggle()
                         
-                        if(currentCount == intervalItem.repeatCount + 1){
-                            currentCount = currentCount - 1
-                            tapEndButton()
-                        }
+                        self.totalTime += Double(isBurning ?  intervalItem.burningSecondTime : intervalItem.restingSecondTime)
+                        
+                        print(totalTime)
                     }
-                    else {
-                        timer?.invalidate()
-                        timer = nil
+                    
+                    if(currentCount == intervalItem.repeatCount + 1){
+                        currentCount = currentCount - 1
+                        tapEndButton()
                     }
                 }
-        }
-    
-    
+                else {
+                    timer?.invalidate()
+                    timer = nil
+                }
+            }
+    }
 }

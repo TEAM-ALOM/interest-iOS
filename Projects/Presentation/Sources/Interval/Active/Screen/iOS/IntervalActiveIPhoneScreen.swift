@@ -11,26 +11,23 @@ import SharedDesignSystem
 
 public struct IntervalActiveIPhoneScreen: View {
     @State var viewModel: IntervalActiveViewModel
-        
+    
     public var body: some View {
-        VStack(){
+        VStack{
             IntervalChangeView(viewModel: $viewModel)
-                .padding(.bottom,30)
-            
+            Spacer(minLength: 20)
             
             HealthInfoView(viewModel: $viewModel)
-                .padding(.bottom,30)
+            Spacer(minLength: 20)
             
             StateManageView(viewModel: $viewModel)
-            
-            Spacer()
+            Spacer(minLength: 20)
         }
         .padding(.horizontal,16)
         .navigationTitle(viewModel.intervalItem.title)
         .navigationBarTitleDisplayMode(.inline)
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
         .onAppear(perform: {
-            viewModel.totalTime =  Double(viewModel.intervalItem.burningSecondTime)
             viewModel.setupTimer()
         })
         

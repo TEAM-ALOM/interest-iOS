@@ -12,7 +12,6 @@ public extension IntervalActiveScreen {
     var watchOS: some View {
         TabView {
             IntervalActiveWatchScreen(viewModel: viewModel)
-            
             WatchStateManageView(viewModel: viewModel)
         }
     }

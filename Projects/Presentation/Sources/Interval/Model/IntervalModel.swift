@@ -52,11 +52,11 @@ public extension IntervalModel {
             id: .init(),
             title: "달리기 인터벌", 
             exerciseType: .run,
-            burningSecondTime: 1 * 60,
+            burningSecondTime: 5,
             burningHeartIntervalType: .two,
-            restingSecondTime: 1 * 60,
+            restingSecondTime: 3,
             restingHeartIntervalType: .one,
-            repeatCount: 4,
+            repeatCount: 2,
             records: [
                 IntervalRecordModel(
                     id: .init(),

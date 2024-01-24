@@ -13,21 +13,24 @@ struct StateManageView: View {
     
     var body: some View {
         VStack{
-            Text(viewModel.calculateActiveTime())
-                .foregroundColor(.white)
-                .fontWeight(.semibold)
-                .font(.system(size: 52, design: .rounded))
-                .frame(width: 330, height: 52)
+            Spacer(minLength: 20)
+            HStack{
+                Spacer()
+                Text(viewModel.calculateActiveTime())
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 52, design: .rounded))
+                    .frame(width: 312, height: 52 , alignment: .leading)
+                Spacer()
+            }
             
             Spacer(minLength: 150)
-            
         }
         .overlay(alignment: .bottom) {
             stateButton(isPause: true, action: viewModel.tapPauseButton)
         }
         .overlay(alignment: .bottomTrailing){
             stateButton(isPause: false, action: viewModel.tapEndButton)
-            
         }
     }
     

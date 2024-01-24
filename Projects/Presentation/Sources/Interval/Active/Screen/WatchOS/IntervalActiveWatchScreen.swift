@@ -23,31 +23,10 @@ public struct IntervalActiveWatchScreen: View {
             
             WatchHealthInfoView(viewModel: $viewModel)
         }
+        .padding(.vertical , 5)
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
         .onAppear(perform: {
-            viewModel.totalTime =  Double(viewModel.intervalItem.burningSecondTime)
+            viewModel.setupTimer()
         })
-//        .onReceive(
-//            viewModel.$isTimePass, perform: { isTimePassing in
-//                if isTimePassing {
-//                    timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-//                        viewModel.activeTime += 0.01
-//                        isBounce.toggle()
-//                        
-//                        if(viewModel.activeTime == viewModel.totalTime){
-//                            if(viewModel.isBurning){
-//                                viewModel.currentCount += 1
-//                            }
-//                            viewModel.isBurning.toggle()
-//                            
-//                            viewModel.totalTime += Double(viewModel.isBurning ?  viewModel.intervalItem.burningSecondTime : viewModel.intervalItem.restingSecondTime)
-//                        }
-//                    }
-//                }
-//                else {
-//                    timer?.invalidate()
-//                    timer = nil
-//                }
-//            })
     }
 }

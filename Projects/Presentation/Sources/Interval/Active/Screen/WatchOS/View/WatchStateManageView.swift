@@ -18,12 +18,13 @@ public struct WatchStateManageView: View {
     public var body: some View {
         VStack{
             Spacer()
-            
             intervalName
-            
-            HStack(spacing: 16){
+            HStack {
+                Spacer()
                 watchStateButton(isPause: true, action: viewModel.tapPauseButton)
+                Spacer()
                 watchStateButton(isPause: false, action: viewModel.tapEndButton)
+                Spacer()
             }
             Spacer()
         }
