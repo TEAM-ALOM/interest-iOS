@@ -33,6 +33,9 @@ public struct IntervalActiveIPhoneScreen: View {
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
         .onAppear(perform: {
             viewModel.totalTime =  Double(viewModel.intervalItem.burningSecondTime)
+            print(viewModel.intervalItem.burningSecondTime)
+            print(viewModel.intervalItem.restingSecondTime)
+            
             //Error : intervalItem.burningSecondTime이 자꾸 0으로 뜸.
         })
 //        .onReceive(
