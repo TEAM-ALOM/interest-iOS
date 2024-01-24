@@ -8,7 +8,9 @@
 import Foundation
 import HealthKit
 
-public final class WorkoutRepository: WorkoutDataSourceInterface {
+import Domain
+
+public final class WorkoutRepository: WorkoutRepositoryInterface {
     internal let dataSource: WorkoutDataSource
     
     public init(dataSource: WorkoutDataSource) {

@@ -45,17 +45,18 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
             .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { receivedMesssge in
+                print(receivedMesssge)
                 messageHandler(receivedMesssge)
             }
             .store(in: &cancellable)
     }
     
     public func sendMessage(_ message: [String: Any]) {
-        if session.isReachable {
+//        if session.isReachable {
             session.sendMessage(message, replyHandler: nil, errorHandler: { (error) in
                 print("Error sending message: \(error.localizedDescription)")
             })
-        }
+//        }
     }
     
     #if os(iOS)

@@ -14,15 +14,14 @@ public extension WorkoutManager {
         let completionHandler: (HKStatisticsQuery,
                             HKStatistics?,
                             Error?) -> Void = { query, statistics, error in
-            guard let quantity = statistics?.mostRecentQuantity() else {
-                return
-            }
             
-            self.process(quantity, type: HKQuantityType(type))
+            self.process(statistics, type: HKQuantityType(type))
         }
         
+        let devicePredicate = HKQuery.predicateForObjects(from: [HKDevice.local()])
+        
         let query = HKStatisticsQuery(quantityType: HKQuantityType(type),
-                                      quantitySamplePredicate: nil,
+                                      quantitySamplePredicate: devicePredicate,
                                       options: .mostRecent,
                                       completionHandler: completionHandler)
         

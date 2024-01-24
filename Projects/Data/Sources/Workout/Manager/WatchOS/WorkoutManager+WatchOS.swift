@@ -11,7 +11,14 @@ import HealthKit
 #if os(watchOS)
 extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate {
     public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        
+        print(toState.rawValue)
+        if toState == .ended {
+            builder?.endCollection(withEnd: date) { (success, error) in
+                self.builder?.finishWorkout { (workout, error) in
+                    self.workout = workout
+                }
+            }
+        }
     }
     
     public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
@@ -25,11 +32,11 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         
         self.session = try? HKWorkoutSession(healthStore: healthStore, configuration: configuration)
         builder = session?.associatedWorkoutBuilder()
+        builder?.delegate = self
         
         builder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: configuration)
         
         session?.delegate = self
-        builder?.delegate = self
         
         let startDate = Date()
         session?.startActivity(with: startDate)
@@ -51,20 +58,13 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
     }
     
     public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
+        print(#function)
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else {
                 return
             }
             
-            guard let statistics = workoutBuilder.statistics(for: quantityType) else {
-                return
-            }
-            
-            guard let quantity = statistics.mostRecentQuantity() else {
-                return
-            }
-            
-            process(quantity, type: quantityType)
+            process(workoutBuilder.statistics(for: quantityType), type: quantityType)
         }
     }
     
