@@ -9,11 +9,11 @@ import SwiftUI
 import SharedDesignSystem
 
 struct StateManageView: View {
-    @ObservedObject var viewModel: IntervalActiveViewModel
+    @Binding var viewModel: IntervalActiveViewModel
     
     var body: some View {
         VStack{
-            Text(IntervalTimer(viewModel: viewModel).calculateActiveTime)
+            Text(viewModel.calculateActiveTime())
                 .foregroundColor(.white)
                 .fontWeight(.semibold)
                 .font(.system(size: 52, design: .rounded))

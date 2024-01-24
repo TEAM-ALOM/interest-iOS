@@ -35,9 +35,8 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         return IntervalActiveViewModelWithRouter(
             router: intervalRouter,
             intervalUseCase: intervalUseCase, 
-            intervalItem: intervalItem, 
-            intervalRecordUseCase: intervalRecordUseCase
-            
+            intervalRecordUseCase: intervalRecordUseCase, 
+            intervalItem: intervalItem
         )
     }
     

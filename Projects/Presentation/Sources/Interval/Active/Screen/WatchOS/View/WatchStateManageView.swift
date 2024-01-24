@@ -13,7 +13,7 @@ import Shared
 import SharedDesignSystem
 
 public struct WatchStateManageView: View {
-    @ObservedObject var viewModel: IntervalActiveViewModel
+    var viewModel: IntervalActiveViewModel
     
     public var body: some View {
         VStack{

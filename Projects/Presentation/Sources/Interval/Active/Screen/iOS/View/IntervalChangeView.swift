@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct IntervalChangeView: View {
-    @ObservedObject var viewModel: IntervalActiveViewModel
+    @Binding var viewModel: IntervalActiveViewModel
     
     var body: some View {
         VStack{
@@ -29,7 +29,7 @@ struct IntervalChangeView: View {
             
             HStack{
                 HStack{
-                    Text(IntervalTimer(viewModel: viewModel).calculateUntilTime)
+                    Text(viewModel.calculateUntilTime())
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 52, design: .rounded))

@@ -12,7 +12,7 @@ import Shared
 import SharedDesignSystem
 
 public struct IntervalActiveScreen: View {
-    @StateObject var viewModel: IntervalActiveViewModel
+    @State var viewModel: IntervalActiveViewModel
     
     public init(viewModel: IntervalActiveViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)

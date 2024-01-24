@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct HealthInfoView: View {
-    @ObservedObject var viewModel: IntervalActiveViewModel
-    
-    @Binding var isBounce : Bool
-    
+    @Binding var viewModel: IntervalActiveViewModel
+        
     var body: some View {
         VStack(spacing : 30){
             repeatCount
@@ -66,7 +64,7 @@ struct HealthInfoView: View {
                 .scaledToFit()
                 .frame(width: 24,height: 24)
                 .foregroundColor(Color.heartColor)
-                .symbolEffect(.bounce, options: .speed(1), value: isBounce)
+                .symbolEffect(.bounce, options: .speed(1), value: viewModel.isBounce)
                 .padding(.trailing,8)
             
             Text(String(viewModel.heartRate))

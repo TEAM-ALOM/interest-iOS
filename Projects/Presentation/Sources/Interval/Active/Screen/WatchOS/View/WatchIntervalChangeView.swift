@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct WatchIntervalChangeView : View {
-    @ObservedObject var viewModel: IntervalActiveViewModel
+    @Binding var viewModel: IntervalActiveViewModel
     
     var body: some View {
         VStack{
@@ -24,7 +24,7 @@ struct WatchIntervalChangeView : View {
             
             HStack{
                 HStack{
-                    Text(IntervalTimer(viewModel: viewModel).calculateUntilTime)
+                    Text(viewModel.calculateUntilTime())
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 28, design: .rounded))
