@@ -9,19 +9,16 @@ import Foundation
 import HealthKit
 
 #if os(iOS)
-public extension WorkoutManager {
+extension WorkoutManager {
     func healthKitDataQuery(type: HKQuantityTypeIdentifier) async {
         let completionHandler: (HKStatisticsQuery,
-                            HKStatistics?,
-                            Error?) -> Void = { query, statistics, error in
-            
+                                HKStatistics?,
+                                Error?) -> Void = { query, statistics, error in
             self.process(statistics, type: HKQuantityType(type))
         }
         
-        let devicePredicate = HKQuery.predicateForObjects(from: [HKDevice.local()])
-        
         let query = HKStatisticsQuery(quantityType: HKQuantityType(type),
-                                      quantitySamplePredicate: devicePredicate,
+                                      quantitySamplePredicate: nil,
                                       options: .mostRecent,
                                       completionHandler: completionHandler)
         

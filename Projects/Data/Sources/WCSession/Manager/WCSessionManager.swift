@@ -40,7 +40,7 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
         self.message.send(message)
     }
     
-    public func subcribeReceivedMessage(messageHandler: @escaping ([String: Any]) -> Void) {
+    func subcribeReceivedMessage(messageHandler: @escaping ([String: Any]) -> Void) {
         self.message
             .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
@@ -51,24 +51,22 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
             .store(in: &cancellable)
     }
     
-    public func sendMessage(_ message: [String: Any]) {
-//        if session.isReachable {
-            session.sendMessage(message, replyHandler: nil, errorHandler: { (error) in
-                print("Error sending message: \(error.localizedDescription)")
-            })
-//        }
+    func sendMessage(_ message: [String: Any]) {
+        session.sendMessage(message, replyHandler: nil, errorHandler: { (error) in
+            print("Error sending message: \(error.localizedDescription)")
+        })
     }
     
     #if os(iOS)
-    public func checkSessionStatus() -> String {
+    func checkSessionStatus() -> WCSessionStatus {
         if !session.isPaired {
-            return "isNotPaired"
+            return .notPaired
         } else if !session.isWatchAppInstalled {
-            return "isNotWatchAppInstalled"
+            return .notInstalledWatchApp
         } else if !session.isReachable {
-            return "isNotReachable"
+            return .notReachable
         } else {
-            return "isConnected"
+            return .connected
         }
     }
     #endif

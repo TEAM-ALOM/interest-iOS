@@ -25,7 +25,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         
     }
     
-    public func startWorkout(workoutType: HKWorkoutActivityType) {
+    func startWorkout(workoutType: HKWorkoutActivityType) {
         let configuration = HKWorkoutConfiguration()
         configuration.activityType = workoutType
         configuration.locationType = .outdoor
@@ -45,15 +45,15 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         })
     }
     
-    public func pauseWorkout() {
+    func pauseWorkout() {
         session?.pause()
     }
 
-    public func resumeWorkout() {
+    func resumeWorkout() {
         session?.resume()
     }
 
-    public func endWorkout() {
+    func endWorkout() {
         session?.end()
     }
     

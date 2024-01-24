@@ -32,7 +32,7 @@ public class WorkoutManager: NSObject {
     
     public override init() { }
     
-    public func requestAuthorization() -> Bool {
+    func requestAuthorization() -> Bool {
         var result = false
         
         healthStore.requestAuthorization(toShare: typesToShare, read: healthKitTypes) { success, error in
@@ -42,7 +42,7 @@ public class WorkoutManager: NSObject {
         return result
     }
     
-    public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
+    func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
         self.hearRate
             .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
@@ -52,7 +52,7 @@ public class WorkoutManager: NSObject {
             .store(in: &cancellable)
     }
     
-    public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
+    func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
         self.calorie
             .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
