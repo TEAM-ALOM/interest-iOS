@@ -10,40 +10,12 @@ import SwiftUI
 
 import Domain
 
-public class IntervalListViewModelWithRouter: IntervalListViewModel {
-    private var router: IntervalRouter
-    
-    public init(
-        router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface
-    ) {
-        self.router = router
-        super.init(intervalUseCase: intervalUseCase)
-    }
-    
-    override func tapStartButton() {
-        super.tapStartButton()
-        router.triggerScreenTransition(route: .intervalActive)
-    }
-    
-    override func tapIntervalDetailPageButton(intervalItem: IntervalModel) {
-        super.tapIntervalDetailPageButton(intervalItem: intervalItem)
-        router.triggerScreenTransition(route: .intervalDetail(intervalItem))
-    }
-    
-    func editIntervalScreen(selectedItem: IntervalModel) -> some View {
-        return router.sheetScreen(route: .editInterval(selectedItem))
-    }
-}
-
-
-public class IntervalListViewModel: ObservableObject {
+@Observable public class IntervalListViewModel {
     private let intervalUseCase: IntervalUseCaseInterface
     
-    @Published var intervalItems: [IntervalModel] = []
-    @Published var showEditIntervalView: Bool = false
-    @Published var selectedItem: IntervalModel? = nil
-    
+    var intervalItems: [IntervalModel] = []
+//    var selectedItem: IntervalModel? = nil
+
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
     }
@@ -64,8 +36,7 @@ public class IntervalListViewModel: ObservableObject {
         self.fetchIntervalItems()
     }
     
-    func tapIntervalEditButton(selectedItem: IntervalModel) {
-        showEditIntervalView = true
-        self.selectedItem = selectedItem
+    func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
+//        self.selectedItem = selectedItem
     }
 }

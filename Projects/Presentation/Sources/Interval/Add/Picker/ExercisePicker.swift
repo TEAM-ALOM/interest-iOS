@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ExercisePickerView: View {
-    @Binding var selectedExerciseType: ExerciseTypeModel?
+    @Binding var selectedExerciseType: ExerciseTypeModel
     
     var body: some View {
         pickerView

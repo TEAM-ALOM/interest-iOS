@@ -10,8 +10,8 @@ import SwiftUI
 import SharedDesignSystem
 
 public struct IntervalListIPhoneScreen: View {
-    @ObservedObject var viewModel: IntervalListViewModelWithRouter
-    
+    @State var viewModel: IntervalListViewModelWithRouter
+
     public var body: some View {
         ScrollView {
             LazyVStack(spacing: 24) {
@@ -23,9 +23,6 @@ public struct IntervalListIPhoneScreen: View {
             .padding(.top, 32)
         }
         .mainBackground()
-        .sheet(isPresented: $viewModel.showEditIntervalView, onDismiss: viewModel.fetchIntervalItems){
-            viewModel.editIntervalScreen(selectedItem: viewModel.selectedItem!)
-        }
         .onAppear {
             viewModel.fetchIntervalItems()
         }

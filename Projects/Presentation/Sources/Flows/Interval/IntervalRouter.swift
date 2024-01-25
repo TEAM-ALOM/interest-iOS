@@ -9,40 +9,43 @@ import SwiftUI
 
 import Domain
 
-public final class IntervalRouter: ObservableObject, FlowRouter {
+@Observable
+public final class IntervalRouter: FlowRouter {
     public let id = UUID()
     
     public init(intervalDIContainer: IntervalDIContainerInterface) {
         self.intervalDIContainer = intervalDIContainer
     }
     
-    @Published public var navigationPath: NavigationPath = .init()
-    
-    public var nextTransitionRoute: PushRoute = .intervalList
-    
+    public var navigationPath: NavigationPath = .init()
+    public var nextNavigationRoute: NavigationRoute = .intervalList
+    public var nextPresentationRoute: PresentationRoute? = nil
+
     private let intervalDIContainer: IntervalDIContainerInterface
     
-    public func triggerScreenTransition(route: PushRoute) {
-        navigationPath.append(route)
-        nextTransitionRoute = route
+    public func triggerNavigationScreen(navigationRoute: NavigationRoute) {
+        navigationPath.append(navigationRoute)
+        nextNavigationRoute = navigationRoute
     }
-    
-    public func nextTransitionScreen() -> some View {
-        nextTransitionRoute.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
+
+    public func triggerPresentationScreen(presentationRoute: PresentationRoute?) {
+        nextPresentationRoute = presentationRoute
     }
-    
-    public func sheetScreen(route: PushRoute) -> some View {
-        route.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
+
+    public func nextNavigationScreen() -> some View {
+        nextNavigationRoute.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
+    }
+
+    public func nextPresentationScreen() -> some View {
+        nextPresentationRoute?.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
     }
 }
 
 public extension IntervalRouter {
-    enum PushRoute: Hashable {
+    enum NavigationRoute: Hashable {
         case intervalList
         case intervalDetail(IntervalModel)
         case intervalActive
-        case addInterval
-        case editInterval(IntervalModel)
        
         @ViewBuilder
         func nextView(intervalDIContainer: IntervalDIContainerInterface, router: IntervalRouter) -> some View {
@@ -56,13 +59,24 @@ public extension IntervalRouter {
             case .intervalActive:
                 let viewModel = intervalDIContainer.intervalActiveDependencies(intervalRouter: router)
                 IntervalActiveScreen(viewModel: viewModel)
-            case .addInterval:
-                let viewModel = intervalDIContainer.addIntervalDependencies(intervalRouter: router)
-                AddIntervalScreen(viewModel: viewModel)
-            case .editInterval(let intervalItem):
-                let viewModel = intervalDIContainer.addIntervalDependencies(intervalRouter: router, intervalItem: intervalItem)
-                AddIntervalScreen(viewModel: viewModel)
             }
         }
+    }
+
+    enum PresentationRoute: Identifiable {
+        case addInterval
+        case editInterval(Binding<IntervalModel>)
+
+        @ViewBuilder
+        func nextView(intervalDIContainer: IntervalDIContainerInterface, router: IntervalRouter) -> some View {
+            switch self {
+            case .addInterval:
+                AddIntervalScreen(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router, intervalItem: nil))
+            case let .editInterval(item):
+                AddIntervalScreen(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router, intervalItem: item))
+            }
+        }
+
+        public var id: UUID { return .init() }
     }
 }

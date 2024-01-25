@@ -11,8 +11,8 @@ import Combine
 public protocol IntervalUseCaseInterface {
     func fetch(id: UUID) -> IntervalEntity?
     func fetches() -> [IntervalEntity]
-    func save(interval: IntervalEntity) -> Bool
-    func update(at id: UUID, to interval: IntervalEntity) -> IntervalEntity?
+    @discardableResult func save(interval: IntervalEntity) -> Bool
+    @discardableResult func update(at id: UUID, to interval: IntervalEntity) -> IntervalEntity?
     func delete(at id: UUID) -> Bool
 }
 

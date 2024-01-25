@@ -11,15 +11,15 @@ import SwiftUI
 import SharedDesignSystem
 
 public struct IntervalInfoCellView: View {
-    @ObservedObject private var intervalListViewModel: IntervalListViewModel
-    
+    private var intervalListViewModel: IntervalListViewModel
+
     @State private var cellOffsetX = CGFloat.zero
     
-    public var intervalItem: IntervalModel
-    
+    @State var intervalItem: IntervalModel
+
     init(intervalItem: IntervalModel, intervalListViewModel: IntervalListViewModel) {
-        self.intervalItem = intervalItem
         self.intervalListViewModel = intervalListViewModel
+        self._intervalItem = .init(wrappedValue: intervalItem)
     }
     
     public var body: some View {
@@ -44,8 +44,9 @@ public struct IntervalInfoCellView: View {
             
             toolButton(imageName: "pencil", 
                        color: .editColor,
-                       backgroundColor: .editColor) {
-                intervalListViewModel.tapIntervalEditButton(selectedItem: intervalItem)
+                       backgroundColor: .editColor
+            ) {
+                intervalListViewModel.tapIntervalEditButton(selectedItem: $intervalItem)
             }
             
             Spacer()

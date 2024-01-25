@@ -23,7 +23,7 @@ public extension IntervalScreen {
                 }
             }
             .navigationTitle("인터레스트")
-            .navigationDestination(for: IntervalRouter.PushRoute.self) { _ in
+            .navigationDestination(for: IntervalRouter.NavigationRoute.self) { _ in
                 viewModel.nextScreen()
             }
         }
