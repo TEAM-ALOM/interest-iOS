@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 import Presentation
 import Domain
@@ -26,7 +27,7 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
             intervalUseCase: intervalUseCase
         )
     }
-    
+
     public func intervalActiveDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalActiveViewModel {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
@@ -55,15 +56,18 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
-    public func addIntervalDependencies(intervalRouter: IntervalRouter) -> AddIntervalViewModel {
+    public func addIntervalDependencies(intervalRouter: IntervalRouter, intervalItem: Binding<IntervalModel>?) -> AddIntervalViewModel {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
-        
-        return AddIntervalViewModelWithRouter(router: intervalRouter, intervalUseCase: intervalUseCase)
-
-    }
     
+        return AddIntervalViewModelWithRouter(
+            router: intervalRouter,
+            intervalUseCase: intervalUseCase,
+            intervalItem: intervalItem
+        )
+    }
+
     public func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModel {
         let intervalRecordDataSource = IntervalRecordDataSource()
         let intervalRecordRepository = IntervalRecordRepository(dataSource: intervalRecordDataSource)

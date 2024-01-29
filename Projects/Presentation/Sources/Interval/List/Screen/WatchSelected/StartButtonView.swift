@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct StartButton: View {
-    @ObservedObject var viewModel: IntervalListViewModel
+    var viewModel: IntervalListViewModel
         
     public var intervalItem: IntervalModel
 

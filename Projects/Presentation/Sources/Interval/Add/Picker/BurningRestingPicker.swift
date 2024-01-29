@@ -24,7 +24,6 @@ struct BurningRestingPicker: View {
     @State private var isTimeExpanded: Bool = false
     @State private var isSectionExpanded: Bool = false
     
-    
     var body: some View {
         VStack() {
             HStack {
@@ -51,6 +50,7 @@ struct BurningRestingPicker: View {
             
             pickIntervalView(selection: $selection, isExpanded: $isSectionExpanded)
         }
+        .onAppear(perform: calculateTime)
     }
     
     @ViewBuilder
@@ -92,6 +92,10 @@ struct BurningRestingPicker: View {
     
     private func calculateTime() {
         totalTime = hours * 3600 + minutes * 60 + seconds
+//        hours = totalTime / 3600
+//        minutes = totalTime % 3600 / 60
+//        seconds = totalTime % 60
+//        print(totalTime)
     }
     
     @ViewBuilder

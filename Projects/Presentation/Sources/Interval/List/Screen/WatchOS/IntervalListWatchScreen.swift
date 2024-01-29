@@ -10,7 +10,7 @@ import SwiftUI
 import SharedDesignSystem
 
 public struct IntervalListWatchScreen: View {
-    @ObservedObject var viewModel: IntervalListViewModel
+    @State var viewModel: IntervalListViewModel
     
     public var body: some View {
         VStack{
@@ -19,7 +19,7 @@ public struct IntervalListWatchScreen: View {
             Spacer()
             HStack{
                 Spacer()
-                StartButton(viewModel: viewModel, intervalItem: viewModel.selectedItem)
+                StartButton(viewModel: viewModel, intervalItem: viewModel.selectedItem!)
                 Spacer()
             }
         }

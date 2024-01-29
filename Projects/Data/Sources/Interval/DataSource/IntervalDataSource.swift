@@ -111,7 +111,10 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     
     public func delete(at id: UUID) -> Bool {
         if let interval = self.fetch(id: id) {
-            self.context?.delete(interval)
+            interval.modelContext?.delete(interval)
+            
+            try? interval.modelContext?.save()
+    
             return true
         } else {
             return false

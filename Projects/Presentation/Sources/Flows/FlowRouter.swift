@@ -9,17 +9,24 @@ import Foundation
 import SwiftUI
 
 public protocol FlowRouter: Hashable {
-    associatedtype PushRoute: Hashable
-    associatedtype NextScreen: View
+    associatedtype NavigationRoute: Hashable
+    associatedtype PresentationRoute: Identifiable
+    associatedtype NavigationScreen: View
+    associatedtype PresentationScreen: View
 
     var id: UUID { get }
 
     var navigationPath: NavigationPath { get set }
 
-    var nextTransitionRoute: PushRoute { get }
+    var nextNavigationRoute: NavigationRoute { get }
+    var nextPresentationRoute: PresentationRoute? { get }
 
-    func triggerScreenTransition(route: PushRoute)
-    func nextTransitionScreen() -> NextScreen
+    func triggerNavigationScreen(navigationRoute: NavigationRoute)
+    func triggerPresentationScreen(presentationRoute: PresentationRoute?)
+
+    func nextNavigationScreen() -> NavigationScreen
+    func nextPresentationScreen() -> PresentationScreen
+
 }
 
 public extension FlowRouter {

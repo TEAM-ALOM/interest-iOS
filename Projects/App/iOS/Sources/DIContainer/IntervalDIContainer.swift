@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 import Presentation
 import Domain
 import Data
 
 public final class IntervalDIContainer: IntervalDIContainerInterface {
+    
     public func intervalScreenDependencies(intervalRouter: IntervalRouter) -> IntervalViewModel {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
@@ -23,7 +25,19 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
+    public func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel {
+        let intervalDataSource = IntervalDataSource()
+        let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
+        let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
+        
+        return IntervalListViewModelWithRouter(
+            router: intervalRouter,
+            intervalUseCase: intervalUseCase
+        )
+    }
+    
     public func intervalActiveDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalActiveViewModel {
+//    public func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModelWithRouter {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
@@ -40,23 +54,16 @@ public final class IntervalDIContainer: IntervalDIContainerInterface {
         )
     }
     
-    public func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel {
+    public func addIntervalDependencies(intervalRouter:IntervalRouter, intervalItem: Binding<IntervalModel>?) -> AddIntervalViewModel {
         let intervalDataSource = IntervalDataSource()
         let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
         let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
-        
-        return IntervalListViewModelWithRouter(
-            router: intervalRouter,
-            intervalUseCase: intervalUseCase
-        )
-    }
     
-    public func addIntervalDependencies(intervalRouter: IntervalRouter) -> AddIntervalViewModel {
-        let intervalDataSource = IntervalDataSource()
-        let intervalRepository = IntervalRepository(dataSource: intervalDataSource)
-        let intervalUseCase = IntervalUseCase(intervalRepository: intervalRepository)
-        
-        return AddIntervalViewModelWithRouter(router: intervalRouter, intervalUseCase: intervalUseCase)
+        return AddIntervalViewModelWithRouter(
+            router: intervalRouter,
+            intervalUseCase: intervalUseCase,
+            intervalItem: intervalItem
+        )
     }
     
     public func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModel {

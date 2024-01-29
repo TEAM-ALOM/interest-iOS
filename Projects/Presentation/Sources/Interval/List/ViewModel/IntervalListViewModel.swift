@@ -10,41 +10,13 @@ import SwiftUI
 
 import Domain
 
-public class IntervalListViewModelWithRouter: IntervalListViewModel {
-    private var router: IntervalRouter
-    
-    public init(
-        router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface
-    ) {
-        self.router = router
-        super.init(intervalUseCase: intervalUseCase)
-    }
-    
-    override func tapStartButton(intervalItem: IntervalModel) {
-        super.tapStartButton(intervalItem: intervalItem)
-        router.triggerScreenTransition(route: .intervalActive(intervalItem))
-    }
-    
-    override func tapIntervalDetailPageButton(intervalItem: IntervalModel) {
-        super.tapIntervalDetailPageButton(intervalItem: intervalItem)
-        router.triggerScreenTransition(route: .intervalDetail(intervalItem))
-    }
-}
-
-
-public class IntervalListViewModel: ObservableObject {
+@Observable public class IntervalListViewModel {
     private let intervalUseCase: IntervalUseCaseInterface
     
-    @Published var intervalItems: [IntervalModel] = []
-    @Published var showEditIntervalView: Bool = false
-    
-    @Published var selectedItem : IntervalModel = .init(id: UUID(), exerciseType: .run)
-    
-    public init(
-        intervalUseCase: IntervalUseCaseInterface
-        //selectedItem : IntervalModel
-    ) {
+    var intervalItems: [IntervalModel] = []
+    var selectedItem: IntervalModel? = nil
+
+    public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
         //self.selectedItem = selectedItem
     }
@@ -61,9 +33,11 @@ public class IntervalListViewModel: ObservableObject {
     
     func tapIntervalDeleteButton(at id: UUID) {
         let _ = intervalUseCase.delete(at: id)
+        
+        self.fetchIntervalItems()
     }
     
-    func tapIntervalEditButton() {
-        showEditIntervalView = true
+    func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
+//        self.selectedItem = selectedItem
     }
 }

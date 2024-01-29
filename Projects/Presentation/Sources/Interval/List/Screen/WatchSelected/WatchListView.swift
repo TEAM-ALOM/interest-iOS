@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct WatchListView: View {
-    @ObservedObject var viewModel: IntervalListViewModel
+    var viewModel: IntervalListViewModel
     
     var body : some View {
         WatchExercisePickerView(viewModel: viewModel)

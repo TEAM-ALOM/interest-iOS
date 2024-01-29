@@ -12,7 +12,7 @@ import Domain
 import SharedDesignSystem
 
 public struct IntervalListScreen: View {
-    @StateObject var listViewModel: IntervalListViewModel
+    @State var listViewModel: IntervalListViewModel
 
     public init(
         listViewModel: IntervalListViewModel

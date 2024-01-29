@@ -15,10 +15,10 @@ public struct AddIntervalScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
-    @StateObject var viewModel: AddIntervalViewModel
+    @State var viewModel: AddIntervalViewModel
     
     public init(viewModel: AddIntervalViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
     public var body: some View {
@@ -32,7 +32,9 @@ public struct AddIntervalScreen: View {
             }
             .padding(.horizontal, 30)
             .padding(.top, 10)
-            .navigationTitle("인터벌 추가")
+            .navigationTitle(
+                "인터벌 추가"
+            )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -61,7 +63,7 @@ public struct AddIntervalScreen: View {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            TextField("달리기 인터벌", text: $viewModel.name)
+            TextField("달리기 인터벌", text: viewModel.intervalItem.title)
                 .padding(.all,12)
                 .background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
@@ -70,22 +72,22 @@ public struct AddIntervalScreen: View {
     }
     private var exercise: some View {
         HStack{
-            ExercisePickerView(selectedExerciseType: $viewModel.selectedExerciseType)
+            ExercisePickerView(selectedExerciseType: viewModel.intervalItem.exerciseType)
         }
         .padding(.vertical,10)
     }
     
     private var repeatCount: some View {
         VStack{
-            RepeatPicker(isRepeat: false, repeatCount: $viewModel.repeatCounts)
+            RepeatPicker(isRepeat: false, repeatCount: viewModel.intervalItem.repeatCount)
         }
     }
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, selection: $viewModel.burningSelectedInterval, totalTime: $viewModel.burningTime)
-            
-            BurningRestingPicker(isBurning: false, selection: $viewModel.restingSelectedInterval, totalTime: $viewModel.restingTime)
+            BurningRestingPicker(isBurning: true, selection: viewModel.intervalItem.burningHeartIntervalType, totalTime: viewModel.intervalItem.burningSecondTime)
+
+            BurningRestingPicker(isBurning: false, selection: viewModel.intervalItem.restingHeartIntervalType, totalTime: viewModel.intervalItem.restingSecondTime)
         }
     }
 }

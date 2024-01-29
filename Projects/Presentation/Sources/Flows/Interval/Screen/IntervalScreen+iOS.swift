@@ -16,18 +16,16 @@ public extension IntervalScreen {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button(action: {
-                            viewModel.isBottomSheetPresent = true
+                            viewModel.tapPlusButton()
                         }, label: {
                             Image(systemName: "plus")
                         })
                     }
                 }
-                .navigationDestination(for: IntervalRouter.PushRoute.self) { _ in
+                .navigationDestination(for: IntervalRouter.NavigationRoute.self) { _ in
                     viewModel.nextScreen()
                 }
-                .sheet(isPresented: $viewModel.isBottomSheetPresent) {
-                    addIntervalScreen
-                }
+                .sheetWithRouter(router: self.router)
         }
         .tint(Color.keyColor)
     }

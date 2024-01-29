@@ -11,56 +11,68 @@ import SwiftData
 
 import Domain
 
-public class AddIntervalViewModelWithRouter: AddIntervalViewModel {
+@Observable public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
     private var router: IntervalRouter
     
     public init(
         router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface
+        intervalUseCase: IntervalUseCaseInterface,
+        intervalItem: Binding<IntervalModel>?
     ) {
         self.router = router
-        super.init(intervalUseCase: intervalUseCase)
+        super.init(intervalUseCase: intervalUseCase, intervalItem: intervalItem)
     }
-    
+
+
     override func tapSaveButton() {
         super.tapSaveButton()
+
+        router.triggerPresentationScreen(presentationRoute: nil)
     }
-    
+
 }
 
-public class AddIntervalViewModel: ObservableObject {
+@Observable public class AddIntervalViewModel {
     let intervalUseCase: IntervalUseCaseInterface
-    
-    @Published var name: String = ""
-    @Published var repeatCounts : Int = 0
-    
-    @Published var exercise : [ExerciseTypeModel] = ExerciseTypeModel.allCases
-    @Published var selectedExerciseType: ExerciseTypeModel?
-    
-    
-    @Published var burningSelectedInterval = HeartIntervalTypeModel.one
-    @Published var burningTime: Int = 0
-    @Published var restingSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restingTime: Int = 0
-    
-    public init(intervalUseCase: IntervalUseCaseInterface) {
+
+    public let mode: Mode
+
+    public var intervalItem: Binding<IntervalModel> {
+        if let intervalItem = intervalItemOrNil {
+            return intervalItem
+        } else {
+            return .init(get: { self._intervalItem }, set: { self._intervalItem = $0 })
+        }
+    }
+
+    private var _intervalItem: IntervalModel = .init()
+    private var intervalItemOrNil: Binding<IntervalModel>?
+
+    public init(
+        intervalUseCase: IntervalUseCaseInterface,
+        intervalItem: Binding<IntervalModel>?
+    ) {
         self.intervalUseCase = intervalUseCase
+        self.intervalItemOrNil = intervalItem
+
+        self.mode = intervalItem == nil ? .add : .edit
     }
     
     func tapSaveButton() {
-        let newInterval = IntervalEntity(
-            id: .init(),
-            title: name,
-            exerciseType: ExerciseTypeModelMapper.toEntity(model: selectedExerciseType ?? ExerciseTypeModel.run),
-            burningSecondTime: burningTime,
-            burningHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: burningSelectedInterval),
-            restingSecondTime: restingTime,
-            restingHeartIntervalType: HeartIntervalTypeModelMapper.toEntity(model: restingSelectedInterval),
-            repeatCount: repeatCounts,
-            records: []
-        )
-        
-        intervalUseCase.save(interval: newInterval)
+        let entity = IntervalModelMapper.toEntity(model: intervalItem.wrappedValue)
+
+        switch self.mode {
+        case .add:
+            intervalUseCase.save(interval: entity)
+        case .edit:
+            intervalUseCase.update(at: entity.id, to: entity)
+        }
     }
 }
 
+extension AddIntervalViewModel {
+    public enum Mode {
+        case add
+        case edit
+    }
+}

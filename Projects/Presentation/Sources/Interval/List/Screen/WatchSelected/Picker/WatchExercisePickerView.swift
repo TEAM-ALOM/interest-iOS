@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct WatchExercisePickerView: View {
-    @ObservedObject var viewModel: IntervalListViewModel
+    var viewModel: IntervalListViewModel
 
     @State private var currentIndex : Int = 0
     @GestureState private var dragOffset : CGFloat = 0
