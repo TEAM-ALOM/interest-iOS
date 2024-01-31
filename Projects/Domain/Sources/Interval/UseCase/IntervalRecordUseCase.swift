@@ -10,7 +10,7 @@ import Foundation
 public protocol IntervalRecordUseCaseInterface {
     func fetchIntervalRecord(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity?
     func fetchIntervalRecords(intervalId id: UUID) -> [IntervalRecordEntity]
-    func appendIntervalRecord(intervalId: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity
+    @discardableResult func appendIntervalRecord(intervalId: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity
     func deleteIntervalRecord(intervalId: UUID, at recordId: UUID) -> Bool
 }
 

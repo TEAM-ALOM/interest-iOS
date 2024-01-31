@@ -21,11 +21,11 @@ import Domain
         super.init(intervalUseCase: intervalUseCase)
     }
 
-    override func tapStartButton() {
-        super.tapStartButton()
-        router.triggerNavigationScreen(navigationRoute: .intervalActive)
+    override func tapStartButton(intervalItem: IntervalModel) {
+            super.tapStartButton(intervalItem: intervalItem)
+            router.triggerNavigationScreen(navigationRoute: .intervalActive(intervalItem))
     }
-
+    
     override func tapIntervalDetailPageButton(intervalItem: IntervalModel) {
         super.tapIntervalDetailPageButton(intervalItem: intervalItem)
         router.triggerNavigationScreen(navigationRoute: .intervalDetail(intervalItem))

@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct ExerciseBackgroundModifier: ViewModifier {
+public struct ExerciseBackgroundModifier: ViewModifier {
     init(mode: ExerciseMode) {
         self.mode = mode
     }
     
     private let mode: ExerciseMode
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .background {
                 ZStack {
@@ -33,7 +33,7 @@ struct ExerciseBackgroundModifier: ViewModifier {
     }
 }
 
-extension ExerciseBackgroundModifier {
+public extension ExerciseBackgroundModifier {
     enum ExerciseMode {
         case burning
         case rest

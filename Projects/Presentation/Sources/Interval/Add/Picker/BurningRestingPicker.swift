@@ -38,6 +38,15 @@ struct BurningRestingPicker: View {
             .padding(.vertical,15)
             
             pickTimeView(hour: $hours, minute: $minutes, second: $seconds, isExpanded: $isTimeExpanded)
+                .onChange(of: hours) {
+                    calculateTime()
+                }
+                .onChange(of: minutes) {
+                    calculateTime()
+                }
+                .onChange(of: seconds) {
+                    calculateTime()
+                }
             
             pickIntervalView(selection: $selection, isExpanded: $isSectionExpanded)
         }

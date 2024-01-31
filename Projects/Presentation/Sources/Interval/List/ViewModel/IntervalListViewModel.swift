@@ -14,10 +14,11 @@ import Domain
     private let intervalUseCase: IntervalUseCaseInterface
     
     var intervalItems: [IntervalModel] = []
-//    var selectedItem: IntervalModel? = nil
+    var selectedItem: IntervalModel? = nil
 
     public init(intervalUseCase: IntervalUseCaseInterface) {
         self.intervalUseCase = intervalUseCase
+        //self.selectedItem = selectedItem
     }
     
     func fetchIntervalItems() {
@@ -26,7 +27,7 @@ import Domain
         }
     }
     
-    func tapStartButton() { }
+    func tapStartButton(intervalItem: IntervalModel) { }
     
     func tapIntervalDetailPageButton(intervalItem: IntervalModel) { }
     

@@ -42,24 +42,28 @@ struct IntervalDetailScreen: View {
     }
     
     private var startButton: some View {
-        HStack {
-            Spacer()
-            
-            Image(systemName: "play.circle.fill")
-                .symbolRenderingMode(.palette)
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundStyle(Color.backgroundColor, Color.keyColor)
-                .shadow(color: .black.opacity(0.25), radius: 10)
-            
-            Spacer()
-        }
-        .padding(.bottom, 52)
-        .background(alignment: .bottom) {
-            Rectangle()
-                .fill(.ultraThinMaterial)
-                .mask(LinearGradient(colors: [.clear, .keyColor], startPoint: .top, endPoint: .center))
-                .frame(height: 140)
-        }
+        Button(action: {
+            viewModel.tapIntervalStartButton(intervalItem: viewModel.intervalItem)
+        }, label: {
+            HStack {
+                Spacer()
+                
+                Image(systemName: "play.circle.fill")
+                    .symbolRenderingMode(.palette)
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .foregroundStyle(Color.backgroundColor, Color.keyColor)
+                    .shadow(color: .black.opacity(0.25), radius: 10)
+                
+                Spacer()
+            }
+            .padding(.bottom, 52)
+            .background(alignment: .bottom) {
+                Rectangle()
+                    .fill(.ultraThinMaterial)
+                    .mask(LinearGradient(colors: [.clear, .keyColor], startPoint: .top, endPoint: .center))
+                    .frame(height: 140)
+            }
+        })
     }
 }

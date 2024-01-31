@@ -26,8 +26,8 @@ import Domain
         router.triggerPresentationScreen(presentationRoute: .addInterval)
     }
 
-    public func tapIntervalStartButton(item: IntervalModel) {
-        router.triggerNavigationScreen(navigationRoute: .intervalActive)
+    public func tapIntervalStartButton(intervalItem: IntervalModel) {
+        router.triggerNavigationScreen(navigationRoute: .intervalActive(intervalItem))
     }
 
     public func nextScreen() -> some View {

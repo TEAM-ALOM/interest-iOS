@@ -66,7 +66,6 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
             createDate: createDate,
             calorie: calorie
         )
-        
         interval?.records?.append(record)
         try? context?.save()
         

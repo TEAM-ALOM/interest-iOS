@@ -12,4 +12,8 @@ extension View {
     public func mainBackground() -> some View {
         modifier(MainBackgroundModifier())
     }
+    
+    public func exerciseBackground(mode: ExerciseBackgroundModifier.ExerciseMode) -> some View {
+        modifier(ExerciseBackgroundModifier(mode: mode))
+    }
 }

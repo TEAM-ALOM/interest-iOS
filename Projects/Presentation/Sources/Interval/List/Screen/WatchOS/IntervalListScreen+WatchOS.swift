@@ -11,6 +11,6 @@ import SwiftUI
 
 public extension IntervalListScreen {
     var watchOS: some View {
-        IntervalListWatchScreen(viewModel: viewModel)
+        IntervalListWatchScreen(viewModel: listViewModel)
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 import SharedDesignSystem
 
 public struct IntervalListIPhoneScreen: View {
-    @State var viewModel: IntervalListViewModelWithRouter
+    @State var viewModel: IntervalListViewModel
 
     public var body: some View {
         ScrollView {

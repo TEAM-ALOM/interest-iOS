@@ -27,7 +27,7 @@ public struct IntervalScreen: View {
         self._router = .init(wrappedValue: router)
         self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies(intervalRouter: router))
         
-        self.intervalListScreen = .init(viewModel: intervalDIContainer.intervalListDependencies(intervalRouter: router))
+        self.intervalListScreen = .init(listViewModel: intervalDIContainer.intervalListDependencies(intervalRouter: router))
         
 //        self.addIntervalScreen = .init(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
                 

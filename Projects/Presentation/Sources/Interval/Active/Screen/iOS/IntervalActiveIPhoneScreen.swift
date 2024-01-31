@@ -7,11 +7,29 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 public struct IntervalActiveIPhoneScreen: View {
-    @ObservedObject var viewModel: IntervalActiveViewModel
+    @State var viewModel: IntervalActiveViewModel
     
     public var body: some View {
-        Text("여기는 아이폰")
+        VStack{
+            IntervalChangeView(viewModel: $viewModel)
+            Spacer(minLength: 20)
+            
+            HealthInfoView(viewModel: $viewModel)
+            Spacer(minLength: 20)
+            
+            StateManageView(viewModel: $viewModel)
+            Spacer(minLength: 20)
+        }
+        .padding(.horizontal,16)
+        .navigationTitle(viewModel.intervalItem.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
+        .onAppear(perform: {
+            viewModel.setupTimer()
+        })
+        
     }
 }

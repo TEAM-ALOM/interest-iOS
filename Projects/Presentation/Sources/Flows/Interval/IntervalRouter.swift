@@ -39,25 +39,29 @@ public final class IntervalRouter: FlowRouter {
     public func nextPresentationScreen() -> some View {
         nextPresentationRoute?.nextView(intervalDIContainer: self.intervalDIContainer, router: self)
     }
+    
+    public func removeScreenTransition() {
+        navigationPath.removeLast()
+    }
 }
 
 public extension IntervalRouter {
     enum NavigationRoute: Hashable {
         case intervalList
         case intervalDetail(IntervalModel)
-        case intervalActive
+        case intervalActive (IntervalModel)
        
         @ViewBuilder
         func nextView(intervalDIContainer: IntervalDIContainerInterface, router: IntervalRouter) -> some View {
             switch self {
             case .intervalList:
                 let viewModel = intervalDIContainer.intervalListDependencies(intervalRouter: router)
-                IntervalListScreen(viewModel: viewModel)
+                IntervalListScreen(listViewModel: viewModel)
             case .intervalDetail(let intervalItem):
                 let viewModel = intervalDIContainer.intervalDetailDependencies(intervalRouter: router, intervalItem: intervalItem)
                 IntervalDetailScreen(viewModel: viewModel)
-            case .intervalActive:
-                let viewModel = intervalDIContainer.intervalActiveDependencies(intervalRouter: router)
+            case .intervalActive(let intervalItem):
+                let viewModel = intervalDIContainer.intervalActiveDependencies(intervalRouter: router, intervalItem: intervalItem)
                 IntervalActiveScreen(viewModel: viewModel)
             }
         }

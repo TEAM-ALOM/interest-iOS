@@ -10,8 +10,8 @@ import SwiftUI
 
 public protocol IntervalDIContainerInterface {
     func intervalScreenDependencies(intervalRouter: IntervalRouter) -> IntervalViewModel
-    func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModelWithRouter
-    func intervalActiveDependencies(intervalRouter: IntervalRouter) -> IntervalActiveViewModelWithRouter
+    func intervalListDependencies(intervalRouter: IntervalRouter) -> IntervalListViewModel
+    func intervalActiveDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalActiveViewModel
     func addIntervalDependencies(intervalRouter: IntervalRouter, intervalItem: Binding<IntervalModel>?) -> AddIntervalViewModel
-    func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModelWithRouter
+    func intervalDetailDependencies(intervalRouter: IntervalRouter, intervalItem: IntervalModel) -> IntervalDetailViewModel
 }
