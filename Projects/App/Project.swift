@@ -18,6 +18,7 @@ let appTarget = Target(
     infoPlist: .file(path: .relativeToRoot("Projects/App/iOS/Resources/InterestApp-Info.plist")),
     sources: ["iOS/Sources/**"],
     resources: ["iOS/Resources/**"],
+    entitlements: .file(path: .relativeToRoot("Projects/App/iOS/Resources/InterestApp.entitlements")),
     dependencies: [
         .target(name: "InterestWatch"),
         .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
@@ -51,6 +52,7 @@ let watchExtensionTarget = Target(
     infoPlist: .file(path: .relativeToRoot("Projects/App/WatchExtension/Resources/InterestWatchExtension-Info.plist")),
     sources: ["WatchExtension/Sources/**"],
     resources: ["WatchExtension/Resources/**"],
+    entitlements: .file(path: .relativeToRoot("Projects/App/WatchExtension/Resources/InterestWatchExtension.entitlements")),
     dependencies: [
         .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
         .project(target: "Data", path: .relativeToRoot("Projects/Data")),
