@@ -25,7 +25,7 @@ public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
         }
     }
     
-    public func append(intervalId: UUID, record: IntervalRecordEntity) -> IntervalRecordEntity {
+    public func append(intervalId: UUID, record: IntervalRecordEntity) -> Void {
         return dataSource.append(
             intervalId: intervalId,
             heartRates: record.heartRates,
@@ -33,7 +33,7 @@ public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
             secondTime: record.secondTime,
             createDate: record.createDate,
             calorie: record.calorie
-        ).toEntity()
+        )
     }
     
     public func delete(intervalId: UUID, at recordId: UUID) -> Bool {

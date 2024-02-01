@@ -36,7 +36,6 @@ public protocol IntervalDataSourceInterface {
 }
 
 public final class IntervalDataSource: IntervalDataSourceInterface {
-
     private var context: ModelContext? { PersistentContainer.shared.context }
     
     public init() {}

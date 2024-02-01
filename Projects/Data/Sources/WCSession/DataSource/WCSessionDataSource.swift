@@ -24,7 +24,7 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
     
 #if os(iOS)
     public func checkSessionStatus() -> String {
-        return manager.checkSessionStatus()
+        return manager.checkSessionStatus().rawValue
     }
 #endif
     
