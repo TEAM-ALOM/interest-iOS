@@ -9,18 +9,19 @@ import Foundation
 import SwiftUI
 import SwiftData
 
+import Dependencies
+
 import Domain
 
-@Observable public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
+@Observable 
+public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
     private var router: IntervalRouter
     
     public init(
-        router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface,
-        intervalItem: Binding<IntervalModel>?
+        router: IntervalRouter
     ) {
         self.router = router
-        super.init(intervalUseCase: intervalUseCase, intervalItem: intervalItem)
+        super.init()
     }
 
 
@@ -31,10 +32,14 @@ import Domain
     }
 }
 
-@Observable public class AddIntervalViewModel {
-    let intervalUseCase: IntervalUseCaseInterface
-
+@Observable
+public class AddIntervalViewModel {
+    @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
     public let mode: Mode
+    
+    public init() {
+        self.mode = .add
+    }
 
     public var intervalItem: Binding<IntervalModel> {
         if let intervalItem = intervalItemOrNil {
@@ -47,15 +52,6 @@ import Domain
     private var _intervalItem: IntervalModel = .init()
     private var intervalItemOrNil: Binding<IntervalModel>?
 
-    public init(
-        intervalUseCase: IntervalUseCaseInterface,
-        intervalItem: Binding<IntervalModel>?
-    ) {
-        self.intervalUseCase = intervalUseCase
-        self.intervalItemOrNil = intervalItem
-
-        self.mode = intervalItem == nil ? .add : .edit
-    }
     
     func tapSaveButton() {
         let entity = IntervalModelMapper.toEntity(model: intervalItem.wrappedValue)

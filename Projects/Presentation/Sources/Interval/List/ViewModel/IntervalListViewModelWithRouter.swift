@@ -10,18 +10,18 @@ import SwiftUI
 
 import Domain
 
-@Observable public final class IntervalListViewModelWithRouter: IntervalListViewModel {
+@Observable 
+public final class IntervalListViewModelWithRouter: IntervalListViewModel {
     private var router: IntervalRouter
     
     private var addIntervalViewModelWithRouter: AddIntervalViewModelWithRouter
 
     public init(
-        router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface
+        router: IntervalRouter
     ) {
         self.router = router
-        self.addIntervalViewModelWithRouter = IntervalRouter.NavigationRoute.intervalActive(<#T##IntervalModel#>)
-        super.init(intervalUseCase: intervalUseCase)
+        self.addIntervalViewModelWithRouter = .init(router: router)
+        super.init()
     }
 
     override func tapStartButton(intervalItem: IntervalModel) {
@@ -41,6 +41,5 @@ import Domain
 
     func editIntervalScreen(selectedItem: IntervalModel) -> some View {
         return router.nextPresentationScreen()
-//        return router.sheetScreen(route: .editInterval(selectedItem))
     }
 }

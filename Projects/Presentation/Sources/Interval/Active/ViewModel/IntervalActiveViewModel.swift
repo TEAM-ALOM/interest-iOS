@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Dependencies
+
 import Domain
 import Combine
 
@@ -15,17 +17,10 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     private var router: IntervalRouter
     
     public init(
-        router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface,
-        intervalRecordUseCase : IntervalRecordUseCaseInterface,
-        intervalItem : IntervalModel
+        router: IntervalRouter
     ) {
         self.router = router
-        super.init(
-            intervalUseCase: intervalUseCase,
-            intervalItem: intervalItem,
-            intervalRecordUseCase: intervalRecordUseCase
-        )
+        super.init()
     }
     
     override func removeScreen() {
@@ -42,8 +37,8 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
 
 @Observable
 public class IntervalActiveViewModel: ObservableObject {
-    private let intervalUseCase: IntervalUseCaseInterface
-    private let intervalRecordUseCase : IntervalRecordUseCaseInterface
+    @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
     
     var intervalItem: IntervalModel
     
@@ -65,15 +60,9 @@ public class IntervalActiveViewModel: ObservableObject {
     private var timerSubscription: AnyCancellable?
     private let timerPublisher = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     
-    init(
-        intervalUseCase: IntervalUseCaseInterface,
-        intervalItem : IntervalModel,
-        intervalRecordUseCase : IntervalRecordUseCaseInterface
-    ) {
-        self.intervalUseCase = intervalUseCase
-        self.intervalItem = intervalItem
-        self.intervalRecordUseCase = intervalRecordUseCase
-        self.totalTime = TimeInterval(intervalItem.burningSecondTime)
+    init() { 
+        self.intervalItem = .init()
+        self.totalTime = 0
     }
     
     func removeScreen() {}
@@ -94,7 +83,7 @@ public class IntervalActiveViewModel: ObservableObject {
     func saveRecord(intervalRecordItem : IntervalModel){
         let newIntervalrecord = IntervalRecordEntity(
             id: intervalRecordItem.id,
-            heartRates: [136.0, 130.0], //HealthKit의 평균심박수
+            heartRates: [136.0, 130.0], // HealthKit의 평균심박수
             repeatedCount: currentCount,
             secondTime: Int(activeTime),
             createDate: .now,

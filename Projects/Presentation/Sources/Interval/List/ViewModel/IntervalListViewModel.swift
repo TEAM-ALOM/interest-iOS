@@ -8,18 +8,19 @@
 import Foundation
 import SwiftUI
 
+import Dependencies
+import Perception
+
 import Domain
 
-@Observable public class IntervalListViewModel {
-    private let intervalUseCase: IntervalUseCaseInterface
+@Observable
+public class IntervalListViewModel {
+    @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
     
     var intervalItems: [IntervalModel] = []
     var selectedItem: IntervalModel? = nil
 
-    public init(intervalUseCase: IntervalUseCaseInterface) {
-        self.intervalUseCase = intervalUseCase
-        //self.selectedItem = selectedItem
-    }
+    public init() { }
     
     func fetchIntervalItems() {
         intervalItems = intervalUseCase.fetches().map {

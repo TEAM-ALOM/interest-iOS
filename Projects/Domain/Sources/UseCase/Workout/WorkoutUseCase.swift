@@ -8,6 +8,8 @@
 import Foundation
 import HealthKit
 
+import Dependencies
+
 public protocol WorkoutUseCaseInterface {
     func requestAuthorization() -> Bool
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
@@ -24,21 +26,40 @@ public protocol WorkoutUseCaseInterface {
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
-    internal let repository: WorkoutRepositoryInterface
+    internal let workoutRepository: WorkoutRepositoryInterface
     
-    public init(repository: WorkoutRepositoryInterface) {
-        self.repository = repository
+    public init(workoutRepository: WorkoutRepositoryInterface) {
+        self.workoutRepository = workoutRepository
     }
     
     public func requestAuthorization() -> Bool {
-        return repository.requestAuthorization()
+        return workoutRepository.requestAuthorization()
     }
     
     public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
-        repository.subcribeHeartRate(updateHandler: updateHandler)
+        workoutRepository.subcribeHeartRate(updateHandler: updateHandler)
     }
     
     public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
-        repository.subcribeCalorie(updateHandler: updateHandler)
+        workoutRepository.subcribeCalorie(updateHandler: updateHandler)
+    }
+}
+
+extension WorkoutUseCase: TestDependencyKey {
+    public static var testValue: WorkoutUseCase = unimplemented()
+}
+
+public extension DependencyValues {
+    var workoutUseCase: WorkoutUseCase {
+        get { self[WorkoutUseCase.self] }
+        set { self[WorkoutUseCase.self] = newValue }
+    }
+}
+
+extension WorkoutUseCase {
+    public static func live(
+        workoutRepository: WorkoutRepositoryInterface
+    ) -> Self {
+        return Self(workoutRepository: workoutRepository)
     }
 }
