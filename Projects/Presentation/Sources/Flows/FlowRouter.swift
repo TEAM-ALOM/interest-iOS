@@ -10,7 +10,7 @@ import SwiftUI
 
 public protocol FlowRouter: Hashable {
     associatedtype NavigationRoute: Hashable
-    associatedtype PresentationRoute: Identifiable
+    associatedtype PresentationRoute: Hashable
     associatedtype NavigationScreen: View
     associatedtype PresentationScreen: View
 
@@ -18,10 +18,10 @@ public protocol FlowRouter: Hashable {
 
     var navigationPath: NavigationPath { get set }
 
-    var nextNavigationRoute: NavigationRoute { get }
+    var nextNavigationRoute: NavigationRoute? { get }
     var nextPresentationRoute: PresentationRoute? { get }
 
-    func triggerNavigationScreen(navigationRoute: NavigationRoute)
+    func triggerNavigationScreen(navigationRoute: NavigationRoute?)
     func triggerPresentationScreen(presentationRoute: PresentationRoute?)
 
     func nextNavigationScreen() -> NavigationScreen

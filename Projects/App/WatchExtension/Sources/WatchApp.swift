@@ -13,9 +13,7 @@ import Data
 struct WatchApp: App {
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            IntervalScreen(
-                intervalDIContainer: IntervalDIContainer(), 
-                routerDIContainer: RouterDIContainer())
+            IntervalScreen()
         }
     }
 }

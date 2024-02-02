@@ -10,22 +10,18 @@ import Domain
 import SharedDesignSystem
 
 public struct IntervalScreen: View {
-    let intervalDIContainer: IntervalDIContainerInterface
     @State var router: IntervalRouter
     @State var viewModel: IntervalViewModel
 
     let intervalListScreen: IntervalListScreen
 //    let addIntervalScreen: AddIntervalScreen
     
-    public init(
-        intervalDIContainer: IntervalDIContainerInterface,
-        routerDIContainer: RouterDIContainerInterface
-    ) {
-        let router = routerDIContainer.intervalRouter(intervalDIContainer: intervalDIContainer)
+    public init() {
+        self.router = IntervalRouter()
         
-        self.intervalDIContainer = intervalDIContainer
+//        self.intervalDIContainer = intervalDIContainer
         self._router = .init(wrappedValue: router)
-        self._viewModel = .init(wrappedValue: intervalDIContainer.intervalScreenDependencies(intervalRouter: router))
+        self._viewModel = .init(wrappedValue: intervalScreenDependencies(intervalRouter: router))
         
         self.intervalListScreen = .init(listViewModel: intervalDIContainer.intervalListDependencies(intervalRouter: router))
         

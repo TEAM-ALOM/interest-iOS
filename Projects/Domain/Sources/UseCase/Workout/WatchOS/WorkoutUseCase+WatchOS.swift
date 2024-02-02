@@ -11,19 +11,19 @@ import HealthKit
 #if os(watchOS)
 public extension WorkoutUseCase {
     func startWorkout(workoutType: HKWorkoutActivityType) {
-        repository.startWorkout(workoutType: workoutType)
+        workoutRepository.startWorkout(workoutType: workoutType)
     }
     
     func pauseWorkout() {
-        repository.pauseWorkout()
+        workoutRepository.pauseWorkout()
     }
     
     func resumeWorkout() {
-        repository.resumeWorkout()
+        workoutRepository.resumeWorkout()
     }
     
     func endWorkout() {
-        repository.endWorkout()
+        workoutRepository.endWorkout()
     }
 }
 #endif

@@ -11,7 +11,7 @@ import HealthKit
 #if os(iOS)
 public extension WorkoutUseCase {
     func fetchHealthKitData(type: HKQuantityTypeIdentifier) async {
-        await repository.fetchHealthKitData(type: type)
+        await workoutRepository.fetchHealthKitData(type: type)
     }
 }
 #endif

@@ -6,20 +6,23 @@
 //
 
 import SwiftUI
+
+import Dependencies
+
 import Domain
 
-@Observable public final class IntervalViewModel {
+@Observable 
+public final class IntervalViewModel {
+    @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    
     private let router: IntervalRouter
-    private let intervalUseCase: IntervalUseCaseInterface
     
     public var isBottomSheetPresent = false
     
     public init(
-        router: IntervalRouter,
-        intervalUseCase: IntervalUseCaseInterface
+        router: IntervalRouter
     ) {
         self.router = router
-        self.intervalUseCase = intervalUseCase
     }
 
     public func tapPlusButton() {

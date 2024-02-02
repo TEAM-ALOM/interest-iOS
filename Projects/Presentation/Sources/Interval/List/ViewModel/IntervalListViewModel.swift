@@ -14,8 +14,10 @@ import Perception
 import Domain
 
 @Observable
-public class IntervalListViewModel {
+public class IntervalListViewModel: Identifiable {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    
+    public let id: UUID = .init()
     
     var intervalItems: [IntervalModel] = []
     var selectedItem: IntervalModel? = nil
