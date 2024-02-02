@@ -8,6 +8,7 @@
 import ProjectDescription
 
 let SPM = SwiftPackageManagerDependencies([
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", .upToNextMajor(from: "1.2.1"))
 ])
 
 let dependencies = Dependencies(

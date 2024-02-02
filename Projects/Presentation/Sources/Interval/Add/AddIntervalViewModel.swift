@@ -29,7 +29,6 @@ import Domain
 
         router.triggerPresentationScreen(presentationRoute: nil)
     }
-
 }
 
 @Observable public class AddIntervalViewModel {

@@ -33,6 +33,7 @@ let thirdPartyLibTarget = Target(
     infoPlist: .default,
     sources: ["ThirdPartyLib/Sources/**"],
     dependencies: [
+        .external(name: "Dependencies")
     ],
     settings: nil
 )
