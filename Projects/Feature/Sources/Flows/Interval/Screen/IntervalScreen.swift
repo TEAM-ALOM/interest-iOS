@@ -82,8 +82,8 @@ private extension IntervalScreen {
                 intervalListScreen
             }
             .navigationTitle("인터레스트")
-            .navigationDestination(for: IntervalRouter.NavigationRoute.self) { _ in
-                viewModel.nextScreen()
+            .navigationDestination(for: IntervalRouter.NavigationRoute.self) { route in
+                route.nextView
             }
         }
         .tint(Color.keyColor)

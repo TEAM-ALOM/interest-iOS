@@ -27,12 +27,16 @@ public final class IntervalViewModel {
         self.router = router
         self.intervalListViewModel = IntervalListViewModelWithRouter(router: router)
     }
+    
+    public func send() {
+        
+    }
 
     public func tapPlusButton() {
         let addIntervalViewModel: AddIntervalViewModel = AddIntervalViewModelWithRouter(router: router)
         let addIntervalRoute: IntervalRouter.PresentationRoute = .addInterval(addIntervalViewModel)
         
-        addIntervalViewModel.send =  { [weak self] delegate in
+        addIntervalViewModel.delegateActionHandler =  { [weak self] delegate in
             guard let `self` = self else { return }
             switch delegate {
             case let .saved(entity):

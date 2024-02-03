@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
+import Domain
+
 struct ExercisePickerView: View {
-    @Binding var selectedExerciseType: ExerciseTypeModel
+    @Binding var selectedExerciseType: ExerciseType
     
     var body: some View {
         pickerView
@@ -17,7 +19,7 @@ struct ExercisePickerView: View {
     
     var pickerView: some View {
         HStack(spacing: 30) {
-            ForEach(ExerciseTypeModel.allCases, id: \.self) { exerciseType in
+            ForEach(ExerciseType.allCases, id: \.self) { exerciseType in
                 Button(action: {
                     self.selectedExerciseType = exerciseType
                 }, label: {

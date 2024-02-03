@@ -10,7 +10,7 @@ import Foundation
 public struct IntervalEntity {
     public let id: UUID
     
-    public let title: String
+    public var title: String
     public var exerciseType: ExerciseType
     
     public var burningSecondTime: Int

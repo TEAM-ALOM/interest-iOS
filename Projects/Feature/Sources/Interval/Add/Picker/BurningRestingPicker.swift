@@ -14,7 +14,7 @@ struct BurningRestingPicker: View {
     
     var isBurning: Bool
     
-    @Binding var selection: HeartIntervalTypeModel
+    @Binding var selection: HeartIntervalType
     
     @Binding var totalTime : Int
     @State private var hours : Int = 0
@@ -54,7 +54,7 @@ struct BurningRestingPicker: View {
     }
     
     @ViewBuilder
-    func pickTimeView (hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
+    func pickTimeView(hour:Binding<Int>, minute:Binding<Int>, second:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
         
         VStack {
             Button(action: {
@@ -159,7 +159,7 @@ struct BurningRestingPicker: View {
             
             Divider()
             
-            if(isSectionExpanded){
+            if(isSectionExpanded) {
                 Picker("", selection: selection) {
                     Text("1구간 (123~134BPM)").tag(HeartIntervalTypeModel.one)
                     Text("2구간 (135~148BPM)").tag(HeartIntervalTypeModel.two)
