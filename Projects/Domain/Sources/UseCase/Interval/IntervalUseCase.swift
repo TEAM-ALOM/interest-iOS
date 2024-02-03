@@ -44,22 +44,3 @@ public final class IntervalUseCase: IntervalUseCaseInterface {
         return intervalRepository.delete(at: id)
     }
 }
-
-extension IntervalUseCase: TestDependencyKey {
-    public static var testValue: IntervalUseCase = unimplemented()
-}
-
-public extension DependencyValues {
-    var intervalUseCase: IntervalUseCase {
-        get { self[IntervalUseCase.self] }
-        set { self[IntervalUseCase.self] = newValue }
-    }
-}
-
-extension IntervalUseCase {
-    public static func live(
-        intervalRepository: IntervalRepositoryInterface
-    ) -> Self {
-        return Self(intervalRepository: intervalRepository)
-    }
-}

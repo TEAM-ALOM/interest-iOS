@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Domain
+import Dependencies
 import SharedDesignSystem
 
 public struct IntervalScreen: View {
@@ -14,18 +15,17 @@ public struct IntervalScreen: View {
     @State var viewModel: IntervalViewModel
 
     let intervalListScreen: IntervalListScreen
-//    let addIntervalScreen: AddIntervalScreen
     
-    public init() {
-        self.router = IntervalRouter()
-        
-//        self.intervalDIContainer = intervalDIContainer
+    public init(
+        router: IntervalRouter,
+        viewModel: IntervalViewModel
+    ) {
         self._router = .init(wrappedValue: router)
-        self._viewModel = .init(wrappedValue: intervalScreenDependencies(intervalRouter: router))
+        self._viewModel = .init(wrappedValue: viewModel)
         
-        self.intervalListScreen = .init(listViewModel: intervalDIContainer.intervalListDependencies(intervalRouter: router))
-        
-//        self.addIntervalScreen = .init(viewModel: intervalDIContainer.addIntervalDependencies(intervalRouter: router))
+        self.intervalListScreen = .init(
+            listViewModel: viewModel.intervalListViewModel
+        )
                 
 #if os(iOS)
         UIRefreshControl.appearance().tintColor = UIColor(Color.keyColor)

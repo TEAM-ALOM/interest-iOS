@@ -25,18 +25,24 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
     }
 
     override func tapStartButton(intervalItem: IntervalModel) {
-            super.tapStartButton(intervalItem: intervalItem)
-            router.triggerNavigationScreen(navigationRoute: .intervalActive(intervalItem))
+        super.tapStartButton(intervalItem: intervalItem)
+        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router)
+        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+        
+        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
     
     override func tapIntervalDetailPageButton(intervalItem: IntervalModel) {
         super.tapIntervalDetailPageButton(intervalItem: intervalItem)
-        router.triggerNavigationScreen(navigationRoute: .intervalDetail(intervalItem))
+        let intervalDetailViewModel: IntervalDetailViewModel = IntervalDetailViewModelWithRouter(router: router)
+        let intervalDetailRoute: IntervalRouter.NavigationRoute = .intervalDetail(intervalDetailViewModel)
+        
+        router.triggerNavigationScreen(navigationRoute: intervalDetailRoute)
     }
 
     override func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
         super.tapIntervalEditButton(selectedItem: selectedItem)
-        router.triggerPresentationScreen(presentationRoute: .editInterval(selectedItem))
+//        router.triggerPresentationScreen(presentationRoute: .editInterval(selectedItem))
     }
 
     func editIntervalScreen(selectedItem: IntervalModel) -> some View {

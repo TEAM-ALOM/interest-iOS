@@ -7,6 +7,9 @@
 
 import Foundation
 import SwiftData
+
+import Dependencies
+
 import Domain
 
 public protocol IntervalDataSourceInterface {
@@ -119,4 +122,19 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
             return false
         }
     }
+}
+
+extension IntervalDataSource: TestDependencyKey {
+    public static var testValue: IntervalDataSource = unimplemented()
+}
+
+public extension DependencyValues {
+    var intervalDataSource: IntervalDataSource {
+        get { self[IntervalDataSource.self] }
+        set { self[IntervalDataSource.self] = newValue }
+    }
+}
+
+extension IntervalDataSource: DependencyKey {
+    public static var liveValue: IntervalDataSource = .init()
 }

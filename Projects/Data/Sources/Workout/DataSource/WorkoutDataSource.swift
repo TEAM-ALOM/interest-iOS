@@ -6,7 +6,9 @@
 //
 
 import Foundation
-import Combine
+
+import Dependencies
+
 import HealthKit
 
 public protocol WorkoutDataSourceInterface {
@@ -42,4 +44,19 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
     public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
         manager.subcribeCalorie(updateHandler: updateHandler)
     }
+}
+
+extension WorkoutDataSource: TestDependencyKey {
+    public static var testValue: WorkoutDataSource = unimplemented()
+}
+
+public extension DependencyValues {
+    var workoutDataSource: WorkoutDataSource {
+        get { self[WorkoutDataSource.self] }
+        set { self[WorkoutDataSource.self] = newValue }
+    }
+}
+
+extension WorkoutDataSource: DependencyKey {
+    public static var liveValue: WorkoutDataSource = .init(manager: .init())
 }

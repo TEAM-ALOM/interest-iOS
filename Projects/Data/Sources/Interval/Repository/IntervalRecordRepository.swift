@@ -6,12 +6,15 @@
 //
 
 import Foundation
+
+import Dependencies
+
 import Domain
 
 public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
-    private let dataSource: IntervalRecordDataSource
+    private let dataSource: IntervalRecordDataSourceInterface
     
-    public init(dataSource: IntervalRecordDataSource) {
+    public init(dataSource: IntervalRecordDataSourceInterface) {
         self.dataSource = dataSource
     }
     
@@ -39,4 +42,21 @@ public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
     public func delete(intervalId: UUID, at recordId: UUID) -> Bool {
         return dataSource.delete(intervalId: intervalId, at: recordId)
     }
+}
+
+extension IntervalRecordRepository: TestDependencyKey {
+    public static var testValue: IntervalRecordRepository = unimplemented()
+}
+
+public extension DependencyValues {
+    var intervalRecordRepository: IntervalRecordRepository {
+        get { self[IntervalRecordRepository.self] }
+        set { self[IntervalRecordRepository.self] = newValue }
+    }
+}
+
+extension IntervalRecordRepository: DependencyKey {
+    public static var liveValue: IntervalRecordRepository = .init(
+        dataSource: DependencyValues.live.intervalRecordDataSource
+    )
 }

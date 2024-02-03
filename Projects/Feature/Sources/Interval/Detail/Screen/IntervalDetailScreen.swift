@@ -9,10 +9,10 @@ import SwiftUI
 import SharedDesignSystem
 
 struct IntervalDetailScreen: View {
-    @StateObject private var viewModel: IntervalDetailViewModel
+    @State private var viewModel: IntervalDetailViewModel
     
     init(viewModel: IntervalDetailViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {

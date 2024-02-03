@@ -39,22 +39,3 @@ public final class IntervalRecordUseCase: IntervalRecordUseCaseInterface {
         return intervalRecordRepository.delete(intervalId: intervalId, at: recordId)
     }
 }
-
-extension IntervalRecordUseCase: TestDependencyKey {
-    public static var testValue: IntervalRecordUseCase = unimplemented()
-}
-
-public extension DependencyValues {
-    var intervalRecordUseCase: IntervalRecordUseCase {
-        get { self[IntervalRecordUseCase.self] }
-        set { self[IntervalRecordUseCase.self] = newValue }
-    }
-}
-
-extension IntervalRecordUseCase {
-    public static func live(
-        intervalRecordRepository: IntervalRecordRepositoryInterface
-    ) -> Self {
-        return Self(intervalRecordRepository: intervalRecordRepository)
-    }
-}

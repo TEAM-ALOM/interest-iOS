@@ -9,7 +9,7 @@ import SwiftUI
 import SharedDesignSystem
 
 public struct IntervalRecordCellView: View {
-    @ObservedObject private var intervalDetailViewModel: IntervalDetailViewModel
+    @State private var intervalDetailViewModel: IntervalDetailViewModel
     
     @State private var averageHeartRate: Double = 0
     @State private var calorie: Double = 0
@@ -21,7 +21,7 @@ public struct IntervalRecordCellView: View {
     private let intervalRecordModel: IntervalRecordModel
     
     init(intervalDetailViewModel: IntervalDetailViewModel, intervalRecordModel: IntervalRecordModel) {
-        self.intervalDetailViewModel = intervalDetailViewModel
+        self._intervalDetailViewModel = .init(wrappedValue: intervalDetailViewModel)
         self.intervalRecordModel = intervalRecordModel
     }
     
