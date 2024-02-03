@@ -25,6 +25,10 @@ public final class IntervalViewModel {
         self.router = router
         self.intervalListViewModel = IntervalListViewModelWithRouter(router: router)
     }
+    
+    public func send() {
+        
+    }
 
     public func tapPlusButton() {
         let addIntervalViewModel: AddIntervalViewModel = AddIntervalViewModelWithRouter(router: router)

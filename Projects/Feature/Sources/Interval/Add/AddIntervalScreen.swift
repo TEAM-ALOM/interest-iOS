@@ -66,7 +66,7 @@ private extension AddIntervalScreen {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            TextField("달리기 인터벌", text: $viewModel.intervalEntity.title)
+            TextField("달리기 인터벌", text: $viewModel.interval.title)
                 .padding(.all, 12)
                 .cornerRadius(10)
             
@@ -75,7 +75,7 @@ private extension AddIntervalScreen {
     private var exercisePickerView: some View {
         HStack{
             ExercisePickerView(
-                selectedExerciseType: $viewModel.intervalEntity.exerciseType
+                selectedExerciseType: $viewModel.interval.exerciseType
             )
         }
         .padding(.vertical, 10)
@@ -85,7 +85,7 @@ private extension AddIntervalScreen {
         VStack{
             RepeatPicker(
                 isRepeat: false,
-                repeatCount: $viewModel.intervalEntity.repeatCount
+                repeatCount: $viewModel.interval.repeatCount
             )
         }
     }
@@ -94,14 +94,14 @@ private extension AddIntervalScreen {
         VStack{
             BurningRestingPicker(
                 isBurning: true,
-                heartType: $viewModel.intervalEntity.burningHeartIntervalType,
-                totalTime: $viewModel.intervalEntity.burningSecondTime
+                heartType: $viewModel.interval.burningHeartIntervalType,
+                totalTime: $viewModel.interval.burningSecondTime
             )
             
             BurningRestingPicker(
                 isBurning: false,
-                heartType: $viewModel.intervalEntity.restingHeartIntervalType,
-                totalTime: $viewModel.intervalEntity.restingSecondTime
+                heartType: $viewModel.interval.restingHeartIntervalType,
+                totalTime: $viewModel.interval.restingSecondTime
             )
         }
     }
