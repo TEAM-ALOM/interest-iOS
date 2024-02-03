@@ -11,8 +11,8 @@ import SwiftUI
 public protocol IntervalListViewModelInterface {
     func append(interval: IntervalEntity)
     func fetchIntervalItems()
-    func tapStartButton(intervalItem: IntervalEntity)
-    func tapIntervalDetailPageButton(intervalItem: IntervalEntity)
+    func tapStartButton(interval: IntervalEntity)
+    func tapIntervalDetailPageButton(interval: IntervalEntity)
     func tapIntervalDeleteButton(at id: UUID)
-    func tapIntervalEditButton(selectedItem: Binding<IntervalEntity>)
+    func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>)
 }

@@ -12,11 +12,11 @@ import Domain
 struct StartButton: View {
     var viewModel: IntervalListViewModel
         
-    public var intervalItem: IntervalEntity
+    public var interval: IntervalEntity
 
     var body : some View {
             Button(action: {
-                viewModel.tapStartButton(intervalItem: intervalItem)
+                viewModel.tapStartButton(interval: interval)
             }) {
                 Image(systemName: "play.circle.fill")
                     .resizable()
