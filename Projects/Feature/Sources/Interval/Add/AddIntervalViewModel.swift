@@ -37,6 +37,16 @@ public class AddIntervalViewModel {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
     public let mode: Mode
     
+    public enum Action {
+        case delegate(Delegate)
+        
+        public enum Delegate {
+            case saved(IntervalEntity)
+        }
+    }
+    
+    public var send: ((Action.Delegate) -> ())?
+    
     public init() {
         self.mode = .add
     }
@@ -58,9 +68,10 @@ public class AddIntervalViewModel {
 
         switch self.mode {
         case .add:
-            intervalUseCase.save(interval: entity)
+            let interval = intervalUseCase.save(interval: entity)
+            send?(.saved(entity))
         case .edit:
-            intervalUseCase.update(at: entity.id, to: entity)
+            let _ = intervalUseCase.update(at: entity.id, to: entity)
         }
     }
 }

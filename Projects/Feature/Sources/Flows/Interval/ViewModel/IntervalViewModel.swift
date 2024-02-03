@@ -31,6 +31,15 @@ public final class IntervalViewModel {
     public func tapPlusButton() {
         let addIntervalViewModel: AddIntervalViewModel = AddIntervalViewModelWithRouter(router: router)
         let addIntervalRoute: IntervalRouter.PresentationRoute = .addInterval(addIntervalViewModel)
+        
+        addIntervalViewModel.send =  { [weak self] delegate in
+            guard let `self` = self else { return }
+            switch delegate {
+            case let .saved(entity):
+                self.intervalListViewModel.append(interval: entity)
+            }
+            
+        }
         router.triggerPresentationScreen(presentationRoute: addIntervalRoute)
     }
 
