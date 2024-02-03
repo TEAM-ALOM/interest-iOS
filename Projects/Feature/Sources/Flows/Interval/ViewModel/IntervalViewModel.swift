@@ -48,8 +48,4 @@ public final class IntervalViewModel {
         let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
         router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
-
-    public func nextScreen() -> some View {
-        router.nextNavigationScreen()
-    }
 }
