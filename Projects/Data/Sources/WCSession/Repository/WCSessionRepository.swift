@@ -6,7 +6,9 @@
 //
 
 import Foundation
-import Combine
+
+import Dependencies
+
 import Domain
 
 public final class WCSessionRepository: WCSessionRepositoryInterface {
@@ -29,4 +31,19 @@ public final class WCSessionRepository: WCSessionRepositoryInterface {
     public func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void) {
         dataSource.observeReceiveMessageValue(key: key, valueHandler: valueHandler)
     }
+}
+
+extension WCSessionRepository: TestDependencyKey {
+    public static var testValue: WCSessionRepository = unimplemented()
+}
+
+public extension DependencyValues {
+    var wcSessionRepository: WCSessionRepository {
+        get { self[WCSessionRepository.self] }
+        set { self[WCSessionRepository.self] = newValue }
+    }
+}
+
+extension WCSessionRepository: DependencyKey {
+    public static var liveValue: WCSessionRepository = .init(dataSource: DependencyValues.live.wcSessionDataSource)
 }

@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
-import Presentation
+
+import Dependencies
+
+import Feature
 import Data
 
 @main
 public struct RootApp: App {
+    let intervalRouter = IntervalRouter()
+    
     public init() { }
     
     public var body: some Scene {
         WindowGroup {
             IntervalScreen(
-                intervalDIContainer: IntervalDIContainer(),
-                routerDIContainer: RouterDIContainer()
+                router: intervalRouter,
+                viewModel: IntervalViewModel(router: intervalRouter)
             )
             .modelContainer(for: [
                 IntervalPersistentModel.self,

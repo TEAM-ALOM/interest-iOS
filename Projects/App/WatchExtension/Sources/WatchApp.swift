@@ -6,16 +6,19 @@
 //
 
 import SwiftUI
-import Presentation
+
+import Dependencies
+
+import Feature
 import Data
 
 @main
 struct WatchApp: App {
+    let intervalRouter: IntervalRouter = .init()
+    
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            IntervalScreen(
-                intervalDIContainer: IntervalDIContainer(), 
-                routerDIContainer: RouterDIContainer())
+            IntervalScreen(router: intervalRouter, viewModel: .init(router: intervalRouter))
         }
     }
 }

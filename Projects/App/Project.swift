@@ -21,8 +21,7 @@ let appTarget = Target(
     entitlements: .file(path: .relativeToRoot("Projects/App/iOS/Resources/InterestApp.entitlements")),
     dependencies: [
         .target(name: "InterestWatch"),
-        .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "Data", path: .relativeToRoot("Projects/Data")),
+        .project(target: "Feature", path: .relativeToRoot("Projects/Feature"))
     ],
     settings: nil
 )
@@ -54,8 +53,7 @@ let watchExtensionTarget = Target(
     resources: ["WatchExtension/Resources/**"],
     entitlements: .file(path: .relativeToRoot("Projects/App/WatchExtension/Resources/InterestWatchExtension.entitlements")),
     dependencies: [
-        .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "Data", path: .relativeToRoot("Projects/Data")),
+        .project(target: "Feature", path: .relativeToRoot("Projects/Feature"))
     ],
     settings: nil
 )

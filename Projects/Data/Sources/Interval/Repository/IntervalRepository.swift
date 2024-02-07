@@ -6,6 +6,9 @@
 //
 
 import Foundation
+
+import Dependencies
+
 import Domain
 
 public final class IntervalRepository: IntervalRepositoryInterface {
@@ -54,4 +57,25 @@ public final class IntervalRepository: IntervalRepositoryInterface {
     public func delete(at id: UUID) -> Bool {
         return dataSource.delete(at: id)
     }
+}
+
+extension IntervalRepository: TestDependencyKey {
+    public static var testValue: IntervalRepository = unimplemented()
+}
+
+public extension DependencyValues {
+    var intervalRepository: IntervalRepository {
+        get { self[IntervalRepository.self] }
+        set { self[IntervalRepository.self] = newValue }
+    }
+}
+
+extension IntervalRepository {
+    public static func live(dataSource: IntervalDataSourceInterface) -> Self {
+        return Self(dataSource: dataSource)
+    }
+}
+
+extension IntervalRepository: DependencyKey {
+    public static var liveValue: IntervalRepository = .init(dataSource: DependencyValues.live.intervalDataSource)
 }

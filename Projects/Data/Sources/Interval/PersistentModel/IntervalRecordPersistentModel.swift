@@ -20,15 +20,17 @@ public class IntervalRecordPersistentModel {
     public var createDate: Date = Date.now
     public var calorie: Int = 0
     
-    public var interval: IntervalPersistentModel?
+    @Relationship public var interval: IntervalPersistentModel?
     
     public init(
+        interval: IntervalPersistentModel,
         heartRates: [Double],
         repeatedCount: Int,
         secondTime: Int,
         createDate: Date,
         calorie: Int
     ) {
+        self.interval = interval
         self.heartRates = heartRates
         self.repeatedCount = repeatedCount
         self.secondTime = secondTime

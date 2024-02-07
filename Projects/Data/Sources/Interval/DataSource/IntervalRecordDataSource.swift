@@ -6,6 +6,9 @@
 //
 
 import Foundation
+
+import Dependencies
+
 import SwiftData
 
 public protocol IntervalRecordDataSourceInterface {
@@ -17,12 +20,12 @@ public protocol IntervalRecordDataSourceInterface {
                 secondTime: Int,
                 createDate: Date,
                 calorie: Int
-    ) -> IntervalRecordPersistentModel
+    ) -> Void
     func delete(intervalId: UUID, at recordID: UUID) -> Bool
 }
 
 public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
-    private var context: ModelContext? = PersistentContainer.shared.context
+    private var context: ModelContext? { PersistentContainer.shared.context }
     
     public init() {}
     
@@ -57,19 +60,19 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
                        secondTime: Int,
                        createDate: Date,
                        calorie: Int
-    ) -> IntervalRecordPersistentModel {
-        let interval = self.intervalFetch(at: id)
-        let record: IntervalRecordPersistentModel = .init(
-            heartRates: heartRates,
-            repeatedCount: repeatedCount,
-            secondTime: secondTime,
-            createDate: createDate,
-            calorie: calorie
-        )
-        interval?.records?.append(record)
-        try? context?.save()
-        
-        return record
+    ) -> Void {
+        if let interval = self.intervalFetch(at: id) {
+            let record: IntervalRecordPersistentModel = .init(
+                interval: interval,
+                heartRates: heartRates,
+                repeatedCount: repeatedCount,
+                secondTime: secondTime,
+                createDate: createDate,
+                calorie: calorie
+            )
+            context?.insert(record)
+            try? context?.save()
+        }
     }
     
     public func delete(intervalId: UUID, at recordID: UUID) -> Bool {
@@ -84,4 +87,19 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
             return false
         }
     }
+}
+
+extension IntervalRecordDataSource: TestDependencyKey {
+    public static var testValue: IntervalRecordDataSource = unimplemented()
+}
+
+public extension DependencyValues {
+    var intervalRecordDataSource: IntervalRecordDataSource {
+        get { self[IntervalRecordDataSource.self] }
+        set { self[IntervalRecordDataSource.self] = newValue }
+    }
+}
+
+extension IntervalRecordDataSource: DependencyKey {
+    public static var liveValue: IntervalRecordDataSource = .init()
 }
