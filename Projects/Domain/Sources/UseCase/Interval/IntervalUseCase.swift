@@ -32,6 +32,7 @@ public final class IntervalUseCase: IntervalUseCaseInterface {
         return intervalRepository.fetches()
     }
     
+    @discardableResult
     public func save(interval: IntervalEntity) -> Bool {
         return intervalRepository.save(interval: interval)
     }

@@ -82,6 +82,5 @@ public class IntervalListViewModel: Identifiable {
     }
     
     func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
-//        self.selectedItem = selectedItem
     }
 }

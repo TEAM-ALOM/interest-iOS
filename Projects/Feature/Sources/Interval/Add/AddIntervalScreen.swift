@@ -46,7 +46,7 @@ public struct AddIntervalScreen: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        viewModel.tapSaveButton()
+                        viewModel.send(action: .saveButtonTapped)
                         dismiss()
                     }, label: {
                         Text("저장")
@@ -63,7 +63,7 @@ public struct AddIntervalScreen: View {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            TextField("달리기 인터벌", text: viewModel.intervalItem.title)
+            TextField("달리기 인터벌", text: $viewModel.interval.title)
                 .padding(.all,12)
                 .background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
@@ -72,22 +72,30 @@ public struct AddIntervalScreen: View {
     }
     private var exercise: some View {
         HStack{
-            ExercisePickerView(selectedExerciseType: viewModel.intervalItem.exerciseType)
+            ExercisePickerView(selectedExerciseType: $viewModel.interval.exerciseType)
         }
         .padding(.vertical,10)
     }
     
     private var repeatCount: some View {
         VStack{
-            RepeatPicker(isRepeat: false, repeatCount: viewModel.intervalItem.repeatCount)
+            RepeatPicker(isRepeat: false, repeatCount: $viewModel.interval.repeatCount)
         }
     }
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, selection: viewModel.intervalItem.burningHeartIntervalType, totalTime: viewModel.intervalItem.burningSecondTime)
-
-            BurningRestingPicker(isBurning: false, selection: viewModel.intervalItem.restingHeartIntervalType, totalTime: viewModel.intervalItem.restingSecondTime)
+//            BurningRestingPicker(
+//                isBurning: true,
+//                selection: $viewModel.interval.burningHeartIntervalType,
+//                totalTime: $viewModel.interval.burningSecondTime
+//            )
+//
+//            BurningRestingPicker(
+//                isBurning: false,
+//                selection: $viewModel.intervalItem.restingHeartIntervalType,
+//                totalTime: $viewModel.intervalItem.restingSecondTime
+//            )
         }
     }
 }

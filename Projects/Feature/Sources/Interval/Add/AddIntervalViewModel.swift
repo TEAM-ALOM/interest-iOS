@@ -23,62 +23,71 @@ public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         self.router = router
         super.init()
     }
-
-
-    override func tapSaveButton() {
-        super.tapSaveButton()
-
-        router.triggerPresentationScreen(presentationRoute: nil)
+    
+    func actionMutation(action: Action) {
+        switch action {
+        case .inner(.saveButtonTapped):
+            router.triggerPresentationScreen(presentationRoute: nil)
+        default: break
+        }
     }
 }
 
 @Observable
 public class AddIntervalViewModel {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
-    public let mode: Mode
-    
     public enum Action {
-        case delegate(Delegate)
-        
-        public enum Delegate {
-            case saved(IntervalEntity)
-        }
+        case inner(InnerAction)
+        case outer(OuterAction)
+        case delegate(DelegateAction)
     }
     
-    public var send: ((Action.Delegate) -> ())?
+    public enum InnerAction {
+        case onAppear
+        case saveButtonTapped
+        case titleChanged(String)
+    }
+    
+    public enum OuterAction { }
+    
+    public enum DelegateAction {
+        case saved(IntervalEntity)
+    }
+    
+    public var actionHandler: ((Action) -> ())?
+    public var innerActionHandler: (InnerAction) -> ()
+    public var delegateActionHandler: ((DelegateAction) -> ())?
+    
+    public var interval: IntervalEntity = .init(id: .init())
     
     public init() {
-        self.mode = .add
+        self.innerActionHandler = { self.innerActionMutation(action: $0) }
     }
-
-    public var intervalItem: Binding<IntervalModel> {
-        if let intervalItem = intervalItemOrNil {
-            return intervalItem
-        } else {
-            return .init(get: { self._intervalItem }, set: { self._intervalItem = $0 })
-        }
-    }
-
-    private var _intervalItem: IntervalModel = .init()
-    private var intervalItemOrNil: Binding<IntervalModel>?
-
     
-    func tapSaveButton() {
-        let entity = IntervalModelMapper.toEntity(model: intervalItem.wrappedValue)
-
-        switch self.mode {
-        case .add:
-            let interval = intervalUseCase.save(interval: entity)
-            send?(.saved(entity))
-        case .edit:
-            let _ = intervalUseCase.update(at: entity.id, to: entity)
-        }
+    public func send(action: InnerAction) {
+        self.innerActionHandler(action)
+        self.actionHandler?(.inner(action))
     }
-}
-
-extension AddIntervalViewModel {
-    public enum Mode {
-        case add
-        case edit
+    
+    public func send(action: DelegateAction) {
+        self.delegateActionHandler?(action)
+        self.actionHandler?(.delegate(action))
+    }
+    
+    private func innerActionMutation(action: InnerAction) {
+        self.innerActionHandler = { [weak self] action in
+            guard let `self` = self else { return }
+            switch action {
+            case .onAppear:
+                break
+            case .saveButtonTapped:
+                intervalUseCase.save(interval: interval)
+                send(action: .saved(interval))
+                break
+            case let .titleChanged(title):
+                interval.title = title
+                break
+            }
+        }
     }
 }
