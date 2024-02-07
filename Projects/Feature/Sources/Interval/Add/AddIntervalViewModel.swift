@@ -45,6 +45,7 @@ public class AddIntervalViewModel {
     public enum InnerAction {
         case onAppear
         case saveButtonTapped
+        case titleChanged(String)
     }
     
     public enum OuterAction { }
@@ -82,6 +83,9 @@ public class AddIntervalViewModel {
             case .saveButtonTapped:
                 intervalUseCase.save(interval: interval)
                 send(action: .saved(interval))
+                break
+            case let .titleChanged(title):
+                interval.title = title
                 break
             }
         }

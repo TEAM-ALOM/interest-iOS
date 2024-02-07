@@ -48,7 +48,7 @@ struct BurningRestingPicker: View {
                     calculateTime()
                 }
             
-            pickIntervalView(selection: $selection, isExpanded: $isSectionExpanded)
+//            pickIntervalView(selection: $selection, isExpanded: $isSectionExpanded)
         }
         .onAppear(perform: calculateTime)
     }

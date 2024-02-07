@@ -19,23 +19,23 @@ struct ExercisePickerView: View {
     
     var pickerView: some View {
         HStack(spacing: 30) {
-            ForEach(ExerciseType.allCases, id: \.self) { exerciseType in
-                Button(action: {
-                    self.selectedExerciseType = exerciseType
-                }, label: {
-                    ZStack{
-                        Circle()
-                            .fill(self.selectedExerciseType == exerciseType  ? Color.keyColor : Color.clear)
-                            .frame(width: 42,height: 42)
-                        
-                        Image(systemName: exerciseType.systemImageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 32, height: 32)
-                            .foregroundColor(Color.keyColor50)
-                    }
-                })
-            }
+//            ForEach(ExerciseType.allCases, id: \.self) { exerciseType in
+//                Button(action: {
+//                    self.selectedExerciseType = exerciseType
+//                }, label: {
+//                    ZStack{
+//                        Circle()
+//                            .fill(self.selectedExerciseType == exerciseType  ? Color.keyColor : Color.clear)
+//                            .frame(width: 42,height: 42)
+//                        
+//                        Image(systemName: exerciseType.systemImageName)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 32, height: 32)
+//                            .foregroundColor(Color.keyColor50)
+//                    }
+//                })
+//            }
         }
     }
 }

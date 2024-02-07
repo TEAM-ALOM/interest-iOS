@@ -85,17 +85,17 @@ public struct AddIntervalScreen: View {
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(
-                isBurning: true,
-                selection: $viewModel.interval.burningHeartIntervalType,
-                totalTime: $viewModel.interval.burningSecondTime
-            )
-
-            BurningRestingPicker(
-                isBurning: false,
-                selection: viewModel.intervalItem.restingHeartIntervalType,
-                totalTime: viewModel.intervalItem.restingSecondTime
-            )
+//            BurningRestingPicker(
+//                isBurning: true,
+//                selection: $viewModel.interval.burningHeartIntervalType,
+//                totalTime: $viewModel.interval.burningSecondTime
+//            )
+//
+//            BurningRestingPicker(
+//                isBurning: false,
+//                selection: $viewModel.intervalItem.restingHeartIntervalType,
+//                totalTime: $viewModel.intervalItem.restingSecondTime
+//            )
         }
     }
 }
