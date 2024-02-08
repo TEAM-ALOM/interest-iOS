@@ -10,15 +10,18 @@ import SwiftUI
 import SwiftData
 import SharedDesignSystem
 import Domain
+import Presentation
 
 public struct AddIntervalScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
     @State var viewModel: AddIntervalViewModel
-    
+    @State var intervalEntity : IntervalEntity
+
     public init(viewModel: AddIntervalViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
+        self._intervalEntity = .init(initialValue: IntervalEntity(id: UUID()))
     }
     
     public var body: some View {
@@ -72,22 +75,23 @@ public struct AddIntervalScreen: View {
     }
     private var exercise: some View {
         HStack{
-            ExercisePickerView(selectedExerciseType: viewModel.intervalItem.exerciseType)
+            ExercisePickerView(selectedExerciseType: $intervalEntity.exerciseType)
+//            ExercisePickerView(selectedExerciseType: viewModel.intervalItem.exerciseType)
         }
         .padding(.vertical,10)
     }
     
     private var repeatCount: some View {
         VStack{
-            RepeatPicker(isRepeat: false, repeatCount: viewModel.intervalItem.repeatCount)
+            RepeatPicker(isRepeat: false, repeatCount: $intervalEntity.repeatCount)
         }
     }
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, selection: viewModel.intervalItem.burningHeartIntervalType, totalTime: viewModel.intervalItem.burningSecondTime)
-
-            BurningRestingPicker(isBurning: false, selection: viewModel.intervalItem.restingHeartIntervalType, totalTime: viewModel.intervalItem.restingSecondTime)
+            BurningRestingPicker(isBurning: true, heartType: $intervalEntity.burningHeartIntervalType, totalTime: $intervalEntity.burningSecondTime)
+            
+            BurningRestingPicker(isBurning: false, heartType: $intervalEntity.restingHeartIntervalType, totalTime: $intervalEntity.restingSecondTime)
         }
     }
 }

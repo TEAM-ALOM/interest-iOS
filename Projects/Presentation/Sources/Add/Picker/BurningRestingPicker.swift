@@ -8,15 +8,16 @@
 import Foundation
 import SwiftUI
 import Domain
+import SharedDesignSystem
 
-struct BurningRestingPicker: View {
+public struct BurningRestingPicker: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
-    var isBurning: Bool
+    public var isBurning: Bool
     
-    @Binding var selection: HeartIntervalTypeModel
-    
-    @Binding var totalTime : Int
+    @Binding public var heartType : HeartIntervalType
+        
+    @Binding public var totalTime : Int
     @State private var hours : Int = 0
     @State private var minutes : Int = 0
     @State private var seconds : Int = 0
@@ -24,7 +25,13 @@ struct BurningRestingPicker: View {
     @State private var isTimeExpanded: Bool = false
     @State private var isSectionExpanded: Bool = false
     
-    var body: some View {
+    public init(isBurning: Bool, heartType: Binding<HeartIntervalType>, totalTime: Binding<Int>) {
+        self.isBurning = isBurning
+        _heartType = heartType
+        _totalTime = totalTime
+    }
+    
+    public var body: some View {
         VStack() {
             HStack {
                 Image(systemName: isBurning ? "flame.fill" : "circle.hexagonpath.fill")
@@ -48,7 +55,7 @@ struct BurningRestingPicker: View {
                     calculateTime()
                 }
             
-            pickIntervalView(selection: $selection, isExpanded: $isSectionExpanded)
+            pickIntervalView(selection: $heartType, isExpanded: $isSectionExpanded)
         }
         .onAppear(perform: calculateTime)
     }
@@ -92,10 +99,6 @@ struct BurningRestingPicker: View {
     
     private func calculateTime() {
         totalTime = hours * 3600 + minutes * 60 + seconds
-//        hours = totalTime / 3600
-//        minutes = totalTime % 3600 / 60
-//        seconds = totalTime % 60
-//        print(totalTime)
     }
     
     @ViewBuilder
@@ -137,7 +140,7 @@ struct BurningRestingPicker: View {
     }
     
     @ViewBuilder
-    func pickIntervalView (selection: Binding<HeartIntervalTypeModel>, isExpanded: Binding<Bool>) -> some View {
+    func pickIntervalView (selection: Binding<HeartIntervalType>, isExpanded: Binding<Bool>) -> some View {
         VStack {
             Button(action: {
                 withAnimation {
@@ -149,7 +152,7 @@ struct BurningRestingPicker: View {
                         .foregroundStyle(Color(colorScheme == .dark ? .white: .black))
                     
                     Spacer()
-                    Text("\(selection.wrappedValue.rawValue)")
+                    Text("\(selection.wrappedValue.heartTypeName)")
                         .font(.system(size: 15))
                         .foregroundStyle(Color.keyColor)
                         .bold()
@@ -161,11 +164,11 @@ struct BurningRestingPicker: View {
             
             if(isSectionExpanded){
                 Picker("", selection: selection) {
-                    Text("1구간 (123~134BPM)").tag(HeartIntervalTypeModel.one)
-                    Text("2구간 (135~148BPM)").tag(HeartIntervalTypeModel.two)
-                    Text("3구간 (149~162BPM)").tag(HeartIntervalTypeModel.three)
-                    Text("4구간 (163~175BPM)").tag(HeartIntervalTypeModel.four)
-                    Text("5구간 (176BPM~)").tag(HeartIntervalTypeModel.five)
+                    Text("1구간 (123~134BPM)").tag(HeartIntervalType.one)
+                    Text("2구간 (135~148BPM)").tag(HeartIntervalType.two)
+                    Text("3구간 (149~162BPM)").tag(HeartIntervalType.three)
+                    Text("4구간 (163~175BPM)").tag(HeartIntervalType.four)
+                    Text("5구간 (176BPM~)").tag(HeartIntervalType.five)
                 }
                 .pickerStyle(.wheel)
                 .frame(height: isExpanded.wrappedValue ? 213 : 0)

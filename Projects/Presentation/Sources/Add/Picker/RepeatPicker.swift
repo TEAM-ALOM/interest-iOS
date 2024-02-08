@@ -9,17 +9,21 @@ import Foundation
 import SwiftUI
 import Domain
 
-struct RepeatPicker: View {
+public struct RepeatPicker: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
-    var isRepeat: Bool
+    public var isRepeat: Bool
     
-    @Binding var repeatCount : Int
+    @Binding public var repeatCount : Int
     
     @State private var isExpanded: Bool = false
     
+    public init(isRepeat: Bool, repeatCount: Binding<Int>) {
+        self.isRepeat = isRepeat
+        _repeatCount = repeatCount
+    }
     
-    var body: some View {
+    public var body: some View {
         VStack{
             pickRepeatView(count: $repeatCount, isExpanded: $isExpanded)
         }
