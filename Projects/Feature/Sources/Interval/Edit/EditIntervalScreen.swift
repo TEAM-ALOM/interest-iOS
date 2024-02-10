@@ -15,11 +15,9 @@ public struct EditIntervalScreen: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
     @State var viewModel: EditIntervalViewModel
-    @Binding var intervalEntity : IntervalEntity
 
-    public init(viewModel: EditIntervalViewModel, intervalEntity : Binding<IntervalEntity>) {
+    public init(viewModel: EditIntervalViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
-        _intervalEntity = intervalEntity
     }
     
     public var body: some View {
@@ -34,7 +32,7 @@ public struct EditIntervalScreen: View {
             .padding(.horizontal, 30)
             .padding(.top, 10)
             .navigationTitle(
-                "인터벌 추가"
+                "인터벌 편집"
             )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -64,7 +62,7 @@ public struct EditIntervalScreen: View {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            TextField("달리기 인터벌", text: $intervalEntity.title)
+            TextField("달리기 인터벌", text: $viewModel.intervalItem.title)
                 .padding(.all,12)
                 .background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
@@ -73,22 +71,22 @@ public struct EditIntervalScreen: View {
     }
     private var exercise: some View {
         HStack{
-            ExercisePickerView(selectedExerciseType: $intervalEntity.exerciseType)
+            ExercisePickerView(selectedExerciseType: $viewModel.intervalItem.exerciseType)
         }
         .padding(.vertical,10)
     }
     
     private var repeatCount: some View {
         VStack{
-            RepeatPicker(isRepeat: false, repeatCount: $intervalEntity.repeatCount)
+            RepeatPicker(isRepeat: false, repeatCount: $viewModel.intervalItem.repeatCount)
         }
     }
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, heartType: $intervalEntity.burningHeartIntervalType, totalTime: $intervalEntity.burningSecondTime)
+            BurningRestingPicker(isBurning: true, heartType: $viewModel.intervalItem.burningHeartIntervalType, totalTime: $viewModel.intervalItem.burningSecondTime)
             
-            BurningRestingPicker(isBurning: false, heartType: $intervalEntity.restingHeartIntervalType, totalTime: $intervalEntity.restingSecondTime)
+            BurningRestingPicker(isBurning: false, heartType: $viewModel.intervalItem.restingHeartIntervalType, totalTime: $viewModel.intervalItem.restingSecondTime)
         }
     }
 }

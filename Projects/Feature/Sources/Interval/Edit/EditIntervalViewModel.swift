@@ -13,32 +13,32 @@ import Dependencies
 @Observable
 public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
     private var router: IntervalRouter
+    private var intervalEntity : IntervalEntity
     
     public init(
-        router: IntervalRouter
+        router: IntervalRouter,
+        intervalEntity : IntervalEntity
     ) {
         self.router = router
-        super.init()
+        self._intervalEntity = intervalEntity
+        super.init(intervalItem: intervalEntity)
     }
 }
 
 @Observable
 public class EditIntervalViewModel{
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+        
+    public var intervalItem : IntervalEntity
+    
+    public init(
+        intervalItem : IntervalEntity
+    ) {
+        self.intervalItem = intervalItem
+    }
 
-    var burningSelectedInterval = HeartIntervalTypeModel.one
-    var burningTime: Int = 0
-    var restSelectedInterval = HeartIntervalTypeModel.one
-    var restTime: Int = 0
-    
-    var name: String = ""
-    
-    
-    init() {}
-    
     func tapSaveButton() {
-        //let entity = IntervalModelMapper.toEntity(model: intervalItem.wrappedValue)
-
-        //let _ = intervalUseCase.update(at: entity.id, to: entity)
+        let entity = intervalItem
+        let result = intervalUseCase.update(at: entity.id, to: entity)
     }
 }

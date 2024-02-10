@@ -79,7 +79,7 @@ public extension IntervalRouter {
 
     enum PresentationRoute: Hashable {
         case addInterval(AddIntervalViewModel)
-        case editInterval(EditIntervalViewModel,Binding<IntervalEntity>)
+        case editInterval(EditIntervalViewModel)
 
         @ViewBuilder
         var nextView: some View {
@@ -87,8 +87,8 @@ public extension IntervalRouter {
             case let .addInterval(vm):
                 AddIntervalScreen(viewModel: vm)
                 
-            case let .editInterval(vm, en):
-                EditIntervalScreen(viewModel: vm, intervalEntity: en)
+            case let .editInterval(vm):
+                EditIntervalScreen(viewModel: vm)
             }
         }
 

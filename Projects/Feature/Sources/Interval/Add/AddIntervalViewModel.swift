@@ -65,7 +65,6 @@ public class AddIntervalViewModel {
     
     func tapSaveButton() {
         let entity = intervalItem.wrappedValue
-
         let interval = intervalUseCase.save(interval: entity)
         send?(.saved(entity))
     }

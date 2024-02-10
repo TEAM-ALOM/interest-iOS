@@ -24,7 +24,7 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
         super.init()
     }
 
-    override func tapStartButton(intervalItem: IntervalModel) {
+    override func tapStartButton(intervalItem: IntervalEntity) {
         super.tapStartButton(intervalItem: intervalItem)
         let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router)
         let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
@@ -42,13 +42,13 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
 
     override func tapIntervalEditButton(selectedItem: Binding<IntervalEntity>) {
         super.tapIntervalEditButton(selectedItem: selectedItem)
-        let editIntervalViewModel : EditIntervalViewModel = EditIntervalViewModelWithRouter(router: router)
-        let editIntervalRoute : IntervalRouter.PresentationRoute = .editInterval(editIntervalViewModel, selectedItem)
+        let editIntervalViewModel : EditIntervalViewModel = EditIntervalViewModelWithRouter(router: router, intervalEntity: selectedItem.wrappedValue)
+        let editIntervalRoute : IntervalRouter.PresentationRoute = .editInterval(editIntervalViewModel)
         
         router.triggerPresentationScreen(presentationRoute: editIntervalRoute)
     }
 
-    func editIntervalScreen(selectedItem: IntervalModel) -> some View {
+    func editIntervalScreen(selectedItem: IntervalEntity) -> some View {
         return router.nextPresentationScreen()
     }
 }
@@ -75,7 +75,7 @@ public class IntervalListViewModel: Identifiable {
         }
     }
     
-    func tapStartButton(intervalItem: IntervalModel) { }
+    func tapStartButton(intervalItem: IntervalEntity) { }
     
     func tapIntervalDetailPageButton(intervalItem: IntervalEntity) { }
     
@@ -86,7 +86,9 @@ public class IntervalListViewModel: Identifiable {
     }
     
     func tapIntervalEditButton(selectedItem: Binding<IntervalEntity>) {
+        let _ = intervalUseCase.update(at: selectedItem.wrappedValue.id, to: selectedItem.wrappedValue)
         
+        self.fetchIntervalItems()
     }
 
 }
