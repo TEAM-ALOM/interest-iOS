@@ -32,7 +32,7 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
         router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
     
-    override func tapIntervalDetailPageButton(intervalItem: IntervalModel) {
+    override func tapIntervalDetailPageButton(intervalItem: IntervalEntity) {
         super.tapIntervalDetailPageButton(intervalItem: intervalItem)
         let intervalDetailViewModel: IntervalDetailViewModel = IntervalDetailViewModelWithRouter(router: router)
         let intervalDetailRoute: IntervalRouter.NavigationRoute = .intervalDetail(intervalDetailViewModel)
@@ -40,8 +40,12 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
         router.triggerNavigationScreen(navigationRoute: intervalDetailRoute)
     }
 
-    override func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
+    override func tapIntervalEditButton(selectedItem: Binding<IntervalEntity>) {
         super.tapIntervalEditButton(selectedItem: selectedItem)
+        let editIntervalViewModel : EditIntervalViewModel = EditIntervalViewModelWithRouter(router: router)
+        let editIntervalRoute : IntervalRouter.PresentationRoute = .editInterval(editIntervalViewModel, selectedItem)
+        
+        router.triggerPresentationScreen(presentationRoute: editIntervalRoute)
     }
 
     func editIntervalScreen(selectedItem: IntervalModel) -> some View {
@@ -56,24 +60,24 @@ public class IntervalListViewModel: Identifiable {
     
     public let id: UUID = .init()
     
-    var intervalItems: [IntervalModel] = []
-    var selectedItem: IntervalModel? = nil
+    var intervalItems: [IntervalEntity] = []
+    var selectedItem: IntervalEntity? = nil
 
     public init() { }
     
     func append(interval: IntervalEntity) {
-        intervalItems.append(IntervalModelMapper.toPresentationModel(entity: interval))
+        intervalItems.append(interval)
     }
     
     func fetchIntervalItems() {
-        intervalItems = intervalUseCase.fetches().map {
-            IntervalModelMapper.toPresentationModel(entity: $0)
+        intervalItems = intervalUseCase.fetches().map { intervalEntity in
+            return intervalEntity
         }
     }
     
     func tapStartButton(intervalItem: IntervalModel) { }
     
-    func tapIntervalDetailPageButton(intervalItem: IntervalModel) { }
+    func tapIntervalDetailPageButton(intervalItem: IntervalEntity) { }
     
     func tapIntervalDeleteButton(at id: UUID) {
         let _ = intervalUseCase.delete(at: id)
@@ -81,7 +85,8 @@ public class IntervalListViewModel: Identifiable {
         self.fetchIntervalItems()
     }
     
-    func tapIntervalEditButton(selectedItem: Binding<IntervalModel>) {
-//        self.selectedItem = selectedItem
+    func tapIntervalEditButton(selectedItem: Binding<IntervalEntity>) {
+        
     }
+
 }

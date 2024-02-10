@@ -17,11 +17,9 @@ public struct AddIntervalScreen: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
     @State var viewModel: AddIntervalViewModel
-    @State var intervalEntity : IntervalEntity
 
     public init(viewModel: AddIntervalViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
-        self._intervalEntity = .init(initialValue: IntervalEntity(id: UUID()))
     }
     
     public var body: some View {
@@ -66,7 +64,7 @@ public struct AddIntervalScreen: View {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            TextField("달리기 인터벌", text: viewModel.intervalItem.title)
+            TextField("달리기 인터벌", text: $viewModel._intervalItem.title)
                 .padding(.all,12)
                 .background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
@@ -75,23 +73,22 @@ public struct AddIntervalScreen: View {
     }
     private var exercise: some View {
         HStack{
-            ExercisePickerView(selectedExerciseType: $intervalEntity.exerciseType)
-//            ExercisePickerView(selectedExerciseType: viewModel.intervalItem.exerciseType)
+            ExercisePickerView(selectedExerciseType: $viewModel._intervalItem.exerciseType)
         }
         .padding(.vertical,10)
     }
     
     private var repeatCount: some View {
         VStack{
-            RepeatPicker(isRepeat: false, repeatCount: $intervalEntity.repeatCount)
+            RepeatPicker(isRepeat: false, repeatCount: $viewModel._intervalItem.repeatCount)
         }
     }
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, heartType: $intervalEntity.burningHeartIntervalType, totalTime: $intervalEntity.burningSecondTime)
+            BurningRestingPicker(isBurning: true, heartType: $viewModel._intervalItem.burningHeartIntervalType, totalTime: $viewModel._intervalItem.burningSecondTime)
             
-            BurningRestingPicker(isBurning: false, heartType: $intervalEntity.restingHeartIntervalType, totalTime: $intervalEntity.restingSecondTime)
+            BurningRestingPicker(isBurning: false, heartType: $viewModel._intervalItem.restingHeartIntervalType, totalTime: $viewModel._intervalItem.restingSecondTime)
         }
     }
 }

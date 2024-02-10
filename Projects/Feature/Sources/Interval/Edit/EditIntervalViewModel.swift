@@ -8,14 +8,37 @@
 import Foundation
 import SwiftUI
 import Domain
+import Dependencies
 
-class EditIntervalViewModel: ObservableObject {
-    @Published var burningSelectedInterval = HeartIntervalTypeModel.one
-    @Published var burningTime: Int = 0
-    @Published var restSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restTime: Int = 0
+@Observable
+public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
+    private var router: IntervalRouter
     
-    @Published var name: String = ""
+    public init(
+        router: IntervalRouter
+    ) {
+        self.router = router
+        super.init()
+    }
+}
+
+@Observable
+public class EditIntervalViewModel{
+    @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+
+    var burningSelectedInterval = HeartIntervalTypeModel.one
+    var burningTime: Int = 0
+    var restSelectedInterval = HeartIntervalTypeModel.one
+    var restTime: Int = 0
+    
+    var name: String = ""
+    
     
     init() {}
+    
+    func tapSaveButton() {
+        //let entity = IntervalModelMapper.toEntity(model: intervalItem.wrappedValue)
+
+        //let _ = intervalUseCase.update(at: entity.id, to: entity)
+    }
 }

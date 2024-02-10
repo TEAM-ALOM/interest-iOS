@@ -36,7 +36,7 @@ struct WatchExercisePickerView: View {
         Button(action: {
             withAnimation{
                 currentIndex = index
-                viewModel.selectedItem = IntervalModel.mocks[currentIndex]
+                //viewModel.selectedItem = IntervalModel.mocks[currentIndex]
             }
         }, label: {
             ZStack {
@@ -56,7 +56,7 @@ struct WatchExercisePickerView: View {
         })
         .buttonStyle(.plain)
         .onAppear(perform: {
-            viewModel.selectedItem = IntervalModel.mocks[currentIndex]
+            //viewModel.selectedItem = IntervalModel.mocks[currentIndex]
         })
     }
     

@@ -18,9 +18,9 @@ public struct BurningRestingPicker: View {
     @Binding public var heartType : HeartIntervalType
         
     @Binding public var totalTime : Int
-    @State private var hours : Int = 0
-    @State private var minutes : Int = 0
-    @State private var seconds : Int = 0
+    @State private var hours : Int
+    @State private var minutes : Int
+    @State private var seconds : Int
 
     @State private var isTimeExpanded: Bool = false
     @State private var isSectionExpanded: Bool = false
@@ -29,6 +29,11 @@ public struct BurningRestingPicker: View {
         self.isBurning = isBurning
         _heartType = heartType
         _totalTime = totalTime
+        
+        let totalSeconds = totalTime.wrappedValue
+        _hours = State(initialValue: totalSeconds / 3600)
+        _minutes = State(initialValue: (totalSeconds % 3600) / 60 )
+        _seconds = State(initialValue: totalSeconds % 60)
     }
     
     public var body: some View {
@@ -116,7 +121,7 @@ public struct BurningRestingPicker: View {
                 Text("시간")
                 
                 Picker("분", selection: $minutes) {
-                    ForEach(0..<59) { i in
+                    ForEach(0..<60) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
                     }
@@ -126,7 +131,7 @@ public struct BurningRestingPicker: View {
                 Text("분")
                 
                 Picker("초", selection: $seconds) {
-                    ForEach(0..<59) { i in
+                    ForEach(0..<60) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
                     }

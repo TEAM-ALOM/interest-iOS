@@ -9,15 +9,16 @@ import Foundation
 import SwiftUI
 
 import SharedDesignSystem
+import Domain
 
 public struct IntervalInfoCellView: View {
     private var intervalListViewModel: IntervalListViewModel
 
     @State private var cellOffsetX = CGFloat.zero
     
-    @State var intervalItem: IntervalModel
+    @State var intervalItem: IntervalEntity
 
-    init(intervalItem: IntervalModel, intervalListViewModel: IntervalListViewModel) {
+    init(intervalItem: IntervalEntity, intervalListViewModel: IntervalListViewModel) {
         self.intervalListViewModel = intervalListViewModel
         self._intervalItem = .init(wrappedValue: intervalItem)
     }
