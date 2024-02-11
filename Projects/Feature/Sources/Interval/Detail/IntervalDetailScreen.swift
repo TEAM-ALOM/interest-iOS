@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SharedDesignSystem
+import Presentation
 
 struct IntervalDetailScreen: View {
     @State private var viewModel: IntervalDetailViewModel
@@ -25,7 +26,7 @@ struct IntervalDetailScreen: View {
                 
                 LazyVStack(spacing: 24) {
                     ForEach(viewModel.intervalItem.records) { record in
-                        IntervalRecordCellView(intervalDetailViewModel: viewModel, intervalRecordModel: record)
+                        IntervalRecordCellView(intervalRecordEntity: record)
                     }
                 }
                 .padding(.bottom, 160)

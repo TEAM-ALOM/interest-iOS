@@ -13,14 +13,18 @@ import Domain
 public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
     private var router: IntervalRouter
     
+    private var intervalEntity : IntervalEntity
+    
     public init(
-        router: IntervalRouter
+        router: IntervalRouter,
+        intervalEntity : IntervalEntity
     ) {
         self.router = router
-        super.init()
+        self._intervalEntity = intervalEntity
+        super.init(intervalItem: intervalEntity)
     }
     
-    override func tapIntervalStartButton(intervalItem: IntervalModel) {
+    override func tapIntervalStartButton(intervalItem: IntervalEntity) {
         super.tapIntervalStartButton(intervalItem: intervalItem)
         router.removeScreenTransition()
     }
@@ -28,13 +32,13 @@ public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
 
 @Observable
 public class IntervalDetailViewModel {
-    var intervalItem: IntervalModel
+    var intervalItem: IntervalEntity
     
-    init() {
-        self.intervalItem = .init()
+    public init(intervalItem: IntervalEntity) {
+        self.intervalItem = intervalItem
     }
     
-    func tapIntervalStartButton(intervalItem: IntervalModel) {
+    func tapIntervalStartButton(intervalItem: IntervalEntity) {
         
     }
 }
