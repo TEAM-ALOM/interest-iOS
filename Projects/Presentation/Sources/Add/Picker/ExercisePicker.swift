@@ -20,7 +20,7 @@ public struct ExercisePickerView: View {
         pickerView
     }
     
-    var pickerView: some View {
+    private var pickerView: some View {
         HStack(spacing: 30) {
             ForEach(ExerciseType.allCases, id: \.self) { exerciseType in
                 Button(action: {

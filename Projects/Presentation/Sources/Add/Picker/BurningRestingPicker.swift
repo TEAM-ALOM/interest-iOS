@@ -11,16 +11,14 @@ import Domain
 import SharedDesignSystem
 
 public struct BurningRestingPicker: View {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
-    
     public var isBurning: Bool
     
-    @Binding public var heartType : HeartIntervalType
+    @Binding public var heartType: HeartIntervalType
     
-    @Binding public var totalTime : Int
-    @State private var hours : Int
-    @State private var minutes : Int
-    @State private var seconds : Int
+    @Binding public var totalTime: Int
+    @State private var hours: Int
+    @State private var minutes: Int
+    @State private var seconds: Int
     
     @State private var wakeUp = Date()
     
@@ -39,7 +37,14 @@ public struct BurningRestingPicker: View {
     }
     
     public var body: some View {
-        VStack() {
+        containerView
+            .onAppear(perform: calculateTime)
+    }
+}
+
+private extension BurningRestingPicker {
+    private var containerView: some View {
+        VStack {
             HStack {
                 Image(systemName: isBurning ? "flame.fill" : "circle.hexagonpath.fill")
                     .foregroundStyle(isBurning ? Color.burningColor : Color.restColor)
@@ -64,11 +69,10 @@ public struct BurningRestingPicker: View {
             
             pickIntervalView(selection: $heartType, isExpanded: $isSectionExpanded)
         }
-        .onAppear(perform: calculateTime)
     }
     
     @ViewBuilder
-    func pickTimeView (hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
+    private func pickTimeView(hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
         
         VStack {
             Button(action: {
@@ -78,7 +82,7 @@ public struct BurningRestingPicker: View {
             }, label: {
                 HStack{
                     Text("시간")
-                        .foregroundStyle(Color(colorScheme == .dark ? .white: .black))
+                        //.foregroundStyle(Color(colorScheme == .dark ? .white: .black))
                     
                     Spacer()
                     
@@ -104,12 +108,8 @@ public struct BurningRestingPicker: View {
         }
     }
     
-    private func calculateTime() {
-        totalTime = hours * 3600 + minutes * 60 + seconds
-    }
-    
     @ViewBuilder
-    func timePicker(hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>) -> some View {
+    private func timePicker(hour:Binding<Int>,minute:Binding<Int>,second:Binding<Int>) -> some View {
         GeometryReader { geometry in
             HStack(){
                 Picker("시간", selection: $hours) {
@@ -147,7 +147,7 @@ public struct BurningRestingPicker: View {
     }
     
     @ViewBuilder
-    func pickIntervalView (selection: Binding<HeartIntervalType>, isExpanded: Binding<Bool>) -> some View {
+    private func pickIntervalView(selection: Binding<HeartIntervalType>, isExpanded: Binding<Bool>) -> some View {
         VStack {
             Button(action: {
                 withAnimation {
@@ -156,7 +156,7 @@ public struct BurningRestingPicker: View {
             }, label: {
                 HStack{
                     Text("구간")
-                        .foregroundStyle(Color(colorScheme == .dark ? .white: .black))
+                        //.foregroundStyle(Color(colorScheme == .dark ? .white: .black))
                     
                     Spacer()
                     Text("\(selection.wrappedValue.heartTypeName)")
@@ -184,6 +184,10 @@ public struct BurningRestingPicker: View {
         if (isExpanded.wrappedValue) {
             Divider()
         }
+    }
+    
+    private func calculateTime() {
+        totalTime = hours * 3600 + minutes * 60 + seconds
     }
 }
 

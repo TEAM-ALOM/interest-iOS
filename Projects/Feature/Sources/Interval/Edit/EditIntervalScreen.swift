@@ -12,46 +12,52 @@ import Presentation
 
 public struct EditIntervalScreen: View {
     @State var viewModel: EditIntervalViewModel
-
+    
     public init(viewModel: EditIntervalViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
     
     public var body: some View {
-        NavigationStack {
-            ScrollView {
-                name
-                exercise
-                repeatCount
-                burningResting
-                Spacer()
-            }
-            .padding(.horizontal, 30)
-            .padding(.top, 10)
-            .navigationTitle(
-                "인터벌 편집"
-            )
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        viewModel.tapCancelButton()
-                    }, label: {
-                        Text("취소")
-                    })
+        NavigationStack{
+            containerView
+                .padding(.horizontal, 30)
+                .padding(.top, 10)
+                .navigationTitle(
+                    "인터벌 편집"
+                )
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            viewModel.tapCancelButton()
+                        }, label: {
+                            Text("취소")
+                        })
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            viewModel.tapSaveButton()
+                        }, label: {
+                            Text("저장")
+                        })
+                    }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        viewModel.tapSaveButton()
-                    }, label: {
-                        Text("저장")
-                    })
-                }
-            }
+        }
+    }
+}
+
+private extension EditIntervalScreen {
+    private var containerView: some View {
+        ScrollView {
+            nameView
+            exercisePickerView
+            repeatCountPickerView
+            burningRestingPickerView
+            Spacer()
         }
     }
     
-    private var name: some View {
+    private var nameView: some View {
         VStack{
             HStack{
                 Text("이름")
@@ -60,25 +66,26 @@ public struct EditIntervalScreen: View {
             }
             TextField("달리기 인터벌", text: $viewModel.intervalEntity.title)
                 .padding(.all,12)
-                //.background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
+            //.background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
             
         }
     }
-    private var exercise: some View {
+    
+    private var exercisePickerView: some View {
         HStack{
             ExercisePickerView(selectedExerciseType: $viewModel.intervalEntity.exerciseType)
         }
         .padding(.vertical,10)
     }
     
-    private var repeatCount: some View {
+    private var repeatCountPickerView: some View {
         VStack{
             RepeatPicker(isRepeat: false, repeatCount: $viewModel.intervalEntity.repeatCount)
         }
     }
     
-    private var burningResting: some View {
+    private var burningRestingPickerView: some View {
         VStack{
             BurningRestingPicker(isBurning: true, heartType: $viewModel.intervalEntity.burningHeartIntervalType, totalTime: $viewModel.intervalEntity.burningSecondTime)
             

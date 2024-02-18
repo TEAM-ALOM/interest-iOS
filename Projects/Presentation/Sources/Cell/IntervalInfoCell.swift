@@ -17,11 +17,15 @@ public struct IntervalInfoCell: View {
     }
     
     public var body: some View {
+        containerView
+    }
+}
+
+public extension IntervalInfoCell {
+    private var containerView: some View {
         HStack {
             titleView
-            
             Spacer()
-            
             info
         }
         .padding(20)
@@ -32,7 +36,7 @@ public struct IntervalInfoCell: View {
         }
     }
     
-    public var titleView: some View {
+    private var titleView: some View {
         VStack(alignment: .leading, spacing: 12) {
             Image(systemName: intervalEntity.exerciseType.systemImageName)
                 .foregroundStyle(Color.keyColor)
@@ -45,7 +49,7 @@ public struct IntervalInfoCell: View {
     }
     
     @ViewBuilder
-    public func infoCell(minute: Int, phase: String, label: () -> some View) -> some View {
+    private func infoCell(minute: Int, phase: String, label: () -> some View) -> some View {
         HStack(spacing: 4) {
             label()
             
@@ -56,7 +60,7 @@ public struct IntervalInfoCell: View {
         }
     }
     
-    public var info: some View {
+    private var info: some View {
         VStack(alignment: .trailing, spacing: 20) {
             infoCell(minute: calculateMinutes(minute: intervalEntity.burningSecondTime), phase: String(intervalEntity.burningHeartIntervalType.heartTypeName.prefix(1))) {
                 Image(systemName: "flame.fill")
@@ -76,18 +80,16 @@ public struct IntervalInfoCell: View {
         }
     }
     
-    public func calculateMinutes(minute: Int) -> Int {
+    private func calculateMinutes(minute: Int) -> Int {
         let result = minute / 60
         return result
     }
-}
-
-public extension IntervalInfoCell {
+    
     @ViewBuilder
     func toolButton(imageName: String,
                     color: Color,
                     backgroundColor: Color,
-                           action: @escaping () -> Void) -> some View {
+                    action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: imageName)
                 .resizable()

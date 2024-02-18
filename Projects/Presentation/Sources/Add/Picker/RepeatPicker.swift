@@ -28,7 +28,7 @@ public struct RepeatPicker: View {
     }
     
     @ViewBuilder
-    func pickRepeatView (count:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
+    private func pickRepeatView(count:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
         VStack {
             Button(action: {
                 withAnimation {
@@ -67,7 +67,7 @@ public struct RepeatPicker: View {
     }
     
     @ViewBuilder
-    func repeatCountPicker (count:Binding<Int>) -> some View {
+    private func repeatCountPicker(count:Binding<Int>) -> some View {
         GeometryReader { geometry in
             Picker("", selection: count, content: {
                 ForEach(0..<21) { i in

@@ -10,7 +10,6 @@ import SharedDesignSystem
 import Domain
 
 public struct IntervalRecordCellView: View {
-    
     @State private var averageHeartRate: Double = 0
     @State private var calorie: Double = 0
     @State private var repeatedCount: Double = 0
@@ -25,10 +24,12 @@ public struct IntervalRecordCellView: View {
     }
     
     public var body: some View {
-        cell
+        containerView
     }
-    
-    private var cell: some View {
+}
+
+private extension IntervalRecordCellView {
+    private var containerView: some View {
         VStack(spacing: 12) {
             calorieAndDate
             

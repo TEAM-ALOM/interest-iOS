@@ -16,7 +16,7 @@ public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
     
     public init(
         router: IntervalRouter,
-        intervalEntity : IntervalEntity
+        intervalEntity: IntervalEntity
     ) {
         self.router = router
         super.init(intervalEntity: intervalEntity)
@@ -49,10 +49,10 @@ public class EditIntervalViewModel{
     
     public var send: ((Action.Delegate) -> ())?
     
-    public var intervalEntity : IntervalEntity
+    public var intervalEntity: IntervalEntity
     
     public init(
-        intervalEntity : IntervalEntity
+        intervalEntity: IntervalEntity
     ) {
         _intervalEntity = intervalEntity
     }
