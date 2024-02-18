@@ -13,15 +13,19 @@ import Dependencies
 @Observable
 public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
     private var router: IntervalRouter
-    private var intervalEntity : Binding<IntervalEntity>
     
     public init(
         router: IntervalRouter,
-        intervalEntity : Binding<IntervalEntity>
+        intervalEntity : IntervalEntity
     ) {
         self.router = router
-        self._intervalEntity = intervalEntity
-        super.init(intervalItem: intervalEntity)
+        super.init(intervalEntity: intervalEntity)
+    }
+    
+    override func tapCancelButton() {
+        super.tapCancelButton()
+        
+        router.triggerPresentationScreen(presentationRoute: nil)
     }
     
     override func tapSaveButton() {
@@ -39,24 +43,25 @@ public class EditIntervalViewModel{
         case delegate(Delegate)
         
         public enum Delegate {
-            case saved(IntervalEntity)
+            case fetched(IntervalEntity)
         }
     }
     
     public var send: ((Action.Delegate) -> ())?
     
-    public var intervalItem : Binding<IntervalEntity>
+    public var intervalEntity : IntervalEntity
     
     public init(
-        intervalItem : Binding<IntervalEntity>
+        intervalEntity : IntervalEntity
     ) {
-        _intervalItem = intervalItem
-
+        _intervalEntity = intervalEntity
     }
 
+    func tapCancelButton() {}
+    
     func tapSaveButton() {
-        let entity = intervalItem.wrappedValue
+        let entity = intervalEntity
         let result = intervalUseCase.update(at: entity.id, to: entity)
-        send?(.saved(entity))
+        send?(.fetched(entity))
     }
 }

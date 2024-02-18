@@ -55,13 +55,15 @@ public struct IntervalInfoCellView: View {
     
     private var tool: some View {
         HStack(spacing: 12) {
-            toolButton(imageName: "trash",
+            let intervalInfoCell = IntervalInfoCell(intervalEntity: intervalItem)
+            
+            intervalInfoCell.toolButton(imageName: "trash",
                        color: .warningColor,
                        backgroundColor: .warningColor) {
                 viewModel.tapIntervalDeleteButton(at: intervalItem.id)
             }
             
-            toolButton(imageName: "pencil",
+            intervalInfoCell.toolButton(imageName: "pencil",
                        color: .editColor,
                        backgroundColor: .editColor
             ) {
@@ -74,7 +76,7 @@ public struct IntervalInfoCellView: View {
     }
     
     private var cell: some View {
-        IntervalInfoCell(intervalEntity: $intervalItem)
+        IntervalInfoCell(intervalEntity: intervalItem)
             .gesture(
                 DragGesture()
                     .onChanged({ drag in

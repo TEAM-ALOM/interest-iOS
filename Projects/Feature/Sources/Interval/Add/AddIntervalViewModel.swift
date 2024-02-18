@@ -24,6 +24,11 @@ public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         super.init()
     }
     
+    override func tapCancelButton() {
+        super.tapCancelButton()
+        
+        router.triggerPresentationScreen(presentationRoute: nil)
+    }
     
     override func tapSaveButton() {
         super.tapSaveButton()
@@ -47,24 +52,15 @@ public class AddIntervalViewModel {
     public var send: ((Action.Delegate) -> ())?
     
     public init() {
-        self._intervalItem = .init(id: UUID())
+        self._intervalEntity = .init(id: UUID())
     }
     
-    public var intervalItem: Binding<IntervalEntity> {
-        if let intervalItem = intervalItemOrNil {
-            return intervalItem
-        } else {
-            return .init(get: { self._intervalItem }, set: { self._intervalItem = $0 })
-        }
-    }
+    public var intervalEntity: IntervalEntity
     
-    public var _intervalItem : IntervalEntity
-    
-    private var intervalItemOrNil: Binding<IntervalEntity>?
-    
+    func tapCancelButton() {}
     
     func tapSaveButton() {
-        let entity = intervalItem.wrappedValue
+        let entity = intervalEntity
         let interval = intervalUseCase.save(interval: entity)
         send?(.saved(entity))
     }

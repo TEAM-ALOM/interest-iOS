@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum HeartIntervalType {
+public enum HeartIntervalType : CaseIterable {
     case one
     case two
     case three

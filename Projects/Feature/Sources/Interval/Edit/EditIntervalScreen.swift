@@ -11,9 +11,6 @@ import Domain
 import Presentation
 
 public struct EditIntervalScreen: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
-    
     @State var viewModel: EditIntervalViewModel
 
     public init(viewModel: EditIntervalViewModel) {
@@ -38,7 +35,7 @@ public struct EditIntervalScreen: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        dismiss()
+                        viewModel.tapCancelButton()
                     }, label: {
                         Text("취소")
                     })
@@ -46,7 +43,6 @@ public struct EditIntervalScreen: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         viewModel.tapSaveButton()
-                        dismiss()
                     }, label: {
                         Text("저장")
                     })
@@ -62,31 +58,31 @@ public struct EditIntervalScreen: View {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            TextField("달리기 인터벌", text: viewModel.intervalItem.title)
+            TextField("달리기 인터벌", text: $viewModel.intervalEntity.title)
                 .padding(.all,12)
-                .background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
+                //.background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
             
         }
     }
     private var exercise: some View {
         HStack{
-            ExercisePickerView(selectedExerciseType: viewModel.intervalItem.exerciseType)
+            ExercisePickerView(selectedExerciseType: $viewModel.intervalEntity.exerciseType)
         }
         .padding(.vertical,10)
     }
     
     private var repeatCount: some View {
         VStack{
-            RepeatPicker(isRepeat: false, repeatCount: viewModel.intervalItem.repeatCount)
+            RepeatPicker(isRepeat: false, repeatCount: $viewModel.intervalEntity.repeatCount)
         }
     }
     
     private var burningResting: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, heartType: viewModel.intervalItem.burningHeartIntervalType, totalTime: viewModel.intervalItem.burningSecondTime)
+            BurningRestingPicker(isBurning: true, heartType: $viewModel.intervalEntity.burningHeartIntervalType, totalTime: $viewModel.intervalEntity.burningSecondTime)
             
-            BurningRestingPicker(isBurning: false, heartType: viewModel.intervalItem.restingHeartIntervalType, totalTime: viewModel.intervalItem.restingSecondTime)
+            BurningRestingPicker(isBurning: false, heartType: $viewModel.intervalEntity.restingHeartIntervalType, totalTime: $viewModel.intervalEntity.restingSecondTime)
         }
     }
 }

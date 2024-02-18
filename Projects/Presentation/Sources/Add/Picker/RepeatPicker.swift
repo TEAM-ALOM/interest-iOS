@@ -10,11 +10,9 @@ import SwiftUI
 import Domain
 
 public struct RepeatPicker: View {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
-    
     public var isRepeat: Bool
     
-    @Binding public var repeatCount : Int
+    @Binding public var repeatCount: Int
     
     @State private var isExpanded: Bool = false
     
@@ -31,7 +29,6 @@ public struct RepeatPicker: View {
     
     @ViewBuilder
     func pickRepeatView (count:Binding<Int>, isExpanded: Binding<Bool>) -> some View {
-        
         VStack {
             Button(action: {
                 withAnimation {
@@ -44,7 +41,7 @@ public struct RepeatPicker: View {
                     
                     Text("반복 횟수")
                         .fontWeight(.semibold)
-                        .foregroundStyle(Color(colorScheme == .dark ? .white: .black))
+                        //.foregroundStyle(Color(colorScheme == .dark ? .white: .black))
                     
                     Spacer()
                     
@@ -68,7 +65,6 @@ public struct RepeatPicker: View {
             }
         }
     }
-    
     
     @ViewBuilder
     func repeatCountPicker (count:Binding<Int>) -> some View {

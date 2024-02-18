@@ -16,12 +16,14 @@ public struct BurningRestingPicker: View {
     public var isBurning: Bool
     
     @Binding public var heartType : HeartIntervalType
-        
+    
     @Binding public var totalTime : Int
     @State private var hours : Int
     @State private var minutes : Int
     @State private var seconds : Int
-
+    
+    @State private var wakeUp = Date()
+    
     @State private var isTimeExpanded: Bool = false
     @State private var isSectionExpanded: Bool = false
     
@@ -169,20 +171,30 @@ public struct BurningRestingPicker: View {
             
             if(isSectionExpanded){
                 Picker("", selection: selection) {
-                    Text("1구간 (123~134BPM)").tag(HeartIntervalType.one)
-                    Text("2구간 (135~148BPM)").tag(HeartIntervalType.two)
-                    Text("3구간 (149~162BPM)").tag(HeartIntervalType.three)
-                    Text("4구간 (163~175BPM)").tag(HeartIntervalType.four)
-                    Text("5구간 (176BPM~)").tag(HeartIntervalType.five)
+                    ForEach(HeartIntervalType.allCases, id: \.self) { type in
+                        Text(type.title).tag(type)
+                    }
                 }
                 .pickerStyle(.wheel)
                 .frame(height: isExpanded.wrappedValue ? 213 : 0)
                 .offset(y: -7)
+                
             }
-            if (isExpanded.wrappedValue) {
-                Divider()
-            }
-            
+        }
+        if (isExpanded.wrappedValue) {
+            Divider()
+        }
+    }
+}
+
+private extension HeartIntervalType {
+    var title: String {
+        switch self {
+        case .one: "1구간 (123~134BPM)"
+        case .two: "2구간 (135~148BPM)"
+        case .three: "3구간 (149~162BPM)"
+        case .four: "4구간 (163~175BPM)"
+        case .five: "5구간 (176BPM~)"
         }
     }
 }

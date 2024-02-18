@@ -10,15 +10,10 @@ import SwiftUI
 import Domain
 
 public struct IntervalInfoCell: View {
-    @Binding var intervalEntity : IntervalEntity
+    var intervalEntity : IntervalEntity
     
-    var buringMinute : Int
-    var restingMinute : Int
-    
-    public init(intervalEntity: Binding<IntervalEntity>) {
-        _intervalEntity = intervalEntity
-        buringMinute = (intervalEntity.burningSecondTime.wrappedValue) / 60
-        restingMinute = (intervalEntity.restingSecondTime.wrappedValue) / 60
+    public init(intervalEntity: IntervalEntity) {
+        self.intervalEntity = intervalEntity
     }
     
     public var body: some View {
@@ -63,7 +58,7 @@ public struct IntervalInfoCell: View {
     
     public var info: some View {
         VStack(alignment: .trailing, spacing: 20) {
-            infoCell(minute: buringMinute, phase: String(intervalEntity.burningHeartIntervalType.heartTypeName.prefix(1))) {
+            infoCell(minute: calculateMinutes(minute: intervalEntity.burningSecondTime), phase: String(intervalEntity.burningHeartIntervalType.heartTypeName.prefix(1))) {
                 Image(systemName: "flame.fill")
                     .resizable()
                     .scaledToFit()
@@ -71,7 +66,7 @@ public struct IntervalInfoCell: View {
                     .foregroundStyle(Color.burningColor)
             }
             
-            infoCell(minute: restingMinute, phase: String(intervalEntity.restingHeartIntervalType.heartTypeName.prefix(1))) {
+            infoCell(minute: calculateMinutes(minute: intervalEntity.restingSecondTime), phase: String(intervalEntity.restingHeartIntervalType.heartTypeName.prefix(1))) {
                 Image(systemName: "circle.hexagonpath.fill")
                     .resizable()
                     .scaledToFit()
@@ -80,23 +75,30 @@ public struct IntervalInfoCell: View {
             }
         }
     }
+    
+    public func calculateMinutes(minute: Int) -> Int {
+        let result = minute / 60
+        return result
+    }
 }
 
-@ViewBuilder
-public func toolButton(imageName: String,
-                       color: Color,
-                       backgroundColor: Color,
-                       action: @escaping () -> Void) -> some View {
-    Button(action: action) {
-        Image(systemName: imageName)
-            .resizable()
-            .scaledToFit()
-            .frame(height: 16)
-            .foregroundStyle(color)
-            .padding(8)
-            .background {
-                Circle()
-                    .foregroundStyle(backgroundColor.opacity(0.2))
-            }
+public extension IntervalInfoCell {
+    @ViewBuilder
+    func toolButton(imageName: String,
+                    color: Color,
+                    backgroundColor: Color,
+                           action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 16)
+                .foregroundStyle(color)
+                .padding(8)
+                .background {
+                    Circle()
+                        .foregroundStyle(backgroundColor.opacity(0.2))
+                }
+        }
     }
 }

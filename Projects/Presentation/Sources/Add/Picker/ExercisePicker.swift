@@ -10,7 +10,7 @@ import SwiftUI
 import Domain
 
 public struct ExercisePickerView: View {
-    @Binding var selectedExerciseType : ExerciseType
+    @Binding var selectedExerciseType: ExerciseType
     
     public init(selectedExerciseType: Binding<ExerciseType>) {
         _selectedExerciseType = selectedExerciseType

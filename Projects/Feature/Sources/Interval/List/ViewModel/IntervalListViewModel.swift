@@ -42,17 +42,17 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
 
     override func tapIntervalEditButton(selectedItem: Binding<IntervalEntity>) {
         super.tapIntervalEditButton(selectedItem: selectedItem)
-        let editIntervalViewModel : EditIntervalViewModel = EditIntervalViewModelWithRouter(router: router, intervalEntity: selectedItem)
+        let editIntervalViewModel : EditIntervalViewModel = EditIntervalViewModelWithRouter(router: router, intervalEntity: selectedItem.wrappedValue)
         let editIntervalRoute : IntervalRouter.PresentationRoute = .editInterval(editIntervalViewModel)
         
         editIntervalViewModel.send =  { [weak self] delegate in
             guard let `self` = self else { return }
             switch delegate {
-            case .saved(_):
+            case let .fetched(entity):
+                selectedItem.wrappedValue = entity
                 self.fetchIntervalItems()
             }
         }
-        
         router.triggerPresentationScreen(presentationRoute: editIntervalRoute)
     }
 
