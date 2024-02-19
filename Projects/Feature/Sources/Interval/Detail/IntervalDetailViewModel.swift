@@ -13,20 +13,17 @@ import Domain
 public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
     private var router: IntervalRouter
     
-    private var intervalEntity : IntervalEntity
-    
     public init(
         router: IntervalRouter,
-        intervalEntity : IntervalEntity
+        interval : IntervalEntity
     ) {
         self.router = router
-        self._intervalEntity = intervalEntity
-        super.init(intervalItem: intervalEntity)
+        super.init(interval: interval)
     }
     
-    override func tapIntervalStartButton(intervalItem: IntervalEntity) {
-        super.tapIntervalStartButton(intervalItem: intervalItem)
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router)
+    override func tapIntervalStartButton(interval: IntervalEntity) {
+        super.tapIntervalStartButton(interval: interval)
+        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
         let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
         
         router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
@@ -35,13 +32,13 @@ public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
 
 @Observable
 public class IntervalDetailViewModel {
-    var intervalItem: IntervalEntity
+    var interval: IntervalEntity
     
-    public init(intervalItem: IntervalEntity) {
-        self.intervalItem = intervalItem
+    public init(interval: IntervalEntity) {
+        self.interval = interval
     }
     
-    func tapIntervalStartButton(intervalItem: IntervalEntity) {
+    func tapIntervalStartButton(interval: IntervalEntity) {
         
     }
 }

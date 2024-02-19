@@ -19,7 +19,7 @@ public struct IntervalListWatchScreen: View {
             Spacer()
             HStack{
                 Spacer()
-                //StartButton(viewModel: viewModel, intervalItem: viewModel.selectedItem!)
+                StartButton(viewModel: viewModel, interval: viewModel.selectedInterval!)
                 Spacer()
             }
         }

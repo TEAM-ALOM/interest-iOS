@@ -17,10 +17,11 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     private var router: IntervalRouter
     
     public init(
-        router: IntervalRouter
+        router: IntervalRouter,
+        interval: IntervalEntity
     ) {
         self.router = router
-        super.init()
+        super.init(interval: interval)
     }
     
     override func removeScreen() {
@@ -40,7 +41,8 @@ public class IntervalActiveViewModel: ObservableObject {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
     @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
     
-    var intervalItem: IntervalModel
+    var interval: IntervalEntity
+    //var intervalRecord: IntervalRecordEntity
     
     var timer: Timer?
     var isBounce : Bool = true
@@ -52,7 +54,7 @@ public class IntervalActiveViewModel: ObservableObject {
     var isBurning : Bool = true
     var isTimePass : Bool = true
     var activeTime: TimeInterval = 0
-    var totalTime : TimeInterval
+    var totalTime : TimeInterval = 0
     
     var untilResting : TimeInterval = 0
     var untilBurning : TimeInterval = 0
@@ -60,9 +62,8 @@ public class IntervalActiveViewModel: ObservableObject {
     private var timerSubscription: AnyCancellable?
     private let timerPublisher = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     
-    init() { 
-        self.intervalItem = .init()
-        self.totalTime = 0
+    init(interval: IntervalEntity) {
+        self.interval = interval
     }
     
     func removeScreen() {}
@@ -77,19 +78,19 @@ public class IntervalActiveViewModel: ObservableObject {
     
     func tapEndButton() {
         isTimePass = false
-        saveRecord(intervalRecordItem: intervalItem)
+        saveRecord()
     }
     
-    func saveRecord(intervalRecordItem : IntervalModel){
+    func saveRecord(){
         let newIntervalrecord = IntervalRecordEntity(
-            id: intervalRecordItem.id,
+            id: .init(),
             heartRates: [136.0, 130.0], // HealthKit의 평균심박수
             repeatedCount: currentCount,
             secondTime: Int(activeTime),
             createDate: .now,
             calorie: calorie)
         
-        intervalRecordUseCase.appendIntervalRecord(intervalId: newIntervalrecord.id, record: newIntervalrecord)
+        intervalRecordUseCase.appendIntervalRecord(intervalId: interval.id, record: newIntervalrecord)
     }
     
     
@@ -147,12 +148,12 @@ public class IntervalActiveViewModel: ObservableObject {
                         }
                         isBurning.toggle()
                         
-                        self.totalTime += Double(isBurning ?  intervalItem.burningSecondTime : intervalItem.restingSecondTime)
+                        self.totalTime += Double(isBurning ?  interval.burningSecondTime : interval.restingSecondTime)
                         
                         print(totalTime)
                     }
                     
-                    if(currentCount == intervalItem.repeatCount + 1){
+                    if(currentCount == interval.repeatCount + 1){
                         currentCount = currentCount - 1
                         tapEndButton()
                     }

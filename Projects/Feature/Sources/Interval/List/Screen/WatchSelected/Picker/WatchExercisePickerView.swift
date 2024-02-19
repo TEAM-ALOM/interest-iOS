@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Domain
 
 struct WatchExercisePickerView: View {
     var viewModel: IntervalListViewModel
@@ -19,14 +20,14 @@ struct WatchExercisePickerView: View {
             NavigationStack{
                 ZStack {
                     //intervalitems을 가져와야함
-                    ForEach(0..<IntervalModel.mocks.count, id: \.self) { index in
+                    ForEach(0..<IntervalEntity.mocks.count, id: \.self) { index in
                         itemView(index)
                     }
                 }
             }
             .gesture(dragGesture)
             
-            Text(IntervalModel.mocks[currentIndex].title)
+            Text(IntervalEntity.mocks[currentIndex].title)
                 .padding(.top,5)
             
         }
@@ -36,7 +37,7 @@ struct WatchExercisePickerView: View {
         Button(action: {
             withAnimation{
                 currentIndex = index
-                //viewModel.selectedItem = IntervalModel.mocks[currentIndex]
+                viewModel.selectedInterval = IntervalEntity.mocks[currentIndex]
             }
         }, label: {
             ZStack {
@@ -45,7 +46,7 @@ struct WatchExercisePickerView: View {
                     .frame(width: 52, height: 52)
                     .scaleEffect(currentIndex == index ? 1.0 : 0.7)
                 
-                Image(systemName: IntervalModel.mocks[index].exerciseType.systemImageName)
+                Image(systemName: IntervalEntity.mocks[index].exerciseType.systemImageName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 32)
@@ -56,7 +57,7 @@ struct WatchExercisePickerView: View {
         })
         .buttonStyle(.plain)
         .onAppear(perform: {
-            //viewModel.selectedItem = IntervalModel.mocks[currentIndex]
+            viewModel.selectedInterval = IntervalEntity.mocks[currentIndex]
         })
     }
     
@@ -67,7 +68,7 @@ struct WatchExercisePickerView: View {
                 currentIndex = max(0, currentIndex - 1)
             }
             else if value.translation.width < -threshold {
-                currentIndex = min(IntervalModel.mocks.count - 1, currentIndex + 1)
+                currentIndex = min(IntervalEntity.mocks.count - 1, currentIndex + 1)
             }
         }
     }

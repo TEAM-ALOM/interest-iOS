@@ -34,7 +34,7 @@ struct WatchHealthInfoView : View{
             
             Spacer()
             
-            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.intervalItem.repeatCount))
+            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.interval.repeatCount))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .font(.system(size: 16, design: .rounded))

@@ -33,7 +33,7 @@ public struct WatchStateManageView: View {
     
     private var intervalName: some View {
         HStack{
-            Text(viewModel.intervalItem.title)
+            Text(viewModel.interval.title)
                 .foregroundStyle(Color.keyColor)
             Spacer()
         }

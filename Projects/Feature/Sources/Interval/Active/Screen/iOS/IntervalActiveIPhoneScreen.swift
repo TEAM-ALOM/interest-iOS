@@ -24,7 +24,7 @@ public struct IntervalActiveIPhoneScreen: View {
             Spacer(minLength: 20)
         }
         .padding(.horizontal,16)
-        .navigationTitle(viewModel.intervalItem.title)
+        .navigationTitle(viewModel.interval.title)
         .navigationBarTitleDisplayMode(.inline)
         .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
         .onAppear(perform: {
