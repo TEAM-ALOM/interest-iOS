@@ -8,6 +8,7 @@
 import SwiftUI
 
 import Domain
+import Dependencies
 
 @Observable
 public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
@@ -39,6 +40,8 @@ public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
 
 @Observable
 public class IntervalDetailViewModel {
+    @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
+    
     var interval: IntervalEntity
     
     public init(interval: IntervalEntity) {
@@ -47,5 +50,9 @@ public class IntervalDetailViewModel {
     
     func tapIntervalStartButton(interval: IntervalEntity) {
         
+    }
+    
+    func fetchIntervalRecords(){
+        self.interval.records = intervalRecordUseCase.fetchIntervalRecords(intervalId: interval.id)
     }
 }

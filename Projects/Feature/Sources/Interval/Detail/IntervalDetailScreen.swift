@@ -40,6 +40,9 @@ struct IntervalDetailScreen: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .mainBackground()
+        .onAppear(){
+            viewModel.fetchIntervalRecords()
+        }
     }
     
     private var startButton: some View {
