@@ -17,8 +17,8 @@ public struct IntervalListIPhoneScreen: View {
     public var body: some View {
         ScrollView {
             LazyVStack(spacing: 24) {
-                ForEach(viewModel.intervalItems) { item in
-                    IntervalInfoCellView(viewModel: viewModel, intervalItem: item)
+                ForEach(viewModel.intervalItems.indices, id: \.self) { index in
+                    IntervalInfoCell(viewModel: viewModel, intervalEntity: viewModel.intervalItems[index])
                 }
             }
             .padding(.horizontal, 24)
@@ -28,74 +28,5 @@ public struct IntervalListIPhoneScreen: View {
         .onAppear {
             viewModel.fetchIntervalItems()
         }
-    }
-}
-
-public struct IntervalInfoCellView: View {
-    @State private var cellOffsetX = CGFloat.zero
-    @State var viewModel: IntervalListViewModel
-    @State var intervalItem: IntervalEntity
-    
-    public init(viewModel: IntervalListViewModel, intervalItem: IntervalEntity) {
-        self._viewModel = .init(wrappedValue: viewModel)
-        self._intervalItem = .init(wrappedValue: intervalItem)
-    }
-    
-    public var body: some View {
-        Button {
-            viewModel.tapIntervalDetailPageButton(intervalItem: intervalItem)
-        } label: {
-            ZStack {
-                tool
-                
-                cell
-            }
-        }
-    }
-    
-    private var tool: some View {
-        HStack(spacing: 12) {
-            let intervalInfoCell = IntervalInfoCell(intervalEntity: intervalItem)
-            
-            intervalInfoCell.toolButton(imageName: "trash",
-                       color: .warningColor,
-                       backgroundColor: .warningColor) {
-                viewModel.tapIntervalDeleteButton(at: intervalItem.id)
-            }
-            
-            intervalInfoCell.toolButton(imageName: "pencil",
-                       color: .editColor,
-                       backgroundColor: .editColor
-            ) {
-                viewModel.tapIntervalEditButton(selectedItem: $intervalItem)
-            }
-            
-            Spacer()
-        }
-        .scaleEffect(cellOffsetX < 0 ? 0 : cellOffsetX / 90, anchor: .leading)
-    }
-    
-    private var cell: some View {
-        IntervalInfoCell(intervalEntity: intervalItem)
-            .gesture(
-                DragGesture()
-                    .onChanged({ drag in
-                        let dragWidth = drag.translation.width
-                        
-                        if dragWidth < 0 && cellOffsetX <= .zero {
-                            cellOffsetX += 1 / (cellOffsetX - 1)
-                        } else {
-                            cellOffsetX += (cellOffsetX >= 90 && dragWidth > 0) ? 90 / cellOffsetX : dragWidth
-                        }
-                    })
-                    .onEnded({ drag in
-                        withAnimation(.snappy) {
-                            print(drag.translation.width)
-                            let isEdit = cellOffsetX >= 70 || drag.translation.width > 5
-                            cellOffsetX = isEdit ? 90 : .zero
-                        }
-                    })
-            )
-            .offset(x: cellOffsetX)
     }
 }

@@ -9,15 +9,70 @@ import Foundation
 import SwiftUI
 import Domain
 
-public struct IntervalInfoCell: View {
-    var intervalEntity : IntervalEntity
+public struct IntervalInfoCell<ViewModel: IntervalListViewModelInterface>: View {
+    private let viewModel: ViewModel
     
-    public init(intervalEntity: IntervalEntity) {
-        self.intervalEntity = intervalEntity
+    @State private var intervalEntity: IntervalEntity
+    @State private var cellOffsetX = CGFloat.zero
+    
+    public init(viewModel: ViewModel, intervalEntity: IntervalEntity) {
+        self.viewModel = viewModel
+        self._intervalEntity = State(initialValue: intervalEntity)
     }
     
     public var body: some View {
+        Button {
+            viewModel.tapIntervalDetailPageButton(intervalItem: intervalEntity)
+        } label: {
+            ZStack {
+                tool
+                cell
+            }
+        }
+    }
+    
+    private var tool: some View {
+        HStack(spacing: 12) {
+            toolButton(imageName: "trash",
+                       color: .warningColor,
+                       backgroundColor: .warningColor) {
+                viewModel.tapIntervalDeleteButton(at: intervalEntity.id)
+            }
+            
+            toolButton(imageName: "pencil",
+                       color: .editColor,
+                       backgroundColor: .editColor
+            ) {
+                viewModel.tapIntervalEditButton(selectedItem: $intervalEntity)
+            }
+            
+            Spacer()
+        }
+        .scaleEffect(cellOffsetX < 0 ? 0 : cellOffsetX / 90, anchor: .leading)
+    }
+    
+    private var cell: some View {
         containerView
+            .gesture(
+                DragGesture()
+                    .onChanged({ drag in
+                        let dragWidth = drag.translation.width
+                        
+                        if dragWidth < 0 && cellOffsetX <= .zero {
+                            cellOffsetX += 1 / (cellOffsetX - 1)
+                        } else {
+                            cellOffsetX += (cellOffsetX >= 90 && dragWidth > 0) ? 90 / cellOffsetX : dragWidth
+                        }
+                    })
+                    .onEnded({ drag in
+                        withAnimation(.snappy) {
+                            print(drag.translation.width)
+                            let isEdit = cellOffsetX >= 70 || drag.translation.width > 5
+                            cellOffsetX = isEdit ? 90 : .zero
+                        }
+                    })
+            )
+            .offset(x: cellOffsetX)
     }
 }
 
