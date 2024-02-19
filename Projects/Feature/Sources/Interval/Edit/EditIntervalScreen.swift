@@ -66,9 +66,7 @@ private extension EditIntervalScreen {
             }
             TextField("달리기 인터벌", text: $viewModel.interval.title)
                 .padding(.all,12)
-            //.background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
-            
         }
     }
     

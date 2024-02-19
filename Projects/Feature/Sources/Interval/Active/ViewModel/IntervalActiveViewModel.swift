@@ -48,7 +48,6 @@ public class IntervalActiveViewModel: ObservableObject {
     public var delegateActionHandler: ((DelegateAction) -> ())?
     
     var interval: IntervalEntity
-    //var intervalRecord: IntervalRecordEntity
     
     var timer: Timer?
     var isBounce : Bool = true
@@ -60,7 +59,7 @@ public class IntervalActiveViewModel: ObservableObject {
     var isBurning : Bool = true
     var isTimePass : Bool = true
     var activeTime: TimeInterval = 0
-    var totalTime : TimeInterval = 0
+    var totalTime : TimeInterval
     
     var untilResting : TimeInterval = 0
     var untilBurning : TimeInterval = 0
@@ -70,6 +69,7 @@ public class IntervalActiveViewModel: ObservableObject {
     
     init(interval: IntervalEntity) {
         self.interval = interval
+        self.totalTime = Double(interval.burningSecondTime)
     }
     
     public func sendSignal(action: DelegateAction) {
@@ -154,9 +154,8 @@ public class IntervalActiveViewModel: ObservableObject {
                         }
                         isBurning.toggle()
                         
-                        self.totalTime += Double(isBurning ?  interval.burningSecondTime : interval.restingSecondTime)
-                        
-                        print(totalTime)
+                        self.totalTime = Double(isBurning ?  interval.burningSecondTime : interval.restingSecondTime)
+                        activeTime=0
                     }
                     
                     if(currentCount == interval.repeatCount + 1){
