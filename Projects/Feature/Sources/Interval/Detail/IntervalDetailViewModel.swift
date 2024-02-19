@@ -26,6 +26,13 @@ public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
         let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
         let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
         
+        intervalActiveViewModel.delegateActionHandler =  { [weak self] delegate in
+            guard let `self` = self else { return }
+            switch delegate {
+            case let .saved(entity):
+                self.interval.records.append(entity)
+            }
+        }
         router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
 }

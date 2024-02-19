@@ -41,6 +41,12 @@ public class IntervalActiveViewModel: ObservableObject {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
     @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
     
+    public enum DelegateAction {
+        case saved(IntervalRecordEntity)
+    }
+    
+    public var delegateActionHandler: ((DelegateAction) -> ())?
+    
     var interval: IntervalEntity
     //var intervalRecord: IntervalRecordEntity
     
@@ -66,6 +72,10 @@ public class IntervalActiveViewModel: ObservableObject {
         self.interval = interval
     }
     
+    public func sendSignal(action: DelegateAction) {
+        self.delegateActionHandler?(action)
+    }
+    
     func removeScreen() {}
     
     func tapPauseButton() {
@@ -78,10 +88,6 @@ public class IntervalActiveViewModel: ObservableObject {
     
     func tapEndButton() {
         isTimePass = false
-        saveRecord()
-    }
-    
-    func saveRecord(){
         let newIntervalrecord = IntervalRecordEntity(
             id: .init(),
             heartRates: [136.0, 130.0], // HealthKit의 평균심박수
@@ -91,8 +97,8 @@ public class IntervalActiveViewModel: ObservableObject {
             calorie: calorie)
         
         intervalRecordUseCase.appendIntervalRecord(intervalId: interval.id, record: newIntervalrecord)
+        sendSignal(action: .saved(newIntervalrecord))
     }
-    
     
     func calculateUntilTime() -> String {
         var time = 0.0
