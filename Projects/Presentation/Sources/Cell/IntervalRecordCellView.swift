@@ -7,10 +7,9 @@
 
 import SwiftUI
 import SharedDesignSystem
+import Domain
 
 public struct IntervalRecordCellView: View {
-    @State private var intervalDetailViewModel: IntervalDetailViewModel
-    
     @State private var averageHeartRate: Double = 0
     @State private var calorie: Double = 0
     @State private var repeatedCount: Double = 0
@@ -18,18 +17,19 @@ public struct IntervalRecordCellView: View {
     @State private var minute: Double = 0
     @State private var createDate: String = ""
     
-    private let intervalRecordModel: IntervalRecordModel
+    private let intervalRecordEntity: IntervalRecordEntity
     
-    init(intervalDetailViewModel: IntervalDetailViewModel, intervalRecordModel: IntervalRecordModel) {
-        self._intervalDetailViewModel = .init(wrappedValue: intervalDetailViewModel)
-        self.intervalRecordModel = intervalRecordModel
+    public init(intervalRecordEntity: IntervalRecordEntity) {
+        self.intervalRecordEntity = intervalRecordEntity
     }
     
     public var body: some View {
-        cell
+        containerView
     }
-    
-    private var cell: some View {
+}
+
+private extension IntervalRecordCellView {
+    private var containerView: some View {
         VStack(spacing: 12) {
             calorieAndDate
             
@@ -98,10 +98,10 @@ public struct IntervalRecordCellView: View {
     
     private func calculateAverageHeartRate() {
         averageHeartRate = 0
-        intervalRecordModel.heartRates.forEach { heartRate in
+        intervalRecordEntity.heartRates.forEach { heartRate in
             averageHeartRate += heartRate
         }
-        averageHeartRate /= Double(intervalRecordModel.heartRates.count)
+        averageHeartRate /= Double(intervalRecordEntity.heartRates.count)
     }
     
     private func calculateCreateDate() {
@@ -109,8 +109,8 @@ public struct IntervalRecordCellView: View {
         let currentYear = calendar.component(.year, from: .now)
         let currentWeek = calendar.component(.weekOfYear, from: .now)
         
-        let createYear = calendar.component(.year, from: intervalRecordModel.createDate)
-        let createWeek = calendar.component(.weekOfYear, from: intervalRecordModel.createDate)
+        let createYear = calendar.component(.year, from: intervalRecordEntity.createDate)
+        let createWeek = calendar.component(.weekOfYear, from: intervalRecordEntity.createDate)
         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_kr")
@@ -122,14 +122,14 @@ public struct IntervalRecordCellView: View {
         } else {
             formatter.dateFormat = "yyyy/MM/dd"
         }
-        createDate = formatter.string(from: intervalRecordModel.createDate)
+        createDate = formatter.string(from: intervalRecordEntity.createDate)
     }
     
     private func calculateRecordInfo() {
-        calorie = Double(intervalRecordModel.calorie)
-        repeatedCount = Double(intervalRecordModel.repeatedCount)
+        calorie = Double(intervalRecordEntity.calorie)
+        repeatedCount = Double(intervalRecordEntity.repeatedCount)
         
-        hour = Double(intervalRecordModel.secondTime / 3600)
-        minute = Double((intervalRecordModel.secondTime - Int(hour * 3600)) / 60)
+        hour = Double(intervalRecordEntity.secondTime / 3600)
+        minute = Double((intervalRecordEntity.secondTime - Int(hour * 3600)) / 60)
     }
 }

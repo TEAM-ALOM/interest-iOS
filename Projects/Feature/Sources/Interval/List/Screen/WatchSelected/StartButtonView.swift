@@ -7,11 +7,12 @@
 
 import Foundation
 import SwiftUI
+import Domain
 
 struct StartButton: View {
     var viewModel: IntervalListViewModel
         
-    public var intervalItem: IntervalModel
+    public var intervalItem: IntervalEntity
 
     var body : some View {
             Button(action: {

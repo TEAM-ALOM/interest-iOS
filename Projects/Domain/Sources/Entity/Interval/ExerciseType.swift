@@ -13,4 +13,14 @@ public enum ExerciseType: CaseIterable {
     case swim
     case stepper
     case badminton
+    
+    public var systemImageName: String {
+        switch self {
+        case .run: "figure.run"
+        case .cycle: "figure.outdoor.cycle"
+        case .swim: "figure.pool.swim"
+        case .stepper: "figure.stair.stepper"
+        case .badminton: "figure.badminton"
+        }
+    }
 }

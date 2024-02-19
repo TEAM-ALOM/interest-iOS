@@ -7,82 +7,89 @@
 
 import Foundation
 import SwiftUI
+import Domain
+import Presentation
 
-struct EditIntervalScreen: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) private var colorScheme
+public struct EditIntervalScreen: View {
+    @State var viewModel: EditIntervalViewModel
     
-    @StateObject var viewModel: EditIntervalViewModel
-        
-    public init() {
-        self._viewModel = StateObject(wrappedValue: .init())
+    public init(viewModel: EditIntervalViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
-    var body: some View {
+    public var body: some View {
         NavigationStack{
-            ScrollView {
-                VStack(alignment: .leading) {
-                    IntervalForm
-                    
-                    Spacer()
-                }
-                .backgroundStyle(Color.clear)
-                .ignoresSafeArea()
-                .navigationTitle("인터벌 편집")
+            containerView
+                .padding(.horizontal, 30)
+                .padding(.top, 10)
+                .navigationTitle(
+                    "인터벌 편집"
+                )
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button(action: {
-                            dismiss()
+                            viewModel.tapCancelButton()
                         }, label: {
                             Text("취소")
                         })
                     }
-                    
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
-                            //저장
-                            dismiss()
+                            viewModel.tapSaveButton()
                         }, label: {
                             Text("저장")
                         })
                     }
                 }
-            }
-            .scrollIndicators(.hidden)
         }
-    }
-
-    //intervalForm
-    private var IntervalForm: some View {
-        VStack (alignment: .leading) {
-            Text("이름")
-                .font(.system(size: 17))
-            
-            HStack () {
-                Text("달리기 인터벌")
-                    .padding(13)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, minHeight: 40)
-            .foregroundColor(Color.textColor50)
-            .background {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
-
-            }
-            .padding(.bottom, 28)
-            
-            
-            //버닝 픽커
-            expandableTimeIntervalPicker(isBurning: true, selection: $viewModel.burningSelectedInterval, totalTime: $viewModel.burningTime)
-                .padding(.bottom, 25)
-            
-            //휴식 픽커
-            expandableTimeIntervalPicker(isBurning: false, selection: $viewModel.restSelectedInterval, totalTime: $viewModel.restTime)
-            
-        }
-        .padding(.horizontal, 24)
     }
 }
 
+private extension EditIntervalScreen {
+    private var containerView: some View {
+        ScrollView {
+            nameView
+            exercisePickerView
+            repeatCountPickerView
+            burningRestingPickerView
+            Spacer()
+        }
+    }
+    
+    private var nameView: some View {
+        VStack{
+            HStack{
+                Text("이름")
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            TextField("달리기 인터벌", text: $viewModel.intervalEntity.title)
+                .padding(.all,12)
+            //.background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
+                .cornerRadius(10)
+            
+        }
+    }
+    
+    private var exercisePickerView: some View {
+        HStack{
+            ExercisePickerView(selectedExerciseType: $viewModel.intervalEntity.exerciseType)
+        }
+        .padding(.vertical,10)
+    }
+    
+    private var repeatCountPickerView: some View {
+        VStack{
+            RepeatPicker(isRepeat: false, repeatCount: $viewModel.intervalEntity.repeatCount)
+        }
+    }
+    
+    private var burningRestingPickerView: some View {
+        VStack{
+            BurningRestingPicker(isBurning: true, heartType: $viewModel.intervalEntity.burningHeartIntervalType, totalTime: $viewModel.intervalEntity.burningSecondTime)
+            
+            BurningRestingPicker(isBurning: false, heartType: $viewModel.intervalEntity.restingHeartIntervalType, totalTime: $viewModel.intervalEntity.restingSecondTime)
+        }
+    }
+}

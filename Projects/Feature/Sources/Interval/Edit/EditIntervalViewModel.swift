@@ -8,14 +8,60 @@
 import Foundation
 import SwiftUI
 import Domain
+import Dependencies
 
-class EditIntervalViewModel: ObservableObject {
-    @Published var burningSelectedInterval = HeartIntervalTypeModel.one
-    @Published var burningTime: Int = 0
-    @Published var restSelectedInterval = HeartIntervalTypeModel.one
-    @Published var restTime: Int = 0
+@Observable
+public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
+    private var router: IntervalRouter
     
-    @Published var name: String = ""
+    public init(
+        router: IntervalRouter,
+        intervalEntity: IntervalEntity
+    ) {
+        self.router = router
+        super.init(intervalEntity: intervalEntity)
+    }
     
-    init() {}
+    override func tapCancelButton() {
+        super.tapCancelButton()
+        
+        router.triggerPresentationScreen(presentationRoute: nil)
+    }
+    
+    override func tapSaveButton() {
+        super.tapSaveButton()
+        
+        router.triggerPresentationScreen(presentationRoute: nil)
+    }
+}
+
+@Observable
+public class EditIntervalViewModel{
+    @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+        
+    public enum Action {
+        case delegate(Delegate)
+        
+        public enum Delegate {
+            case fetched(IntervalEntity)
+        }
+    }
+    
+    public var send: ((Action.Delegate) -> ())?
+    
+    public var intervalEntity: IntervalEntity
+    
+    public init(
+        intervalEntity: IntervalEntity
+    ) {
+        _intervalEntity = intervalEntity
+    }
+
+    func tapCancelButton() {}
+    
+    func tapSaveButton() {
+        let entity = intervalEntity
+        let result = intervalUseCase.update(at: entity.id, to: entity)
+        send?(.fetched(entity))
+    }
 }

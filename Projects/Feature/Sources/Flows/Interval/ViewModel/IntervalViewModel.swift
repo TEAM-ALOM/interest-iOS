@@ -21,9 +21,7 @@ public final class IntervalViewModel {
     
     public var isBottomSheetPresent = false
     
-    public init(
-        router: IntervalRouter
-    ) {
+    public init(router: IntervalRouter) {
         self.router = router
         self.intervalListViewModel = IntervalListViewModelWithRouter(router: router)
     }

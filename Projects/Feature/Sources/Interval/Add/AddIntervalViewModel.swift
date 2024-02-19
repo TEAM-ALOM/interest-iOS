@@ -13,7 +13,7 @@ import Dependencies
 
 import Domain
 
-@Observable 
+@Observable
 public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
     private var router: IntervalRouter
     
@@ -23,11 +23,16 @@ public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
         self.router = router
         super.init()
     }
-
-
+    
+    override func tapCancelButton() {
+        super.tapCancelButton()
+        
+        router.triggerPresentationScreen(presentationRoute: nil)
+    }
+    
     override func tapSaveButton() {
         super.tapSaveButton()
-
+        
         router.triggerPresentationScreen(presentationRoute: nil)
     }
 }
@@ -35,7 +40,6 @@ public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
 @Observable
 public class AddIntervalViewModel {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
-    public let mode: Mode
     
     public enum Action {
         case delegate(Delegate)
@@ -48,37 +52,16 @@ public class AddIntervalViewModel {
     public var send: ((Action.Delegate) -> ())?
     
     public init() {
-        self.mode = .add
+        self._intervalEntity = .init(id: UUID())
     }
-
-    public var intervalItem: Binding<IntervalModel> {
-        if let intervalItem = intervalItemOrNil {
-            return intervalItem
-        } else {
-            return .init(get: { self._intervalItem }, set: { self._intervalItem = $0 })
-        }
-    }
-
-    private var _intervalItem: IntervalModel = .init()
-    private var intervalItemOrNil: Binding<IntervalModel>?
-
+    
+    public var intervalEntity: IntervalEntity
+    
+    func tapCancelButton() {}
     
     func tapSaveButton() {
-        let entity = IntervalModelMapper.toEntity(model: intervalItem.wrappedValue)
-
-        switch self.mode {
-        case .add:
-            let interval = intervalUseCase.save(interval: entity)
-            send?(.saved(entity))
-        case .edit:
-            let _ = intervalUseCase.update(at: entity.id, to: entity)
-        }
-    }
-}
-
-extension AddIntervalViewModel {
-    public enum Mode {
-        case add
-        case edit
+        let entity = intervalEntity
+        let interval = intervalUseCase.save(interval: entity)
+        send?(.saved(entity))
     }
 }
