@@ -17,10 +17,11 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     private var router: IntervalRouter
     
     public init(
-        router: IntervalRouter
+        router: IntervalRouter,
+        interval: IntervalEntity
     ) {
         self.router = router
-        super.init()
+        super.init(interval: interval)
     }
     
     override func removeScreen() {
@@ -40,7 +41,13 @@ public class IntervalActiveViewModel: ObservableObject {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
     @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
     
-    var intervalItem: IntervalModel
+    public enum DelegateAction {
+        case saved(IntervalRecordEntity)
+    }
+    
+    public var delegateActionHandler: ((DelegateAction) -> ())?
+    
+    var interval: IntervalEntity
     
     var timer: Timer?
     var isBounce : Bool = true
@@ -60,9 +67,13 @@ public class IntervalActiveViewModel: ObservableObject {
     private var timerSubscription: AnyCancellable?
     private let timerPublisher = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     
-    init() { 
-        self.intervalItem = .init()
-        self.totalTime = 0
+    init(interval: IntervalEntity) {
+        self.interval = interval
+        self.totalTime = Double(interval.burningSecondTime)
+    }
+    
+    public func sendSignal(action: DelegateAction) {
+        self.delegateActionHandler?(action)
     }
     
     func removeScreen() {}
@@ -77,21 +88,17 @@ public class IntervalActiveViewModel: ObservableObject {
     
     func tapEndButton() {
         isTimePass = false
-        saveRecord(intervalRecordItem: intervalItem)
-    }
-    
-    func saveRecord(intervalRecordItem : IntervalModel){
         let newIntervalrecord = IntervalRecordEntity(
-            id: intervalRecordItem.id,
+            id: .init(),
             heartRates: [136.0, 130.0], // HealthKit의 평균심박수
             repeatedCount: currentCount,
             secondTime: Int(activeTime),
             createDate: .now,
             calorie: calorie)
         
-        intervalRecordUseCase.appendIntervalRecord(intervalId: newIntervalrecord.id, record: newIntervalrecord)
+        intervalRecordUseCase.appendIntervalRecord(intervalId: interval.id, record: newIntervalrecord)
+        sendSignal(action: .saved(newIntervalrecord))
     }
-    
     
     func calculateUntilTime() -> String {
         var time = 0.0
@@ -147,12 +154,10 @@ public class IntervalActiveViewModel: ObservableObject {
                         }
                         isBurning.toggle()
                         
-                        self.totalTime += Double(isBurning ?  intervalItem.burningSecondTime : intervalItem.restingSecondTime)
-                        
-                        print(totalTime)
+                        self.totalTime += Double(isBurning ?  interval.burningSecondTime : interval.restingSecondTime)
                     }
                     
-                    if(currentCount == intervalItem.repeatCount + 1){
+                    if(currentCount == interval.repeatCount + 1){
                         currentCount = currentCount - 1
                         tapEndButton()
                     }

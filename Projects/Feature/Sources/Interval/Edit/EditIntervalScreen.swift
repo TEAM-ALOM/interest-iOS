@@ -64,32 +64,30 @@ private extension EditIntervalScreen {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            TextField("달리기 인터벌", text: $viewModel.intervalEntity.title)
+            TextField("달리기 인터벌", text: $viewModel.interval.title)
                 .padding(.all,12)
-            //.background(colorScheme == .dark ? Color.textColor25 : Color.textColor75)
                 .cornerRadius(10)
-            
         }
     }
     
     private var exercisePickerView: some View {
         HStack{
-            ExercisePickerView(selectedExerciseType: $viewModel.intervalEntity.exerciseType)
+            ExercisePickerView(selectedExerciseType: $viewModel.interval.exerciseType)
         }
         .padding(.vertical,10)
     }
     
     private var repeatCountPickerView: some View {
         VStack{
-            RepeatPicker(isRepeat: false, repeatCount: $viewModel.intervalEntity.repeatCount)
+            RepeatPicker(isRepeat: false, repeatCount: $viewModel.interval.repeatCount)
         }
     }
     
     private var burningRestingPickerView: some View {
         VStack{
-            BurningRestingPicker(isBurning: true, heartType: $viewModel.intervalEntity.burningHeartIntervalType, totalTime: $viewModel.intervalEntity.burningSecondTime)
+            BurningRestingPicker(isBurning: true, heartType: $viewModel.interval.burningHeartIntervalType, totalTime: $viewModel.interval.burningSecondTime)
             
-            BurningRestingPicker(isBurning: false, heartType: $viewModel.intervalEntity.restingHeartIntervalType, totalTime: $viewModel.intervalEntity.restingSecondTime)
+            BurningRestingPicker(isBurning: false, heartType: $viewModel.interval.restingHeartIntervalType, totalTime: $viewModel.interval.restingSecondTime)
         }
     }
 }

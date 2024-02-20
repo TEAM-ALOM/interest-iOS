@@ -17,8 +17,8 @@ public struct IntervalListIPhoneScreen: View {
     public var body: some View {
         ScrollView {
             LazyVStack(spacing: 24) {
-                ForEach(viewModel.intervalItems.indices, id: \.self) { index in
-                    IntervalInfoCell(viewModel: viewModel, intervalEntity: viewModel.intervalItems[index])
+                ForEach(viewModel.intervals) { interval in
+                    IntervalInfoCell(viewModel: viewModel, interval: interval)
                 }
             }
             .padding(.horizontal, 24)

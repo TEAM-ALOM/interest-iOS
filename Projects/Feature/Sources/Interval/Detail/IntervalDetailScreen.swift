@@ -25,7 +25,7 @@ struct IntervalDetailScreen: View {
                     .foregroundStyle(Color.textColor)
                 
                 LazyVStack(spacing: 24) {
-                    ForEach(viewModel.intervalItem.records) { record in
+                    ForEach(viewModel.interval.records) { record in
                         IntervalRecordCellView(intervalRecordEntity: record)
                     }
                 }
@@ -34,17 +34,20 @@ struct IntervalDetailScreen: View {
             .padding(.horizontal, 24)
             .padding(.top, 32)
         }
-        .navigationTitle(viewModel.intervalItem.title)
+        .navigationTitle(viewModel.interval.title)
         .overlay(alignment: .bottom) {
             startButton
         }
         .ignoresSafeArea(edges: .bottom)
         .mainBackground()
+        .onAppear(){
+            viewModel.fetchIntervalRecords()
+        }
     }
     
     private var startButton: some View {
         Button(action: {
-            viewModel.tapIntervalStartButton(intervalItem: viewModel.intervalItem)
+            viewModel.tapIntervalStartButton(interval: viewModel.interval)
         }, label: {
             HStack {
                 Spacer()
