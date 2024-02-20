@@ -154,8 +154,7 @@ public class IntervalActiveViewModel: ObservableObject {
                         }
                         isBurning.toggle()
                         
-                        self.totalTime = Double(isBurning ?  interval.burningSecondTime : interval.restingSecondTime)
-                        activeTime=0
+                        self.totalTime += Double(isBurning ?  interval.burningSecondTime : interval.restingSecondTime)
                     }
                     
                     if(currentCount == interval.repeatCount + 1){

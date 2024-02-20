@@ -17,19 +17,20 @@ struct WatchExercisePickerView: View {
     
     var body: some View {
         VStack{
-            NavigationStack{
-                ZStack {
-                    //intervalitems을 가져와야함
-                    ForEach(0..<IntervalEntity.mocks.count, id: \.self) { index in
-                        itemView(index)
+            if viewModel.intervals.count != 0 {
+                NavigationStack{
+                    ZStack {
+                        //intervalitems을 가져와야함
+                        ForEach(0..<viewModel.intervals.count, id: \.self) { index in
+                            itemView(index)
+                        }
                     }
                 }
+                .gesture(dragGesture)
+                
+                Text(viewModel.intervals[currentIndex].title)
+                    .padding(.top,5)
             }
-            .gesture(dragGesture)
-            
-            Text(IntervalEntity.mocks[currentIndex].title)
-                .padding(.top,5)
-            
         }
     }
     
@@ -37,7 +38,7 @@ struct WatchExercisePickerView: View {
         Button(action: {
             withAnimation{
                 currentIndex = index
-                viewModel.selectedInterval = IntervalEntity.mocks[currentIndex]
+                viewModel.selectedInterval = viewModel.intervals[currentIndex]
             }
         }, label: {
             ZStack {
@@ -46,7 +47,7 @@ struct WatchExercisePickerView: View {
                     .frame(width: 52, height: 52)
                     .scaleEffect(currentIndex == index ? 1.0 : 0.7)
                 
-                Image(systemName: IntervalEntity.mocks[index].exerciseType.systemImageName)
+                Image(systemName: viewModel.intervals[currentIndex].exerciseType.systemImageName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 32)
@@ -57,7 +58,7 @@ struct WatchExercisePickerView: View {
         })
         .buttonStyle(.plain)
         .onAppear(perform: {
-            viewModel.selectedInterval = IntervalEntity.mocks[currentIndex]
+            viewModel.selectedInterval = viewModel.intervals[currentIndex]
         })
     }
     
@@ -68,7 +69,7 @@ struct WatchExercisePickerView: View {
                 currentIndex = max(0, currentIndex - 1)
             }
             else if value.translation.width < -threshold {
-                currentIndex = min(IntervalEntity.mocks.count - 1, currentIndex + 1)
+                currentIndex = min(viewModel.intervals.count - 1, currentIndex + 1)
             }
         }
     }

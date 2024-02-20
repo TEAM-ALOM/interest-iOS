@@ -14,7 +14,7 @@ public struct IntervalScreen: View {
     @State var router: IntervalRouter
     @State var viewModel: IntervalViewModel
 
-    var intervalListScreen: IntervalListScreen
+    @State var intervalListScreen: IntervalListScreen
     
     public init(
         router: IntervalRouter,
