@@ -41,13 +41,9 @@ public final class IntervalViewModel {
         router.triggerPresentationScreen(presentationRoute: addIntervalRoute)
     }
 
-    public func tapIntervalStartButton(intervalItem: IntervalModel) {
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router)
+    public func tapIntervalStartButton(interval: IntervalEntity) {
+        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
         let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
         router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
-    }
-
-    public func nextScreen() -> some View {
-        router.nextNavigationScreen()
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct IntervalEntity : Identifiable{
+public struct IntervalEntity: Identifiable {
     public let id: UUID
     
     public var title: String

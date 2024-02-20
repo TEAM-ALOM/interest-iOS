@@ -24,7 +24,7 @@ struct HealthInfoView: View {
     
     private var repeatCount: some View {
         HStack{
-            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.intervalItem.repeatCount))
+            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.interval.repeatCount))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .font(.system(size: 36, design: .rounded))
@@ -103,7 +103,7 @@ struct HealthInfoView: View {
                 Spacer()
                 HStack(spacing : 0) {
                     Text("현재 구간 (목표 : ")
-                    Text(viewModel.isBurning ? viewModel.intervalItem.burningHeartIntervalType.rawValue.prefix(1) : viewModel.intervalItem.restingHeartIntervalType.rawValue.prefix(1))
+                    Text(viewModel.isBurning ? "\(viewModel.interval.burningHeartIntervalType.heartTypeValue)" : "\(viewModel.interval.restingHeartIntervalType.heartTypeValue)")
                     Text(")")
                 }
                 .foregroundColor(Color.textColor50)

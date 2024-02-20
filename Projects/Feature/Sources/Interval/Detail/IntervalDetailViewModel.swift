@@ -8,37 +8,51 @@
 import SwiftUI
 
 import Domain
+import Dependencies
 
 @Observable
 public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
     private var router: IntervalRouter
     
-    private var intervalEntity : IntervalEntity
-    
     public init(
         router: IntervalRouter,
-        intervalEntity : IntervalEntity
+        interval : IntervalEntity
     ) {
         self.router = router
-        self._intervalEntity = intervalEntity
-        super.init(intervalItem: intervalEntity)
+        super.init(interval: interval)
     }
     
-    override func tapIntervalStartButton(intervalItem: IntervalEntity) {
-        super.tapIntervalStartButton(intervalItem: intervalItem)
-        router.removeScreenTransition()
+    override func tapIntervalStartButton(interval: IntervalEntity) {
+        super.tapIntervalStartButton(interval: interval)
+        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
+        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+        
+        intervalActiveViewModel.delegateActionHandler =  { [weak self] delegate in
+            guard let `self` = self else { return }
+            switch delegate {
+            case let .saved(entity):
+                self.interval.records.append(entity)
+            }
+        }
+        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
 }
 
 @Observable
 public class IntervalDetailViewModel {
-    var intervalItem: IntervalEntity
+    @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
     
-    public init(intervalItem: IntervalEntity) {
-        self.intervalItem = intervalItem
+    var interval: IntervalEntity
+    
+    public init(interval: IntervalEntity) {
+        self.interval = interval
     }
     
-    func tapIntervalStartButton(intervalItem: IntervalEntity) {
+    func tapIntervalStartButton(interval: IntervalEntity) {
         
+    }
+    
+    func fetchIntervalRecords(){
+        self.interval.records = intervalRecordUseCase.fetchIntervalRecords(intervalId: interval.id)
     }
 }

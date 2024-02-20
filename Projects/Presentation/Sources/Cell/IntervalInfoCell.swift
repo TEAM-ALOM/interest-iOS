@@ -12,17 +12,17 @@ import Domain
 public struct IntervalInfoCell<ViewModel: IntervalListViewModelInterface>: View {
     private let viewModel: ViewModel
     
-    @State private var intervalEntity: IntervalEntity
+    @State private var interval: IntervalEntity
     @State private var cellOffsetX = CGFloat.zero
     
-    public init(viewModel: ViewModel, intervalEntity: IntervalEntity) {
+    public init(viewModel: ViewModel, interval: IntervalEntity) {
         self.viewModel = viewModel
-        self._intervalEntity = State(initialValue: intervalEntity)
+        self._interval = State(initialValue: interval)
     }
     
     public var body: some View {
         Button {
-            viewModel.tapIntervalDetailPageButton(intervalItem: intervalEntity)
+            viewModel.tapIntervalDetailPageButton(interval: interval)
         } label: {
             ZStack {
                 tool
@@ -36,14 +36,14 @@ public struct IntervalInfoCell<ViewModel: IntervalListViewModelInterface>: View 
             toolButton(imageName: "trash",
                        color: .warningColor,
                        backgroundColor: .warningColor) {
-                viewModel.tapIntervalDeleteButton(at: intervalEntity.id)
+                viewModel.tapIntervalDeleteButton(at: interval.id)
             }
             
             toolButton(imageName: "pencil",
                        color: .editColor,
                        backgroundColor: .editColor
             ) {
-                viewModel.tapIntervalEditButton(selectedItem: $intervalEntity)
+                viewModel.tapIntervalEditButton(selectedInterval: $interval)
             }
             
             Spacer()
@@ -93,10 +93,10 @@ public extension IntervalInfoCell {
     
     private var titleView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Image(systemName: intervalEntity.exerciseType.systemImageName)
+            Image(systemName: interval.exerciseType.systemImageName)
                 .foregroundStyle(Color.keyColor)
             
-            Text(intervalEntity.title)
+            Text(interval.title)
                 .font(.system(size: 20))
                 .fontWeight(.semibold)
                 .foregroundStyle(Color.textColor)
@@ -117,7 +117,7 @@ public extension IntervalInfoCell {
     
     private var info: some View {
         VStack(alignment: .trailing, spacing: 20) {
-            infoCell(minute: calculateMinutes(minute: intervalEntity.burningSecondTime), phase: String(intervalEntity.burningHeartIntervalType.heartTypeName.prefix(1))) {
+            infoCell(minute: calculateMinutes(minute: interval.burningSecondTime), phase: String(interval.burningHeartIntervalType.heartTypeName.prefix(1))) {
                 Image(systemName: "flame.fill")
                     .resizable()
                     .scaledToFit()
@@ -125,7 +125,7 @@ public extension IntervalInfoCell {
                     .foregroundStyle(Color.burningColor)
             }
             
-            infoCell(minute: calculateMinutes(minute: intervalEntity.restingSecondTime), phase: String(intervalEntity.restingHeartIntervalType.heartTypeName.prefix(1))) {
+            infoCell(minute: calculateMinutes(minute: interval.restingSecondTime), phase: String(interval.restingHeartIntervalType.heartTypeName.prefix(1))) {
                 Image(systemName: "circle.hexagonpath.fill")
                     .resizable()
                     .scaledToFit()

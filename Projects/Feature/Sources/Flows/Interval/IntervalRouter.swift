@@ -21,8 +21,12 @@ public final class IntervalRouter: FlowRouter {
     public var nextPresentationRoute: PresentationRoute? = nil
     
     public func triggerNavigationScreen(navigationRoute: NavigationRoute?) {
-        navigationPath.append(navigationRoute)
         nextNavigationRoute = navigationRoute
+        if let navigationRoute = navigationRoute {
+            navigationPath.append(navigationRoute)
+        } else {
+            navigationPath.removeLast()
+        }
     }
 
     public func triggerPresentationScreen(presentationRoute: PresentationRoute?) {

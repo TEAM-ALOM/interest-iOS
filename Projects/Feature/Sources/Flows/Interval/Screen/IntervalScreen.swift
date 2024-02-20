@@ -23,9 +23,7 @@ public struct IntervalScreen: View {
         self._router = .init(wrappedValue: router)
         self._viewModel = .init(wrappedValue: viewModel)
         
-        self.intervalListScreen = .init(
-            listViewModel: viewModel.intervalListViewModel
-        )
+        self.intervalListScreen = .init(listViewModel: viewModel.intervalListViewModel)
                 
 #if os(iOS)
         UIRefreshControl.appearance().tintColor = UIColor(Color.keyColor)
@@ -51,5 +49,43 @@ public struct IntervalScreen: View {
 #elseif os(watchOS)
         watchOS
 #endif
+    }
+}
+
+private extension IntervalScreen {
+    var iOS: some View {
+        NavigationStack(path: $router.navigationPath) {
+            VStack {
+                intervalListScreen
+                    .navigationTitle("인터레스트")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button(action: {
+                                viewModel.tapPlusButton()
+                            }, label: {
+                                Image(systemName: "plus")
+                            })
+                        }
+                    }
+                    .navigationDestination(for: IntervalRouter.NavigationRoute.self) { route in
+                        route.nextView
+                    }
+                    .sheetWithRouter(router: self.router)
+            }
+        }
+        .tint(Color.keyColor)
+    }
+    
+    var watchOS: some View {
+        NavigationStack(path: $router.navigationPath) {
+            VStack {
+                intervalListScreen
+            }
+            .navigationTitle("인터레스트")
+            .navigationDestination(for: IntervalRouter.NavigationRoute.self) { route in
+                route.nextView
+            }
+        }
+        .tint(Color.keyColor)
     }
 }

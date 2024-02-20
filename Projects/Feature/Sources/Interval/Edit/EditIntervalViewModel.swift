@@ -16,10 +16,10 @@ public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
     
     public init(
         router: IntervalRouter,
-        intervalEntity: IntervalEntity
+        interval: IntervalEntity
     ) {
         self.router = router
-        super.init(intervalEntity: intervalEntity)
+        super.init(interval: interval)
     }
     
     override func tapCancelButton() {
@@ -49,18 +49,18 @@ public class EditIntervalViewModel{
     
     public var send: ((Action.Delegate) -> ())?
     
-    public var intervalEntity: IntervalEntity
+    public var interval: IntervalEntity
     
     public init(
-        intervalEntity: IntervalEntity
+        interval: IntervalEntity
     ) {
-        _intervalEntity = intervalEntity
+        _interval = interval
     }
 
     func tapCancelButton() {}
     
     func tapSaveButton() {
-        let entity = intervalEntity
+        let entity = interval
         let result = intervalUseCase.update(at: entity.id, to: entity)
         send?(.fetched(entity))
     }

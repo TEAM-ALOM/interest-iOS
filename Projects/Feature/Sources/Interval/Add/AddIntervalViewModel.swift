@@ -52,15 +52,16 @@ public class AddIntervalViewModel {
     public var send: ((Action.Delegate) -> ())?
     
     public init() {
-        self._intervalEntity = .init(id: UUID())
+        self._interval = .init(id: UUID())
     }
+
     
-    public var intervalEntity: IntervalEntity
+    public var interval: IntervalEntity
     
     func tapCancelButton() {}
     
     func tapSaveButton() {
-        let entity = intervalEntity
+        let entity = interval
         let interval = intervalUseCase.save(interval: entity)
         send?(.saved(entity))
     }
