@@ -62,3 +62,7 @@ public struct WatchStateManageView: View {
         }
     }
 }
+
+#Preview {
+    IntervalActiveWatchScreen(viewModel: .init(interval: .init(id: .init())))
+}

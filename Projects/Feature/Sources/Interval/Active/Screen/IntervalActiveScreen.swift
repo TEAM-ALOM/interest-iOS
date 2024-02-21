@@ -21,9 +21,14 @@ public struct IntervalActiveScreen: View {
     public var body: some View {
 #if os(iOS)
         iOS
+            .preferredColorScheme(.dark)
 #elseif os(watchOS)
         watchOS
             .navigationBarBackButtonHidden()
 #endif
     }
+}
+
+#Preview {
+    IntervalActiveScreen(viewModel: .init(interval: .init(id: .init())))
 }

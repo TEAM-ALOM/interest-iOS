@@ -23,7 +23,7 @@ struct HealthInfoView: View {
         HStack(alignment: .bottom) {
             Text(String(format: "%d / %d",viewModel.currentCount , viewModel.interval.repeatCount))
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(.textColor)
                 .font(.system(size: 36, design: .rounded))
                 .padding(.trailing, 8)
                 .contentTransition(.numericText())
@@ -41,7 +41,7 @@ struct HealthInfoView: View {
         HStack(alignment: .bottom) {
             Text(String(format: "%d", viewModel.calorie))
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(.textColor)
                 .font(.system(size: 36, design: .rounded))
                 .padding(.trailing, 8)
                 .contentTransition(.numericText())
@@ -67,7 +67,7 @@ struct HealthInfoView: View {
             HStack(alignment: .bottom, spacing: 8) {
                 Text(String(viewModel.heartRate))
                     .fontWeight(.semibold)
-                    .foregroundColor(.white)
+                    .foregroundColor(.textColor)
                     .font(.system(size: 36, design: .rounded))
                     .contentTransition(.numericText())
                 
@@ -86,7 +86,7 @@ struct HealthInfoView: View {
             //HealthKit에서 가져와야함
             Text("\(viewModel.isBurning ? viewModel.interval.burningHeartIntervalType.heartTypeValue : viewModel.interval.restingHeartIntervalType.heartTypeValue)")
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(.textColor)
                 .font(.system(size: 36, design: .rounded))
                 .padding(.trailing, 8)
                 .contentTransition(.numericText())
