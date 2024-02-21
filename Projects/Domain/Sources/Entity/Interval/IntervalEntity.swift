@@ -25,9 +25,9 @@ public struct IntervalEntity: Identifiable {
         id: UUID,
         title: String = "달리기 인터벌",
         exerciseType: ExerciseType = .run,
-        burningSecondTime: Int = 60,
+        burningSecondTime: Int = 10,
         burningHeartIntervalType: HeartIntervalType = .five,
-        restingSecondTime: Int = 120,
+        restingSecondTime: Int = 20,
         restingHeartIntervalType: HeartIntervalType = .two,
         repeatCount: Int = 3,
         records: [IntervalRecordEntity] = []

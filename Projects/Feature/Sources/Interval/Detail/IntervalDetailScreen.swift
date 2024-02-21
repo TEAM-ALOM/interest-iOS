@@ -32,7 +32,7 @@ struct IntervalDetailScreen: View {
                 .padding(.bottom, 160)
             }
             .padding(.horizontal, 24)
-            .padding(.top, 32)
+            .padding(.top, 24)
         }
         .navigationTitle(viewModel.interval.title)
         .overlay(alignment: .bottom) {
@@ -70,4 +70,8 @@ struct IntervalDetailScreen: View {
             }
         })
     }
+}
+
+#Preview {
+    IntervalDetailScreen(viewModel: .init(interval: .init(id: .init())))
 }

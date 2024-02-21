@@ -11,7 +11,7 @@ struct IntervalChangeView: View {
     @Binding var viewModel: IntervalActiveViewModel
     
     var body: some View {
-        VStack{
+        Group {
             HStack{
                 Image(systemName: viewModel.isBurning ? "flame.fill" : "circle.hexagonpath.fill")
                     .resizable()
@@ -54,7 +54,6 @@ struct IntervalChangeView: View {
                             .fontWeight(.semibold)
                     }
                 }
-                .padding(.leading,13)
                 
                 Spacer()
             }
@@ -62,3 +61,6 @@ struct IntervalChangeView: View {
     }
 }
 
+#Preview {
+    IntervalActiveIPhoneScreen(viewModel: .init(interval: .init(id: .init())))
+}

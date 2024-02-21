@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 import Dependencies
 
@@ -122,7 +123,6 @@ public class IntervalActiveViewModel: ObservableObject {
         let milliseconds = Int(tmp)
         
         return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
-        
     }
     
     func calculateActiveTime() -> String {
@@ -140,31 +140,32 @@ public class IntervalActiveViewModel: ObservableObject {
     func setupTimer() {
         timerSubscription = timerPublisher
             .sink { [weak self] _ in
-                guard let self = self else { return }
+                guard let `self` = self else { return }
                 
                 if self.isTimePass {
                     self.activeTime += 0.01
                     self.activeTime = (self.activeTime * 100).rounded() / 100
                     self.totalTime = (self.totalTime * 100).rounded() / 100
-                    isBounce.toggle()
+                    self.isBounce.toggle()
                     
-                    if(activeTime == totalTime){
-                        if(!isBurning){
-                            currentCount += 1
+                    if(self.activeTime == self.totalTime) {
+                        if(!self.isBurning){
+                            self.currentCount += 1
                         }
-                        isBurning.toggle()
                         
-                        self.totalTime += Double(isBurning ?  interval.burningSecondTime : interval.restingSecondTime)
+                        self.isBurning.toggle()
+                        
+                        self.totalTime += Double(self.isBurning ? self.interval.burningSecondTime : self.interval.restingSecondTime)
                     }
                     
-                    if(currentCount == interval.repeatCount + 1){
-                        currentCount = currentCount - 1
-                        tapEndButton()
+                    if(self.currentCount == self.interval.repeatCount + 1){
+                        self.currentCount = self.currentCount - 1
+                        self.tapEndButton()
                     }
                 }
                 else {
-                    timer?.invalidate()
-                    timer = nil
+                    self.timer?.invalidate()
+                    self.timer = nil
                 }
             }
     }
