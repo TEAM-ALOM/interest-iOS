@@ -10,6 +10,8 @@ import SwiftUI
 import Domain
 
 public struct ExercisePickerView: View {
+    @Namespace var heroEffect
+    
     @Binding var selectedExerciseType: ExerciseType
     
     public init(selectedExerciseType: Binding<ExerciseType>) {
@@ -21,24 +23,36 @@ public struct ExercisePickerView: View {
     }
     
     private var pickerView: some View {
-        HStack(spacing: 30) {
+        HStack {
             ForEach(ExerciseType.allCases, id: \.self) { exerciseType in
                 Button(action: {
-                    self.selectedExerciseType = exerciseType
-                }, label: {
-                    ZStack{
-                        Circle()
-                            .fill(self.selectedExerciseType == exerciseType  ? Color.keyColor : Color.clear)
-                            .frame(width: 42,height: 42)
-                        
-                        Image(systemName: exerciseType.systemImageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 32, height: 32)
-                            .foregroundColor(Color.keyColor50)
+                    withAnimation(.smooth) {
+                        self.selectedExerciseType = exerciseType
                     }
+                }, label: {
+                    Image(systemName: exerciseType.systemImageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
+                        .foregroundColor(Color.keyColor75)
+                        .padding(8)
+                        .background {
+                            if (self.selectedExerciseType == exerciseType) {
+                                Circle()
+                                    .fill(Color.keyColor)
+                                    .matchedGeometryEffect(id: "selected", in: heroEffect)
+                            }
+                        }
                 })
+                
+                if (ExerciseType.allCases.last != exerciseType) {
+                    Spacer()
+                }
             }
         }
     }
+}
+
+#Preview {
+    ExercisePickerView(selectedExerciseType: .constant(.run))
 }

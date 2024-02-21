@@ -55,14 +55,13 @@ public class AddIntervalViewModel {
         self._interval = .init(id: UUID())
     }
 
-    
     public var interval: IntervalEntity
     
     func tapCancelButton() {}
     
     func tapSaveButton() {
         let entity = interval
-        let interval = intervalUseCase.save(interval: entity)
+        let _ = intervalUseCase.save(interval: entity)
         send?(.saved(entity))
     }
 }

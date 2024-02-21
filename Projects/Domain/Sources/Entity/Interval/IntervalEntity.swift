@@ -23,13 +23,13 @@ public struct IntervalEntity: Identifiable {
     
     public init(
         id: UUID,
-        title: String = "",
+        title: String = "달리기 인터벌",
         exerciseType: ExerciseType = .run,
-        burningSecondTime: Int = 0,
-        burningHeartIntervalType: HeartIntervalType = .three,
-        restingSecondTime: Int = 0,
-        restingHeartIntervalType: HeartIntervalType = .three,
-        repeatCount: Int = 0,
+        burningSecondTime: Int = 60,
+        burningHeartIntervalType: HeartIntervalType = .five,
+        restingSecondTime: Int = 120,
+        restingHeartIntervalType: HeartIntervalType = .two,
+        repeatCount: Int = 3,
         records: [IntervalRecordEntity] = []
     ) {
         self.id = id

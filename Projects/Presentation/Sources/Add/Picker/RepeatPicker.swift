@@ -41,7 +41,7 @@ public struct RepeatPicker: View {
                     
                     Text("반복 횟수")
                         .fontWeight(.semibold)
-                        //.foregroundStyle(Color(colorScheme == .dark ? .white: .black))
+                        .foregroundStyle(Color.textColor)
                     
                     Spacer()
                     
@@ -50,18 +50,13 @@ public struct RepeatPicker: View {
                         .foregroundStyle(Color.keyColor)
                         .bold()
                 }
-                .padding(.vertical,10)
             })
-            
-            Divider()
             
             repeatCountPicker(count: count)
                 .frame(height: isExpanded.wrappedValue ? 213 : 0)
-                .offset(y: -7)
             
             if (isExpanded.wrappedValue) {
                 Divider()
-                    .padding(.bottom, 4)
             }
         }
     }
@@ -70,9 +65,10 @@ public struct RepeatPicker: View {
     private func repeatCountPicker(count:Binding<Int>) -> some View {
         GeometryReader { geometry in
             Picker("", selection: count, content: {
-                ForEach(0..<21) { i in
+                ForEach(1..<100) { i in
                     Text(String(format: "%2d", i))
                         .tag(i)
+                        .foregroundStyle(Color.textColor)
                 }
             })
             .pickerStyle(.wheel)

@@ -29,16 +29,13 @@ public struct IntervalScreen: View {
         UIRefreshControl.appearance().tintColor = UIColor(Color.keyColor)
             
         let barAppearance = UINavigationBarAppearance()
-        let style = UITraitCollection().userInterfaceStyle
         
-        barAppearance.configureWithTransparentBackground()
         barAppearance.largeTitleTextAttributes = [
             .foregroundColor: UIColor(Color.textColor)
         ]
         barAppearance.titleTextAttributes = [.foregroundColor: UIColor(Color.keyColor)]
         
         UINavigationBar.appearance().standardAppearance = barAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
         UINavigationBar.appearance().compactAppearance = barAppearance
 #endif
     }
@@ -88,4 +85,8 @@ private extension IntervalScreen {
         }
         .tint(Color.keyColor)
     }
+}
+
+#Preview {
+    IntervalScreen(router: .init(), viewModel: .init(router: .init()))
 }

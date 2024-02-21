@@ -22,7 +22,7 @@ public struct IntervalListIPhoneScreen: View {
                 }
             }
             .padding(.horizontal, 24)
-            .padding(.top, 32)
+            .padding(.top, 24)
         }
         .mainBackground()
         .onAppear {

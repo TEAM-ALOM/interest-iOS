@@ -93,6 +93,6 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     }
     
     public func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
+        
     }
-
 }
