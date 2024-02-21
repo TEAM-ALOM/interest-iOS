@@ -10,6 +10,8 @@ import HealthKit
 import Combine
 
 public class WorkoutManager: NSObject {
+    static let shared = WorkoutManager()
+    
     internal var healthStore = HKHealthStore()
     internal var hearRate = PassthroughSubject<Double, Never>()
     internal var calorie = PassthroughSubject<Double, Never>()
@@ -25,8 +27,8 @@ public class WorkoutManager: NSObject {
     ]
 
     internal var workout: HKWorkout?
-    #if os(watchOS)
     internal var session: HKWorkoutSession?
+    #if os(watchOS)
     internal var builder: HKLiveWorkoutBuilder?
     #endif
     
@@ -60,6 +62,29 @@ public class WorkoutManager: NSObject {
                 updateHandler(value)
             }
             .store(in: &cancellable)
+    }
+    
+    func startWorkout(workoutType: HKWorkoutActivityType) {
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = workoutType
+        
+#if os(watchOS)
+        self.workoutInWatch(configuration: configuration)
+#elseif os(iOS)
+        self.workoutInPhone(configuration: configuration)
+#endif
+    }
+    
+    func pauseWorkout() {
+        session?.pause()
+    }
+
+    func resumeWorkout() {
+        session?.resume()
+    }
+
+    func endWorkout() {
+        session?.end()
     }
     
     internal func process(_ statistics: HKStatistics?,

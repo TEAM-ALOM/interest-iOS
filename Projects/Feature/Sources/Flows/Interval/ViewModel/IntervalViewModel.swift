@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-
-import Dependencies
-
 import Domain
+import SharedThirdPartyLib
+import Dependencies
+import Perception
 
 @Observable 
 public final class IntervalViewModel {

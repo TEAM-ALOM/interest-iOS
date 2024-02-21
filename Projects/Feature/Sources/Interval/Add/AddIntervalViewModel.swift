@@ -9,9 +9,10 @@ import Foundation
 import SwiftUI
 import SwiftData
 
-import Dependencies
-
 import Domain
+import SharedThirdPartyLib
+import Dependencies
+import Perception
 
 @Observable
 public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
@@ -40,6 +41,7 @@ public final class AddIntervalViewModelWithRouter: AddIntervalViewModel {
 @Observable
 public class AddIntervalViewModel {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
     
     public enum Action {
         case delegate(Delegate)
@@ -61,7 +63,10 @@ public class AddIntervalViewModel {
     
     func tapSaveButton() {
         let entity = interval
-        let _ = intervalUseCase.save(interval: entity)
+        let result = intervalUseCase.save(interval: entity)
+//        if result {
+            wcSessionUseCase.sendData(["INTERVAL_SAVE": entity])
+//        }
         send?(.saved(entity))
     }
 }

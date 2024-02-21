@@ -15,14 +15,13 @@ public protocol WorkoutUseCaseInterface {
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
     
-    #if os(iOS)
+#if os(iOS)
     func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
-    #elseif os(watchOS)
+#endif
     func startWorkout(workoutType: HKWorkoutActivityType)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
-    #endif
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -43,23 +42,20 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
     public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
         workoutRepository.subcribeCalorie(updateHandler: updateHandler)
     }
-}
-
-extension WorkoutUseCase: TestDependencyKey {
-    public static var testValue: WorkoutUseCase = unimplemented()
-}
-
-public extension DependencyValues {
-    var workoutUseCase: WorkoutUseCase {
-        get { self[WorkoutUseCase.self] }
-        set { self[WorkoutUseCase.self] = newValue }
+    
+    public func startWorkout(workoutType: HKWorkoutActivityType) {
+        workoutRepository.startWorkout(workoutType: workoutType)
     }
-}
-
-extension WorkoutUseCase {
-    public static func live(
-        workoutRepository: WorkoutRepositoryInterface
-    ) -> Self {
-        return Self(workoutRepository: workoutRepository)
+    
+    public func pauseWorkout() {
+        workoutRepository.pauseWorkout()
+    }
+    
+    public func resumeWorkout() {
+        workoutRepository.resumeWorkout()
+    }
+    
+    public func endWorkout() {
+        workoutRepository.endWorkout()
     }
 }

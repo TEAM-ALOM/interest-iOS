@@ -16,14 +16,13 @@ public protocol WorkoutDataSourceInterface {
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
     
-    #if os(iOS)
+#if os(iOS)
     func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
-    #elseif os(watchOS)
+#endif
     func startWorkout(workoutType: HKWorkoutActivityType)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
-    #endif
 }
 
 public final class WorkoutDataSource: WorkoutDataSourceInterface {
@@ -44,6 +43,22 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
     public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
         manager.subcribeCalorie(updateHandler: updateHandler)
     }
+    
+    public func startWorkout(workoutType: HKWorkoutActivityType) {
+        manager.startWorkout(workoutType: workoutType)
+    }
+    
+    public func pauseWorkout() {
+        manager.pauseWorkout()
+    }
+    
+    public func resumeWorkout() {
+        manager.resumeWorkout()
+    }
+    
+    public func endWorkout() {
+        manager.endWorkout()
+    }
 }
 
 extension WorkoutDataSource: TestDependencyKey {
@@ -58,5 +73,5 @@ public extension DependencyValues {
 }
 
 extension WorkoutDataSource: DependencyKey {
-    public static var liveValue: WorkoutDataSource = .init(manager: .init())
+    public static var liveValue: WorkoutDataSource = .init(manager: .shared)
 }

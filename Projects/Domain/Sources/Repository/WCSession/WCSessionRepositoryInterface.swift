@@ -14,4 +14,5 @@ public protocol WCSessionRepositoryInterface {
 #endif
     func sendMessage(_ message: [String: Any])
     func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
+    func sendData(_ message: [String: Any])
 }

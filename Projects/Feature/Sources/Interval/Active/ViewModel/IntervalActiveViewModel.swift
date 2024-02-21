@@ -41,6 +41,7 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
 public class IntervalActiveViewModel: ObservableObject {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
     @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
+    @ObservationIgnored @Dependency(\.workoutUseCase) var workoutUseCase
     
     public enum DelegateAction {
         case saved(IntervalRecordEntity)
@@ -81,13 +82,17 @@ public class IntervalActiveViewModel: ObservableObject {
     
     func tapPauseButton() {
         isTimePass.toggle()
+        workoutUseCase.pauseWorkout()
     }
     
     func tapReStartButton() {
+        workoutUseCase.resumeWorkout()
         isTimePass = true
     }
     
     func tapEndButton() {
+        workoutUseCase.endWorkout()
+
         isTimePass = false
         let newIntervalrecord = IntervalRecordEntity(
             id: .init(),

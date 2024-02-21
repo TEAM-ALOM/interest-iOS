@@ -12,8 +12,8 @@ import Domain
 struct WatchExercisePickerView: View {
     var viewModel: IntervalListViewModel
 
-    @State private var currentIndex : Int = 0
     @GestureState private var dragOffset : CGFloat = 0
+    @State private var currentIndex: Int = 0
     
     var body: some View {
         VStack{
@@ -21,54 +21,58 @@ struct WatchExercisePickerView: View {
                 NavigationStack{
                     ZStack {
                         //intervalitems을 가져와야함
-                        ForEach(0..<viewModel.intervals.count, id: \.self) { index in
-                            itemView(index)
+                        ForEach(viewModel.intervals) { interval in
+                            itemView(interval)
                         }
                     }
                 }
                 .gesture(dragGesture)
                 
-                Text(viewModel.intervals[currentIndex].title)
+                Text(viewModel.selectedInterval?.title ?? "")
                     .padding(.top,5)
             }
         }
     }
     
-    private func itemView(_ index: Int) -> some View {
+    @ViewBuilder
+    private func itemView(_ interval: IntervalEntity) -> some View {
+        let isSelected = viewModel.selectedInterval?.id == interval.id
+        let index = viewModel.intervals.firstIndex { $0.id == interval.id } ?? 0
+         
         Button(action: {
             withAnimation{
                 currentIndex = index
-                viewModel.selectedInterval = viewModel.intervals[currentIndex]
+                viewModel.selectedInterval = interval
             }
         }, label: {
             ZStack {
                 Circle()
-                    .fill(currentIndex == index ? Color.white : Color.clear)
+                    .fill(isSelected ? Color.white : Color.clear)
                     .frame(width: 52, height: 52)
-                    .scaleEffect(currentIndex == index ? 1.0 : 0.7)
+                    .scaleEffect(isSelected ? 1.0 : 0.7)
                 
-                Image(systemName: viewModel.intervals[currentIndex].exerciseType.systemImageName)
+                Image(systemName:viewModel.selectedInterval?.exerciseType.systemImageName ?? "")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 32)
-                    .foregroundColor(currentIndex == index ? Color.keyColor : Color.white)
-                    .scaleEffect(currentIndex == index ? 1.2 : 0.8)
+                    .foregroundColor(isSelected ? Color.keyColor : Color.white)
+                    .scaleEffect(isSelected ? 1.2 : 0.8)
                     .offset(x: CGFloat(index - currentIndex) * 60 + dragOffset , y : 0)
             }
         })
         .buttonStyle(.plain)
         .onAppear(perform: {
-            viewModel.selectedInterval = viewModel.intervals[currentIndex]
+            viewModel.selectedInterval = viewModel.intervals.first { $0.id == interval.id }
         })
     }
     
     private var dragGesture: some Gesture {
         DragGesture().onEnded { value in
             let threshold: CGFloat = 50
+            
             if value.translation.width > threshold {
                 currentIndex = max(0, currentIndex - 1)
-            }
-            else if value.translation.width < -threshold {
+            } else if value.translation.width < -threshold {
                 currentIndex = min(viewModel.intervals.count - 1, currentIndex + 1)
             }
         }

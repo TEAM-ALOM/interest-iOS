@@ -13,12 +13,11 @@ public protocol WorkoutRepositoryInterface {
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
     
-    #if os(iOS)
+#if os(iOS)
     func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
-    #elseif os(watchOS)
+#endif
     func startWorkout(workoutType: HKWorkoutActivityType)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
-    #endif
 }

@@ -30,6 +30,22 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
     public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
         dataSource.subcribeCalorie(updateHandler: updateHandler)
     }
+    
+    public func startWorkout(workoutType: HKWorkoutActivityType) {
+        dataSource.startWorkout(workoutType: workoutType)
+    }
+    
+    public func pauseWorkout() {
+        dataSource.pauseWorkout()
+    }
+    
+    public func resumeWorkout() {
+        dataSource.resumeWorkout()
+    }
+    
+    public func endWorkout() {
+        dataSource.endWorkout()
+    }
 }
 
 extension WorkoutRepository: TestDependencyKey {

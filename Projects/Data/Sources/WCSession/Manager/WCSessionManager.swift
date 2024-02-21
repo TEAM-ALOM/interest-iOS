@@ -10,6 +10,8 @@ import WatchConnectivity
 import Combine
 
 public class WCSessionManager: NSObject, WCSessionDelegate {
+    static let shared = WCSessionManager()
+    
     private let session = WCSession.default
     private var message = PassthroughSubject<[String: Any], Never>()
     private var cancellable = Set<AnyCancellable>()
@@ -40,6 +42,10 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
         self.message.send(message)
     }
     
+    public func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
+        self.message.send(userInfo)
+    }
+    
     func subcribeReceivedMessage(messageHandler: @escaping ([String: Any]) -> Void) {
         self.message
             .subscribe(on: DispatchQueue.main)
@@ -55,6 +61,10 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
         session.sendMessage(message, replyHandler: nil, errorHandler: { (error) in
             print("Error sending message: \(error.localizedDescription)")
         })
+    }
+    
+    func sendData(_ message: [String: Any]) {
+        session.transferUserInfo(message)
     }
     
     #if os(iOS)

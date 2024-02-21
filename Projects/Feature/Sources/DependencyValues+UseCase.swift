@@ -7,10 +7,12 @@
 
 import Foundation
 
-import Domain
 import Data
+import Domain
 
+import SharedThirdPartyLib
 import Dependencies
+import Perception
 
 extension IntervalUseCase: TestDependencyKey, DependencyKey {
     public static var testValue: IntervalUseCase = unimplemented()
@@ -33,5 +35,29 @@ public extension DependencyValues {
     var intervalRecordUseCase: IntervalRecordUseCase {
         get { self[IntervalRecordUseCase.self] }
         set { self[IntervalRecordUseCase.self] = newValue }
+    }
+}
+
+extension WorkoutUseCase: TestDependencyKey, DependencyKey {
+    public static var testValue: WorkoutUseCase = unimplemented()
+    public static var liveValue: WorkoutUseCase = .init(workoutRepository: DependencyValues.live.workoutRepository)
+}
+
+public extension DependencyValues {
+    var workoutUseCase: WorkoutUseCase {
+        get { self[WorkoutUseCase.self] }
+        set { self[WorkoutUseCase.self] = newValue }
+    }
+}
+
+extension WCSessionUseCase: TestDependencyKey, DependencyKey {
+    public static var testValue: WCSessionUseCase = unimplemented()
+    public static var liveValue: WCSessionUseCase = .init(wcSessionRepository: DependencyValues.live.wcSessionRepository)
+}
+
+public extension DependencyValues {
+    var wcSessionUseCase: WCSessionUseCase {
+        get { self[WCSessionUseCase.self] }
+        set { self[WCSessionUseCase.self] = newValue }
     }
 }

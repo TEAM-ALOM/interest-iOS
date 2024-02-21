@@ -8,7 +8,10 @@
 import Foundation
 import SwiftUI
 import Domain
+
+import SharedThirdPartyLib
 import Dependencies
+import Perception
 
 @Observable
 public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
@@ -38,6 +41,7 @@ public final class EditIntervalViewModelWithRouter: EditIntervalViewModel {
 @Observable
 public class EditIntervalViewModel{
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
         
     public enum Action {
         case delegate(Delegate)
@@ -62,6 +66,9 @@ public class EditIntervalViewModel{
     func tapSaveButton() {
         let entity = interval
         let result = intervalUseCase.update(at: entity.id, to: entity)
+        if result != nil {
+            wcSessionUseCase.sendData(["INTERVAL_UPDATE": entity])
+        }
         send?(.fetched(entity))
     }
 }

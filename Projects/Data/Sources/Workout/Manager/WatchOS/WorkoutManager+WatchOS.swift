@@ -25,11 +25,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         
     }
     
-    func startWorkout(workoutType: HKWorkoutActivityType) {
-        let configuration = HKWorkoutConfiguration()
-        configuration.activityType = workoutType
-        configuration.locationType = .outdoor
-        
+    func workoutInWatch(configuration: HKWorkoutConfiguration) {
         self.session = try? HKWorkoutSession(healthStore: healthStore, configuration: configuration)
         builder = session?.associatedWorkoutBuilder()
         builder?.delegate = self
@@ -39,22 +35,13 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         session?.delegate = self
         
         let startDate = Date()
+        Task {
+            try? await session?.startMirroringToCompanionDevice()
+        }
         session?.startActivity(with: startDate)
         builder?.beginCollection(withStart: startDate, completion: { success, error in
             
         })
-    }
-    
-    func pauseWorkout() {
-        session?.pause()
-    }
-
-    func resumeWorkout() {
-        session?.resume()
-    }
-
-    func endWorkout() {
-        session?.end()
     }
     
     public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
