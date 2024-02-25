@@ -10,8 +10,8 @@ import HealthKit
 
 #if os(iOS)
 public extension WorkoutUseCase {
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async {
-        await workoutRepository.fetchHealthKitData(type: type)
+    func observeActiveInfoData(updateHandler: @escaping (ActiveInfoEntity) -> Void) {
+        workoutRepository.observeActiveInfoData(updateHandler: updateHandler)
     }
 }
 #endif

@@ -28,5 +28,9 @@ public struct IntervalListWatchScreen: View {
             }
         }
         .mainBackground()
+        .onAppear() {
+            viewModel.observeIntervalMessage()
+            viewModel.fetchIntervalItems()
+        }
     }
 }

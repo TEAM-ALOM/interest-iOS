@@ -6,19 +6,26 @@
 //
 
 import SwiftUI
-
-import Dependencies
-
+import WatchKit
+import Foundation
+import SwiftData
 import Feature
 import Data
 
 @main
 struct WatchApp: App {
-    let intervalRouter: IntervalRouter = .init()
+    @WKApplicationDelegateAdaptor var appDelegate: AppDelegate
+    
+    let intervalRouter = IntervalRouter()
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            IntervalScreen(router: intervalRouter, viewModel: .init(router: intervalRouter))
+            IntervalScreen(router: intervalRouter,
+                           viewModel: .init(router: intervalRouter))
+                .modelContainer(for: [
+                    IntervalPersistentModel.self,
+                    IntervalRecordPersistentModel.self
+                ])
         }
     }
 }

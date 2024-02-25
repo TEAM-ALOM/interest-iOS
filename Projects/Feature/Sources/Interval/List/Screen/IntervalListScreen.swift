@@ -28,3 +28,7 @@ public struct IntervalListScreen: View {
 #endif
     }
 }
+
+#Preview {
+    IntervalListScreen(listViewModel: .init())
+}

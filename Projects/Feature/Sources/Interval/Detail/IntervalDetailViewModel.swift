@@ -24,25 +24,28 @@ public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
         super.init(interval: interval)
     }
     
-    override func tapIntervalStartButton(interval: IntervalEntity) {
-        super.tapIntervalStartButton(interval: interval)
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
-        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
-        
-        intervalActiveViewModel.delegateActionHandler =  { [weak self] delegate in
-            guard let `self` = self else { return }
-            switch delegate {
-            case let .saved(entity):
-                self.interval.records.append(entity)
-            }
-        }
-        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
+    override func tapIntervalStartButton() {
+        super.tapIntervalStartButton()
+//        super.tapIntervalStartButton(interval: interval)
+//        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
+//        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+//        
+//        intervalActiveViewModel.delegateActionHandler = { [weak self] delegate in
+//            guard let `self` = self else { return }
+//            switch delegate {
+//            case let .saved(entity):
+//                self.interval.records.append(entity)
+//            }
+//        }
+//        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
 }
 
 @Observable
 public class IntervalDetailViewModel {
     @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
+    @ObservationIgnored @Dependency(\.workoutUseCase) var workoutUseCase
+    @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
     
     var interval: IntervalEntity
     
@@ -50,11 +53,11 @@ public class IntervalDetailViewModel {
         self.interval = interval
     }
     
-    func tapIntervalStartButton(interval: IntervalEntity) {
-        
+    func tapIntervalStartButton() {
+        workoutUseCase.startWorkout(interval: self.interval)
     }
     
-    func fetchIntervalRecords(){
+    func fetchIntervalRecords() {
         self.interval.records = intervalRecordUseCase.fetchIntervalRecords(intervalId: interval.id)
     }
 }

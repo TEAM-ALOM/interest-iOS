@@ -67,7 +67,7 @@ public class EditIntervalViewModel{
         let entity = interval
         let result = intervalUseCase.update(at: entity.id, to: entity)
         if result != nil {
-            wcSessionUseCase.sendData(["INTERVAL_UPDATE": entity])
+            wcSessionUseCase.sendData(key: "INTERVAL_UPDATE", value: entity)
         }
         send?(.fetched(entity))
     }

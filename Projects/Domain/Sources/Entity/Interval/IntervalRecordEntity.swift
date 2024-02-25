@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct IntervalRecordEntity: Identifiable {
+public struct IntervalRecordEntity: Identifiable, Codable {
     public var id: UUID
     
     public var heartRates: [Double] = []

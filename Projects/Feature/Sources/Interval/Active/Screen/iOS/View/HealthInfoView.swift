@@ -62,14 +62,20 @@ struct HealthInfoView: View {
                 .scaledToFit()
                 .frame(width: 24,height: 24)
                 .foregroundColor(Color.heartColor)
-                .symbolEffect(.bounce, options: .speed(1), value: viewModel.isBounce)
+                .symbolEffect(.bounce, options: .speed((viewModel.heartRates.last ?? 0) / 60), value: viewModel.isBounce)
             
             HStack(alignment: .bottom, spacing: 8) {
-                Text(String(viewModel.heartRate))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.textColor)
-                    .font(.system(size: 36, design: .rounded))
-                    .contentTransition(.numericText())
+                Group {
+                    if let heartRate = viewModel.heartRates.last {
+                        Text("\(Int(heartRate))")
+                    } else {
+                        Text("-")
+                    }
+                }
+                .fontWeight(.semibold)
+                .foregroundColor(.textColor)
+                .font(.system(size: 36, design: .rounded))
+                .contentTransition(.numericText())
                 
                 
                 Text("bpm")

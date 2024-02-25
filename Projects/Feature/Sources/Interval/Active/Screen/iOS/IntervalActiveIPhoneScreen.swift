@@ -46,6 +46,11 @@ public struct IntervalActiveIPhoneScreen: View {
         .animation(.smooth, value: viewModel.isBurning)
         .onAppear(perform: {
             viewModel.setupTimer()
+            #if os(iOS)
+            viewModel.subscribeActiveInfoData()
+            #endif
+            viewModel.subcribeHeartRate()
+            viewModel.subscibeCalorie()
         })
         .overlay(alignment: .bottom) {
             stateButton(isPause: true, action: viewModel.tapPauseButton)

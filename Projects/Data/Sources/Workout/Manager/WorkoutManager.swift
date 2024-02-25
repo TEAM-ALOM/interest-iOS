@@ -7,19 +7,24 @@
 
 import Foundation
 import HealthKit
+import WorkoutKit
 import Combine
 
 public class WorkoutManager: NSObject {
     static let shared = WorkoutManager()
     
-    internal var healthStore = HKHealthStore()
-    internal var hearRate = PassthroughSubject<Double, Never>()
-    internal var calorie = PassthroughSubject<Double, Never>()
-    private var cancellable = Set<AnyCancellable>()
+    var healthStore = HKHealthStore()
+    var hearRate = PassthroughSubject<Double, Never>()
+    var calorie = PassthroughSubject<Double, Never>()
+    var activeInfoData = PassthroughSubject<Data, Never>()
+    var workoutState = PassthroughSubject<HKWorkoutSessionState, Never>()
+    var cancellable = Set<AnyCancellable>()
+    var intervalData: Data?
+    var startDate: Date?
+    
     private var healthKitTypes: Set = [
         HKQuantityType(.heartRate),
         HKQuantityType(.activeEnergyBurned),
-        HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
         HKObjectType.activitySummaryType()
     ]
     private var typesToShare: Set = [
@@ -37,15 +42,16 @@ public class WorkoutManager: NSObject {
     func requestAuthorization() -> Bool {
         var result = false
         
-        healthStore.requestAuthorization(toShare: typesToShare, read: healthKitTypes) { success, error in
+        healthStore.requestAuthorization(toShare: typesToShare,
+                                         read: healthKitTypes) { success, error in
             result = success
         }
-        
         return result
     }
     
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
         self.hearRate
+            .removeDuplicates()
             .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { value in
@@ -56,6 +62,7 @@ public class WorkoutManager: NSObject {
     
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
         self.calorie
+            .removeDuplicates()
             .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { value in
@@ -64,15 +71,28 @@ public class WorkoutManager: NSObject {
             .store(in: &cancellable)
     }
     
-    func startWorkout(workoutType: HKWorkoutActivityType) {
+    func subscribeWorkoutState(updateHandler: @escaping (HKWorkoutSessionState) -> Void) {
+        self.workoutState
+            .removeDuplicates()
+            .subscribe(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.main)
+            .sink { value in
+                updateHandler(value)
+            }
+            .store(in: &cancellable)
+    }
+    
+    func startWorkout(intervalData: Data, workoutType: HKWorkoutActivityType) {
         let configuration = HKWorkoutConfiguration()
         configuration.activityType = workoutType
-        
+        Task {
 #if os(watchOS)
-        self.workoutInWatch(configuration: configuration)
+            await self.workoutInWatch(configuration: configuration)
 #elseif os(iOS)
-        self.workoutInPhone(configuration: configuration)
+            await self.workoutInPhone(configuration: configuration)
 #endif
+        }
+        self.intervalData = intervalData
     }
     
     func pauseWorkout() {
@@ -85,9 +105,15 @@ public class WorkoutManager: NSObject {
 
     func endWorkout() {
         session?.end()
+        intervalData = nil
+        startDate = nil
     }
     
-    internal func process(_ statistics: HKStatistics?,
+    func workoutStartDate() -> Date? {
+        return startDate
+    }
+    
+    func process(_ statistics: HKStatistics?,
                           type: HKQuantityType) {
         switch type {
         case HKQuantityType(.heartRate):

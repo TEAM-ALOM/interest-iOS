@@ -46,6 +46,10 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
         self.message.send(userInfo)
     }
     
+    public func session(_ session: WCSession, didFinish userInfoTransfer: WCSessionUserInfoTransfer, error: Error?) {
+        print(error)
+    }
+    
     func subcribeReceivedMessage(messageHandler: @escaping ([String: Any]) -> Void) {
         self.message
             .subscribe(on: DispatchQueue.main)
@@ -64,7 +68,11 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
     }
     
     func sendData(_ message: [String: Any]) {
-        session.transferUserInfo(message)
+        #if os(iOS)
+        print(self.checkSessionStatus())
+        #endif
+        print(message)
+        print(session.transferUserInfo(message).userInfo)
     }
     
     #if os(iOS)

@@ -32,8 +32,12 @@ public final class WCSessionRepository: WCSessionRepositoryInterface {
         dataSource.observeReceiveMessageValue(key: key, valueHandler: valueHandler)
     }
     
-    public func sendData(_ message: [String : Any]) {
-        dataSource.sendData(message)
+    public func observeReceiveData<T>(key: String, dataHandler: @escaping (T) -> Void) where T : Decodable, T : Encodable {
+        dataSource.observeReceiveData(key: key, dataHandler: dataHandler)
+    }
+    
+    public func sendData(key: String, value: Codable) {
+        dataSource.sendData(key: key, value: value)
     }
 }
 

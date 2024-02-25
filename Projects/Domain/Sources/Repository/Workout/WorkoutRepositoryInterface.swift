@@ -14,10 +14,15 @@ public protocol WorkoutRepositoryInterface {
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
     
 #if os(iOS)
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
+    func observeActiveInfoData(updateHandler: @escaping (ActiveInfoEntity) -> Void)
+#elseif os(watchOS)
+    func sendActiveInfoData(_ activeInfo: ActiveInfoEntity)
 #endif
-    func startWorkout(workoutType: HKWorkoutActivityType)
+    func startWorkout(interval: IntervalEntity)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
+    func workoutStartDate() -> Date?
+    func observeWorkoutState(updateHandler: @escaping (WorkoutState) -> Void)
+    func checkCurrentInterval() -> IntervalEntity?
 }

@@ -16,6 +16,7 @@ public protocol IntervalDataSourceInterface {
     func fetch(id: UUID) -> IntervalPersistentModel?
     func fetches() -> [IntervalPersistentModel]
     func save(
+        id: UUID,
         title: String,
         exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
@@ -66,6 +67,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
     }
     
     public func save(
+        id: UUID,
         title: String,
         exerciseType: ExerciseTypePersistentModel,
         repeatCount: Int,
@@ -75,6 +77,7 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         restingHeartIntervalType: HeartIntervalTypePresistentModel
     ) -> Bool {
         self.context?.insert(IntervalPersistentModel.init(
+            id: id,
             title: title,
             exerciseType: exerciseType,
             repeatCount: repeatCount,

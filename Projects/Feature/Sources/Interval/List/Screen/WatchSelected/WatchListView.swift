@@ -13,9 +13,5 @@ struct WatchListView: View {
     
     var body : some View {
         WatchExercisePickerView(viewModel: viewModel)
-            .onAppear() {
-                viewModel.fetchIntervalItems()
-                viewModel.observeIntervalMessage()
-            }
     }
 }

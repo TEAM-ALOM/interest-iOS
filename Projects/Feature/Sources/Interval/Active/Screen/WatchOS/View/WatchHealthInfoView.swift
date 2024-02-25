@@ -51,9 +51,9 @@ struct WatchHealthInfoView : View{
                 .scaledToFit()
                 .frame(width: 16,height: 16)
                 .foregroundColor(Color.heartColor)
-                .symbolEffect(.bounce, options: .speed(1), value: viewModel.isBounce)
+                .symbolEffect(.bounce, options: .speed((viewModel.heartRates.last ?? 0) / 60), value: viewModel.isBounce)
             
-            Text(String(viewModel.heartRate))
+            Text(String(Int(viewModel.heartRates.last ?? 0.0)))
                 .fontWeight(.semibold)
                 .foregroundColor(.textColor)
                 .font(.system(size: 16, design: .rounded))

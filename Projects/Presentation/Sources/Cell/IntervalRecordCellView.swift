@@ -101,7 +101,9 @@ private extension IntervalRecordCellView {
         intervalRecordEntity.heartRates.forEach { heartRate in
             averageHeartRate += heartRate
         }
-        averageHeartRate /= Double(intervalRecordEntity.heartRates.count)
+        let count = intervalRecordEntity.heartRates.count
+        
+        averageHeartRate /= Double(count == 0 ? 1 : 0)
     }
     
     private func calculateCreateDate() {

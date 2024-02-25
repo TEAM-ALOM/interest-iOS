@@ -42,6 +42,9 @@ public final class IntervalRouter: FlowRouter {
     }
     
     public func removeScreenTransition() {
+        guard !navigationPath.isEmpty else {
+            return
+        }
         navigationPath.removeLast()
     }
 }
@@ -50,7 +53,7 @@ public extension IntervalRouter {
     enum NavigationRouteType: Hashable {
         case intervalList(IntervalListViewModel)
         case intervalDetail(IntervalDetailViewModel)
-        case intervalActive (IntervalActiveViewModel)
+        case intervalActive(IntervalActiveViewModel)
        
         @ViewBuilder
         var nextView: some View {
@@ -72,7 +75,8 @@ public extension IntervalRouter {
             }
         }
         
-        public static func == (lhs: IntervalRouter.NavigationRouteType, rhs: IntervalRouter.NavigationRouteType) -> Bool {
+        public static func == (lhs: IntervalRouter.NavigationRouteType, 
+                               rhs: IntervalRouter.NavigationRouteType) -> Bool {
             lhs.id == rhs.id
         }
         
@@ -90,7 +94,6 @@ public extension IntervalRouter {
             switch self {
             case let .addInterval(vm):
                 AddIntervalScreen(viewModel: vm)
-                
             case let .editInterval(vm):
                 EditIntervalScreen(viewModel: vm)
             }
@@ -98,7 +101,8 @@ public extension IntervalRouter {
 
         public var id: UUID { return .init() }
         
-        public static func == (lhs: IntervalRouter.PresentationRoute, rhs: IntervalRouter.PresentationRoute) -> Bool {
+        public static func == (lhs: IntervalRouter.PresentationRoute, 
+                               rhs: IntervalRouter.PresentationRoute) -> Bool {
             lhs.id == rhs.id
         }
         

@@ -15,7 +15,8 @@ public protocol WCSessionUseCaseInterface {
 #endif
     func sendMessage(_ message: [String: Any])
     func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
-    func sendData(_ message: [String: Any])
+    func observeReceiveData<T: Codable>(key: String, dataHandler: @escaping (T) -> Void)
+    func sendData(key: String, value: Codable)
 }
 
 public final class WCSessionUseCase: WCSessionUseCaseInterface {
@@ -35,12 +36,16 @@ public final class WCSessionUseCase: WCSessionUseCaseInterface {
         wcSessionRepository.sendMessage(message)
     }
     
-    public func sendData(_ message: [String : Any]) {
-        wcSessionRepository.sendData(message)
+    public func sendData(key: String, value: Codable) {
+        wcSessionRepository.sendData(key: key, value: value)
     }
     
     public func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void) {
         wcSessionRepository.observeReceiveMessageValue(key: key, valueHandler: valueHandler)
+    }
+    
+    public func observeReceiveData<T>(key: String, dataHandler: @escaping (T) -> Void) where T : Decodable, T : Encodable {
+        wcSessionRepository.observeReceiveData(key: key, dataHandler: dataHandler)
     }
 }
 

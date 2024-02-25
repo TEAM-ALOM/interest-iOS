@@ -56,7 +56,7 @@ public class AddIntervalViewModel {
     public init() {
         self._interval = .init(id: UUID())
     }
-
+    
     public var interval: IntervalEntity
     
     func tapCancelButton() {}
@@ -64,9 +64,11 @@ public class AddIntervalViewModel {
     func tapSaveButton() {
         let entity = interval
         let result = intervalUseCase.save(interval: entity)
-//        if result {
-            wcSessionUseCase.sendData(["INTERVAL_SAVE": entity])
-//        }
-        send?(.saved(entity))
+        if result {
+            wcSessionUseCase.sendData(key: "INTERVAL_SAVE", value: entity)
+        }
+        withAnimation(.snappy) {
+            send?(.saved(entity))
+        }
     }
 }

@@ -31,8 +31,8 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
         dataSource.subcribeCalorie(updateHandler: updateHandler)
     }
     
-    public func startWorkout(workoutType: HKWorkoutActivityType) {
-        dataSource.startWorkout(workoutType: workoutType)
+    public func startWorkout(interval: IntervalEntity) {
+        dataSource.startWorkout(interval: interval)
     }
     
     public func pauseWorkout() {
@@ -45,6 +45,18 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
     
     public func endWorkout() {
         dataSource.endWorkout()
+    }
+    
+    public func workoutStartDate() -> Date? {
+        return dataSource.workoutStartDate()
+    }
+    
+    public func observeWorkoutState(updateHandler: @escaping (WorkoutState) -> Void) {
+        dataSource.observeWorkoutState(updateHandler: updateHandler)
+    }
+    
+    public func checkCurrentInterval() -> IntervalEntity? {
+        return dataSource.checkCurrentInterval()
     }
 }
 

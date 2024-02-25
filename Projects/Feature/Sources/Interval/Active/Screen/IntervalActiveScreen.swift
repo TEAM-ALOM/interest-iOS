@@ -22,9 +22,18 @@ public struct IntervalActiveScreen: View {
 #if os(iOS)
         iOS
             .preferredColorScheme(.dark)
+            .onAppear() {
+                viewModel.subcribeHeartRate()
+                viewModel.subscibeCalorie()
+                viewModel.subscribeActiveInfoData()
+            }
 #elseif os(watchOS)
         watchOS
             .navigationBarBackButtonHidden()
+            .onAppear {
+                viewModel.subcribeHeartRate()
+                viewModel.subscibeCalorie()
+            }
 #endif
     }
 }

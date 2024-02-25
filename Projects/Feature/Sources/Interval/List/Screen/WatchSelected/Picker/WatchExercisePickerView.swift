@@ -21,7 +21,7 @@ struct WatchExercisePickerView: View {
                 NavigationStack{
                     ZStack {
                         //intervalitems을 가져와야함
-                        ForEach(viewModel.intervals) { interval in
+                        ForEach(viewModel.intervals, id: \.id) { interval in
                             itemView(interval)
                         }
                     }
@@ -36,11 +36,11 @@ struct WatchExercisePickerView: View {
     
     @ViewBuilder
     private func itemView(_ interval: IntervalEntity) -> some View {
-        let isSelected = viewModel.selectedInterval?.id == interval.id
         let index = viewModel.intervals.firstIndex { $0.id == interval.id } ?? 0
+        let isSelected = currentIndex == index
          
         Button(action: {
-            withAnimation{
+            withAnimation(.snappy) {
                 currentIndex = index
                 viewModel.selectedInterval = interval
             }
@@ -51,7 +51,7 @@ struct WatchExercisePickerView: View {
                     .frame(width: 52, height: 52)
                     .scaleEffect(isSelected ? 1.0 : 0.7)
                 
-                Image(systemName:viewModel.selectedInterval?.exerciseType.systemImageName ?? "")
+                Image(systemName: interval.exerciseType.systemImageName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 32)

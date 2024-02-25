@@ -14,7 +14,7 @@ public struct IntervalScreen: View {
     @State var router: IntervalRouter
     @State var viewModel: IntervalViewModel
 
-    @State var intervalListScreen: IntervalListScreen
+    let intervalListScreen: IntervalListScreen
     
     public init(
         router: IntervalRouter,
@@ -52,38 +52,43 @@ public struct IntervalScreen: View {
 private extension IntervalScreen {
     var iOS: some View {
         NavigationStack(path: $router.navigationPath) {
-            VStack {
-                intervalListScreen
-                    .navigationTitle("인터레스트")
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button(action: {
-                                viewModel.tapPlusButton()
-                            }, label: {
-                                Image(systemName: "plus")
-                            })
-                        }
+            intervalListScreen
+                .navigationTitle("인터레스트")
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            viewModel.tapPlusButton()
+                        }, label: {
+                            Image(systemName: "plus")
+                        })
                     }
-                    .navigationDestination(for: IntervalRouter.NavigationRoute.self) { route in
-                        route.nextView
-                    }
-                    .sheetWithRouter(router: self.router)
-            }
+                }
+                .navigationDestination(for: IntervalRouter.NavigationRoute.self) { route in
+                    route.nextView
+                }
+                .sheetWithRouter(router: self.router)
         }
         .tint(Color.keyColor)
+        .onAppear {
+            viewModel.requestingAuthorization()
+            viewModel.subscribeWorkoutState()
+            viewModel.subscribeWorkoutSessionReady()
+        }
     }
     
     var watchOS: some View {
         NavigationStack(path: $router.navigationPath) {
-            VStack {
-                intervalListScreen
-            }
-            .navigationTitle("인터레스트")
-            .navigationDestination(for: IntervalRouter.NavigationRoute.self) { route in
-                route.nextView
-            }
+            intervalListScreen
+                .navigationTitle("인터레스트")
+                .navigationDestination(for: IntervalRouter.NavigationRoute.self) { route in
+                    route.nextView
+                }
         }
         .tint(Color.keyColor)
+        .onAppear {
+            viewModel.requestingAuthorization()
+            viewModel.subscribeWorkoutState()
+        }
     }
 }
 

@@ -31,7 +31,8 @@ public final class IntervalRepository: IntervalRepositoryInterface {
     
     public func save(interval: IntervalEntity) -> Bool {
         return dataSource.save(
-            title: interval.title, 
+            id: interval.id,
+            title: interval.title,
             exerciseType: interval.exerciseType.toPersistentModel(),
             repeatCount: interval.repeatCount,
             burningSecondTime: interval.burningSecondTime,

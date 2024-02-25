@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import HealthKit
 
-public enum ExerciseType: CaseIterable {
+public enum ExerciseType: CaseIterable, Codable {
     case run
     case cycle
     case swim
@@ -21,6 +22,21 @@ public enum ExerciseType: CaseIterable {
         case .swim: "figure.pool.swim"
         case .stepper: "figure.stair.stepper"
         case .badminton: "figure.badminton"
+        }
+    }
+    
+    public var workoutType: HKWorkoutActivityType {
+        switch self {
+        case .run:
+            return .running
+        case .cycle:
+            return .cycling
+        case .swim:
+            return .swimming
+        case .stepper:
+            return .stairClimbing
+        case .badminton:
+            return .badminton
         }
     }
 }

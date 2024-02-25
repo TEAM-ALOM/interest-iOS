@@ -27,6 +27,7 @@ public class IntervalPersistentModel {
     @Relationship(deleteRule: .cascade, inverse: \IntervalRecordPersistentModel.interval) public var records: [IntervalRecordPersistentModel]? = []
     
     public init(
+        id: UUID,
         title: String,
         exerciseType : ExerciseTypePersistentModel,
         repeatCount: Int,

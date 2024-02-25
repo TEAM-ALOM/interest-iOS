@@ -33,14 +33,6 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
         
         router.triggerNavigationScreen(navigationRoute: intervalDetailRoute)
     }
-    
-    override public func tapStartButton(interval: IntervalEntity) {
-        super.tapStartButton(interval: interval)
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
-        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
-        
-        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
-    }
 
     public override func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
         super.tapIntervalEditButton(selectedInterval: selectedInterval)
@@ -73,7 +65,7 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     public let id: UUID = .init()
     
     var intervals: [IntervalEntity] = []
-    var selectedInterval: IntervalEntity? = nil
+    var selectedInterval: IntervalEntity? = .init(id: UUID(uuidString: "1F8EFB31-50D6-470A-997E-716E83BF26D6")!)
 
     public init() { }
     
@@ -82,29 +74,37 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     }
     
     public func fetchIntervalItems() {
-        withAnimation(.snappy) {
-            intervals = intervalUseCase.fetches()
-        }
+        intervals = intervalUseCase.fetches()
     }
     
     public func tapStartButton(interval: IntervalEntity) {
-        workoutUseCase.startWorkout(workoutType: .running)
+        workoutUseCase.startWorkout(interval: interval)
+        wcSessionUseCase.sendMessage(["INTERVAL_ID": interval.id.uuidString])
     }
     
     public func observeIntervalMessage() {
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_SAVE") { (interval: IntervalEntity) in
+        wcSessionUseCase.observeReceiveData(key: "INTERVAL_SAVE") { [weak self] (interval: IntervalEntity) in
+            guard let `self` = self else { return }
             self.intervalUseCase.save(interval: interval)
-            self.fetchIntervalItems()
+            withAnimation(.snappy) {
+                self.fetchIntervalItems()
+            }
         }
         
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_UPDATE") { (interval: IntervalEntity) in
+        wcSessionUseCase.observeReceiveData(key: "INTERVAL_UPDATE") { [weak self] (interval: IntervalEntity) in
+            guard let `self` = self else { return }
             let _ = self.intervalUseCase.update(at: interval.id, to: interval)
-            self.fetchIntervalItems()
+            withAnimation(.snappy) {
+                self.fetchIntervalItems()
+            }
         }
         
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_DELETE") { (id: UUID) in
+        wcSessionUseCase.observeReceiveData(key: "INTERVAL_DELETE") { [weak self] (id: UUID) in
+            guard let `self` = self else { return }
             let _ = self.intervalUseCase.delete(at: id)
-            self.fetchIntervalItems()
+            withAnimation(.snappy) {
+                self.fetchIntervalItems()
+            }
         }
     }
     
@@ -112,23 +112,19 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     
     public func tapIntervalDeleteButton(at id: UUID) {
         let _ = intervalUseCase.delete(at: id)
-        self.wcSessionUseCase.sendData(["INTERVAL_DELETE": id])
+        self.wcSessionUseCase.sendData(key: "INTERVAL_DELETE", value: id)
         
-        self.fetchIntervalItems()
+        withAnimation(.snappy) {
+            self.fetchIntervalItems()
+        }
     }
     
     public func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
         
     }
     
-    public func observeWorkoutMessage() {
-        wcSessionUseCase.observeReceiveMessageValue(key: "WORKOUT") { (message: String) in
-             
-        }
-    }
-    
     public func checkSessionState() {
-        let status = wcSessionUseCase.checkSessionStatus()
-        print(status)
+//        let status = wcSessionUseCase.checkSessionStatus()
+//        print(status)
     }
 }

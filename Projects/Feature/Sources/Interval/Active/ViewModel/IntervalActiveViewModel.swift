@@ -32,7 +32,6 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     
     override func tapEndButton(){
         super.tapEndButton()
-        router.removeScreenTransition()
     }
 }
 
@@ -55,13 +54,14 @@ public class IntervalActiveViewModel: ObservableObject {
     var isBounce : Bool = true
     
     var currentCount : Int = 1
-    var heartRate : Int = 157
-    var calorie : Int = 423
+    var heartRates: [Double] = []
+    var calorie: Int = 0
     
-    var isBurning : Bool = true
+    var isBurning : Bool = false
     var isTimePass : Bool = true
     var activeTime: TimeInterval = 0
     var totalTime : TimeInterval
+    var startDate: Date?
     
     var untilResting : TimeInterval = 0
     var untilBurning : TimeInterval = 0
@@ -92,11 +92,11 @@ public class IntervalActiveViewModel: ObservableObject {
     
     func tapEndButton() {
         workoutUseCase.endWorkout()
-
+        
         isTimePass = false
         let newIntervalrecord = IntervalRecordEntity(
             id: .init(),
-            heartRates: [136.0, 130.0], // HealthKit의 평균심박수
+            heartRates: self.heartRates, // HealthKit의 평균심박수
             repeatedCount: currentCount,
             secondTime: Int(activeTime),
             createDate: .now,
@@ -118,7 +118,6 @@ public class IntervalActiveViewModel: ObservableObject {
             time = untilBurning
         }
         time = (time * 100).rounded() / 100
-        print(time)
         
         var tmp = (time * 100).truncatingRemainder(dividingBy: 100)
         tmp = (tmp * 10).rounded() / 10
@@ -128,6 +127,29 @@ public class IntervalActiveViewModel: ObservableObject {
         let milliseconds = Int(tmp)
         
         return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
+    }
+    
+    func subcribeHeartRate() {
+        workoutUseCase.subcribeHeartRate { [weak self] heartRate in
+            guard let `self` = self else { return }
+            self.heartRates.append(heartRate)
+        }
+    }
+    
+    func subscibeCalorie() {
+        workoutUseCase.subcribeCalorie { [weak self] calorie in
+            guard let `self` = self else { return }
+            self.calorie = Int(calorie)
+        }
+    }
+    
+    func subscribeWorkoutState() {
+        workoutUseCase.observeWorkoutState { [weak self] state in
+            guard let `self` = self else { return }
+            if state == .ended {
+                self.removeScreen()
+            }
+        }
     }
     
     func calculateActiveTime() -> String {
@@ -143,16 +165,29 @@ public class IntervalActiveViewModel: ObservableObject {
     }
     
     func setupTimer() {
+#if os(watchOS)
+        guard let startDate = workoutUseCase.workoutStartDate() else {
+            return
+        }
+        workoutUseCase.sendActiveInfoData(.init(currentCount: currentCount,
+                                                isBurning: isBurning,
+                                                startDate: startDate))
+#endif
         timerSubscription = timerPublisher
             .sink { [weak self] _ in
                 guard let `self` = self else { return }
-                
+#if os(iOS)
+                guard let startDate else {
+                    return
+                }
+#endif
                 if self.isTimePass {
-                    self.activeTime += 0.01
+                    self.activeTime = DateInterval(start: startDate, end: .now).duration
                     self.activeTime = (self.activeTime * 100).rounded() / 100
                     self.totalTime = (self.totalTime * 100).rounded() / 100
                     self.isBounce.toggle()
                     
+#if os(watchOS)
                     if(self.activeTime == self.totalTime) {
                         if(!self.isBurning){
                             self.currentCount += 1
@@ -161,14 +196,18 @@ public class IntervalActiveViewModel: ObservableObject {
                         self.isBurning.toggle()
                         
                         self.totalTime += Double(self.isBurning ? self.interval.burningSecondTime : self.interval.restingSecondTime)
+                        
+                        workoutUseCase.sendActiveInfoData(.init(currentCount: currentCount,
+                                                                isBurning: isBurning,
+                                                                startDate: startDate))
                     }
+#endif
                     
                     if(self.currentCount == self.interval.repeatCount + 1){
                         self.currentCount = self.currentCount - 1
                         self.tapEndButton()
                     }
-                }
-                else {
+                } else {
                     self.timer?.invalidate()
                     self.timer = nil
                 }

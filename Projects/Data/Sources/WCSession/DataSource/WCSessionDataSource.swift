@@ -15,7 +15,8 @@ public protocol WCSessionDataSourceInterface {
 #endif
     func sendMessage(_ message: [String: Any])
     func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
-    func sendData(_ message: [String: Any])
+    func observeReceiveData<T: Codable>(key: String, dataHandler: @escaping (T) -> Void)
+    func sendData(key: String, value: Codable)
 }
 
 public final class WCSessionDataSource: WCSessionDataSourceInterface {
@@ -35,8 +36,38 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
         manager.sendMessage(message)
     }
     
-    public func sendData(_ message: [String: Any]) {
-        manager.sendData(message)
+    public func sendData(key: String, value: Codable) {
+        guard let jsonData = try? JSONEncoder().encode(value) else {
+            print("encode error")
+            return
+        }
+        
+        guard let data = String(data: jsonData, encoding: .utf8) else {
+            print("error")
+            return
+        }
+        manager.sendData([key: data])
+    }
+    
+    public func observeReceiveData<T: Codable>(key: String, dataHandler: @escaping (T) -> Void) {
+        manager.subcribeReceivedMessage { message in
+            guard let value = message[key] as? String else {
+                print("no value")
+                return
+            }
+            
+            guard let jsonData = value.data(using: .utf8) else {
+                print("no json")
+                return
+            }
+            
+            guard let data = try? JSONDecoder().decode(T.self, from: jsonData) else {
+                print("decode error")
+                return
+            }
+            
+            dataHandler(data)
+        }
     }
     
     public func observeReceiveMessageValue<T>(key: String, 
@@ -46,7 +77,6 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
                 print(message[key])
                 return
             }
-            
             valueHandler(value)
         }
     }

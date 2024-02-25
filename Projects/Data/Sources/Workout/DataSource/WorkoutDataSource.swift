@@ -10,19 +10,24 @@ import Foundation
 import Dependencies
 
 import HealthKit
+import Domain
 
 public protocol WorkoutDataSourceInterface {
     func requestAuthorization() -> Bool
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
-    
 #if os(iOS)
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
+    func observeActiveInfoData(updateHandler: @escaping (ActiveInfoEntity) -> Void)
+#elseif os(watchOS)
+    func sendActiveInfoData(_ activeInfo: ActiveInfoEntity)
 #endif
-    func startWorkout(workoutType: HKWorkoutActivityType)
+    func startWorkout(interval: IntervalEntity)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
+    func workoutStartDate() -> Date?
+    func observeWorkoutState(updateHandler: @escaping (WorkoutState) -> Void)
+    func checkCurrentInterval() -> IntervalEntity?
 }
 
 public final class WorkoutDataSource: WorkoutDataSourceInterface {
@@ -44,8 +49,13 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
         manager.subcribeCalorie(updateHandler: updateHandler)
     }
     
-    public func startWorkout(workoutType: HKWorkoutActivityType) {
-        manager.startWorkout(workoutType: workoutType)
+    public func startWorkout(interval: IntervalEntity) {
+        do {
+            let data = try JSONEncoder().encode(interval)
+            manager.startWorkout(intervalData: data, workoutType: interval.exerciseType.workoutType)
+        } catch {
+            print(error)
+        }
     }
     
     public func pauseWorkout() {
@@ -58,6 +68,44 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
     
     public func endWorkout() {
         manager.endWorkout()
+    }
+    
+    public func workoutStartDate() -> Date? {
+        return manager.workoutStartDate()
+    }
+    
+    public func observeWorkoutState(updateHandler: @escaping (WorkoutState) -> Void) {
+        manager.subscribeWorkoutState { state in
+            switch state {
+            case .notStarted:
+                updateHandler(.notStarted)
+            case .running:
+                updateHandler(.running)
+            case .ended:
+                updateHandler(.ended)
+            case .paused:
+                updateHandler(.paused)
+            case .prepared:
+                updateHandler(.prepared)
+            case .stopped:
+                updateHandler(.stopped)
+            @unknown default:
+                print(state)
+            }
+        }
+    }
+    
+    public func checkCurrentInterval() -> IntervalEntity? {
+        guard let intervalData = manager.intervalData else {
+            return nil
+        }
+        do {
+            let interval = try JSONDecoder().decode(IntervalEntity.self, from: intervalData)
+            return interval
+        } catch {
+            print(error)
+            return nil
+        }
     }
 }
 

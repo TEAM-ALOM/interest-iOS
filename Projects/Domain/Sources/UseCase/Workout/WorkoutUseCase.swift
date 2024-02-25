@@ -14,14 +14,18 @@ public protocol WorkoutUseCaseInterface {
     func requestAuthorization() -> Bool
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
-    
 #if os(iOS)
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
+    func observeActiveInfoData(updateHandler: @escaping (ActiveInfoEntity) -> Void)
+#elseif os(watchOS)
+    func sendActiveInfoData(_ activeInfo: ActiveInfoEntity)
 #endif
-    func startWorkout(workoutType: HKWorkoutActivityType)
+    func startWorkout(interval: IntervalEntity)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
+    func workoutStartDate() -> Date?
+    func observeWorkoutState(updateHandler: @escaping (WorkoutState) -> Void)
+    func checkCurrentInterval() -> IntervalEntity?
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -43,8 +47,8 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
         workoutRepository.subcribeCalorie(updateHandler: updateHandler)
     }
     
-    public func startWorkout(workoutType: HKWorkoutActivityType) {
-        workoutRepository.startWorkout(workoutType: workoutType)
+    public func startWorkout(interval: IntervalEntity) {
+        workoutRepository.startWorkout(interval: interval)
     }
     
     public func pauseWorkout() {
@@ -58,4 +62,17 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
     public func endWorkout() {
         workoutRepository.endWorkout()
     }
+    
+    public func workoutStartDate() -> Date? {
+        return workoutRepository.workoutStartDate()
+    }
+    
+    public func observeWorkoutState(updateHandler: @escaping (WorkoutState) -> Void) {
+        workoutRepository.observeWorkoutState(updateHandler: updateHandler)
+    }
+    
+    public func checkCurrentInterval() -> IntervalEntity? {
+        return workoutRepository.checkCurrentInterval()
+    }
 }
+

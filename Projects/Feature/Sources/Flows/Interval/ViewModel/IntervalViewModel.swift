@@ -14,6 +14,8 @@ import Perception
 @Observable 
 public final class IntervalViewModel {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    @ObservationIgnored @Dependency(\.workoutUseCase) var workoutUseCase
+    @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
     
     private let router: IntervalRouter
     
@@ -40,10 +42,49 @@ public final class IntervalViewModel {
         }
         router.triggerPresentationScreen(presentationRoute: addIntervalRoute)
     }
-
-    public func tapIntervalStartButton(interval: IntervalEntity) {
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
-        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
-        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
+    
+    public func subscribeWorkoutState() {
+        workoutUseCase.observeWorkoutState { [weak self] state in
+            guard let `self` = self else { return }
+            print(state)
+            switch state {
+            case .running:
+                guard let interval = self.workoutUseCase.checkCurrentInterval() else {
+                    break
+                }
+                
+                let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: self.router, interval: interval)
+                let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+                self.router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
+                break
+            case .notStarted:
+                break
+            case .ended:
+                self.router.removeScreenTransition()
+            default:
+                break
+            }
+        }
+    }
+    
+    public func subscribeWorkoutSessionReady() {
+        #if os(iOS)
+        self.wcSessionUseCase.observeReceiveMessageValue(key: "WORKOUT_READY_WATCH") { [weak self] (ready: Bool) in
+            guard let `self` = self else { return }
+            print(ready)
+            if ready, let interval = self.workoutUseCase.checkCurrentInterval() {
+                self.wcSessionUseCase.sendMessage(["INTERVAL_ID": interval.id.uuidString])
+            }
+        }
+        #endif
+        
+        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_ID") { [weak self] (id: String) in
+            guard let `self` = self else { return }
+            self.workoutUseCase.startWorkout(interval: .init(id: UUID(uuidString: id)!))
+        }
+    }
+    
+    public func requestingAuthorization() {
+        print(workoutUseCase.requestAuthorization())
     }
 }
