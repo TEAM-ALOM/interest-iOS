@@ -33,6 +33,9 @@ public struct IntervalActiveScreen: View {
             viewModel.subscribeCalorie()
             viewModel.subscribeWorkoutSessionState()
         }
+        .onDisappear() {
+            viewModel.timerPublisherCancel()
+        }
     }
 }
 

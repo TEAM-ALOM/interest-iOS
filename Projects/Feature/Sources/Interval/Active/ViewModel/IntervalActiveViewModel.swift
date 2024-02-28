@@ -203,4 +203,8 @@ public class IntervalActiveViewModel: ObservableObject {
             self.workoutSessionState = state
         }
     }
+    
+    func timerPublisherCancel() {
+        timerSubscription?.cancel()
+    }
 }
