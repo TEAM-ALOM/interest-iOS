@@ -12,16 +12,22 @@ import Dependencies
 
 public protocol WorkoutUseCaseInterface {
     func requestAuthorization() -> Bool
+    
+#if os(watchOS)
+    func sendActiveInfoData(_ activeInterval: ActiveIntervalEntity)
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
-    
-#if os(iOS)
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
+#elseif os(iOS)
+    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
+    func workoutSessionMirroring(intervalId: UUID)
 #endif
-    func startWorkout(workoutType: HKWorkoutActivityType)
+    func startWorkout(interval: IntervalEntity)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
+    func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
+    func workoutIntervalId() -> UUID?
+    func workoutStartDate() -> Date?
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -35,16 +41,8 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
         return workoutRepository.requestAuthorization()
     }
     
-    public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
-        workoutRepository.subcribeHeartRate(updateHandler: updateHandler)
-    }
-    
-    public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
-        workoutRepository.subcribeCalorie(updateHandler: updateHandler)
-    }
-    
-    public func startWorkout(workoutType: HKWorkoutActivityType) {
-        workoutRepository.startWorkout(workoutType: workoutType)
+    public func startWorkout(interval: IntervalEntity) {
+        workoutRepository.startWorkout(interval: interval)
     }
     
     public func pauseWorkout() {
@@ -57,5 +55,17 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
     
     public func endWorkout() {
         workoutRepository.endWorkout()
+    }
+    
+    public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
+        workoutRepository.subcribeWorkoutSessionState(updateHandler: updateHandler)
+    }
+    
+    public func workoutIntervalId() -> UUID? {
+        return workoutRepository.workoutIntervalId()
+    }
+    
+    public func workoutStartDate() -> Date? {
+        return workoutRepository.workoutStartDate()
     }
 }

@@ -10,14 +10,20 @@ import HealthKit
 
 public protocol WorkoutRepositoryInterface {
     func requestAuthorization() -> Bool
+    
+#if os(watchOS)
+    func sendActiveInfoData(_ activeInterval: ActiveIntervalEntity)
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
-    
-#if os(iOS)
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
+#elseif os(iOS)
+    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
+    func workoutSessionMirroring(intervalId: UUID)
 #endif
-    func startWorkout(workoutType: HKWorkoutActivityType)
+    func startWorkout(interval: IntervalEntity)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
+    func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
+    func workoutIntervalId() -> UUID?
+    func workoutStartDate() -> Date?
 }

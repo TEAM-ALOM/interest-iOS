@@ -41,11 +41,17 @@ public struct IntervalScreen: View {
     }
 
     public var body: some View {
+        Group {
 #if os(iOS)
-        iOS
+            iOS
 #elseif os(watchOS)
-        watchOS
+            watchOS
 #endif
+        }
+        .onAppear {
+            viewModel.requestAuthorization()
+            viewModel.handleWorkout()
+        }
     }
 }
 
@@ -68,6 +74,9 @@ private extension IntervalScreen {
                         route.nextView
                     }
                     .sheetWithRouter(router: self.router)
+            }
+            .onAppear {
+                viewModel.subscribeStartedInterval()
             }
         }
         .tint(Color.keyColor)

@@ -26,23 +26,14 @@ public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
     
     override func tapIntervalStartButton(interval: IntervalEntity) {
         super.tapIntervalStartButton(interval: interval)
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
-        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
-        
-        intervalActiveViewModel.delegateActionHandler =  { [weak self] delegate in
-            guard let `self` = self else { return }
-            switch delegate {
-            case let .saved(entity):
-                self.interval.records.append(entity)
-            }
-        }
-        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
 }
 
 @Observable
 public class IntervalDetailViewModel {
     @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
+    @ObservationIgnored @Dependency(\.workoutUseCase) var workoutUseCase
+    @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
     
     var interval: IntervalEntity
     
@@ -51,7 +42,19 @@ public class IntervalDetailViewModel {
     }
     
     func tapIntervalStartButton(interval: IntervalEntity) {
-        
+        workoutUseCase.startWorkout(interval: interval)
+        #if os(iOS)
+        workoutUseCase.workoutSessionMirroring(intervalId: interval.id)
+        #endif
+    }
+    
+    func checkStartWatchApp() {
+        wcSessionUseCase.observeReceiveMessageValue(key: "WATCH_READY") { (success: Bool) in
+            print("\(#function) \(success)")
+            if success {
+                self.wcSessionUseCase.sendMessage(["INTERVAL_ID": self.interval.id.uuidString])
+            }
+        }
     }
     
     func fetchIntervalRecords(){

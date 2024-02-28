@@ -14,7 +14,7 @@ struct StateManageView: View {
     var body: some View {
         HStack{
             Spacer()
-            Text(viewModel.calculateActiveTime())
+            Text(viewModel.totalSecondTimeString)
                 .foregroundColor(.white)
                 .fontWeight(.semibold)
                 .font(.system(size: 52, design: .rounded))

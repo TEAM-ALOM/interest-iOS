@@ -13,18 +13,19 @@ struct WatchIntervalChangeView : View {
     
     var body: some View {
         Group {
+            let isBurning = viewModel.activeInterval.currentIntervalType == .burning
             HStack{
-                Image(systemName: viewModel.isBurning ? "flame.fill" : "circle.hexagonpath.fill")
-                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
-                Text(viewModel.isBurning ? "버닝중" : "휴식중")
+                Image(systemName: viewModel.activeInterval.currentIntervalType.systemImage)
+                
+                Text(viewModel.activeInterval.currentIntervalType.text + "중")
                     .fontWeight(.semibold)
                     .font(.system(size: 20))
-                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
                 Spacer()
             }
+            .foregroundColor(isBurning ? Color.burningColor : Color.restColor)
             
             HStack{
-                Text(viewModel.calculateUntilTime())
+                Text(viewModel.currentSecondTimeString)
                     .foregroundColor(.white)
                     .fontWeight(.semibold)
                     .font(.system(size: 28, design: .rounded))
@@ -32,9 +33,9 @@ struct WatchIntervalChangeView : View {
                 
                 VStack(alignment : .leading){
                     HStack(spacing:0){
-                        Text(viewModel.isBurning ? "휴식" : "버닝")
-                            .offset(y : viewModel.isBurning ? 0 : 1)
-                            .foregroundStyle(viewModel.isBurning ? Color.restColor : Color.burningColor)
+                        Text(viewModel.activeInterval.currentIntervalType.text)
+                            .offset(y : isBurning ? 0 : 1)
+                            .foregroundStyle(isBurning ? Color.restColor : Color.burningColor)
                         Text("까지")
                             .foregroundStyle(Color.textColor50)
                     }

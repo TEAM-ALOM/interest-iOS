@@ -11,33 +11,48 @@ import HealthKit
 #if os(iOS)
 extension WorkoutManager: HKWorkoutSessionDelegate {
     public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        
+        workoutSessionState.send(toState)
+        switch toState {
+        case .running:
+            break
+        case .ended:
+            intervalId = nil
+            break
+        default:
+            break
+        }
     }
+    
+//    public func workoutSession(_ workoutSession: HKWorkoutSession, didBeginActivityWith workoutConfiguration: HKWorkoutConfiguration, date: Date) {
+//        self.startDate = date
+//        print("\(#function) \(self.startDate)")
+//    }
     
     public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
         
     }
     
-    func healthKitDataQuery(type: HKQuantityTypeIdentifier) async {
-        let completionHandler: (HKStatisticsQuery,
-                                HKStatistics?,
-                                Error?) -> Void = { query, statistics, error in
-            self.process(statistics, type: HKQuantityType(type))
+    func workoutSessionMirroring(intervalId: UUID) {
+        healthStore.workoutSessionMirroringStartHandler = { mirroredSession in
+            self.intervalId = intervalId
+            self.session = mirroredSession
+            self.session?.delegate = self
+            self.startDate = mirroredSession.startDate
+            self.workoutSessionState.send(mirroredSession.state)
         }
-        
-        let query = HKStatisticsQuery(quantityType: HKQuantityType(type),
-                                      quantitySamplePredicate: nil,
-                                      options: .mostRecent,
-                                      completionHandler: completionHandler)
-        
-        healthStore.execute(query)
     }
     
     func workoutInPhone(configuration: HKWorkoutConfiguration) {
-        healthStore.workoutSessionMirroringStartHandler = { mirroredSession in
-            self.session = mirroredSession
-            self.session?.delegate = self
+        healthStore.startWatchApp(with: configuration) { success, error in
+            print("\(#function) \(success)")
         }
+    }
+    
+    public func workoutSession(_ workoutSession: HKWorkoutSession, didReceiveDataFromRemoteWorkoutSession data: [Data]) {
+        guard let recentData = data.last else {
+            return
+        }
+        activeInterval.send(recentData)
     }
 }
 #endif

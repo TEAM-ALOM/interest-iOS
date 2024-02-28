@@ -39,7 +39,7 @@ struct HealthInfoView: View {
     
     private var calorie: some View {
         HStack(alignment: .bottom) {
-            Text(String(format: "%d", viewModel.calorie))
+            Text("\(Int(viewModel.calorie))")
                 .fontWeight(.semibold)
                 .foregroundColor(.textColor)
                 .font(.system(size: 36, design: .rounded))
@@ -65,7 +65,7 @@ struct HealthInfoView: View {
                 .symbolEffect(.bounce, options: .speed(1), value: viewModel.isBounce)
             
             HStack(alignment: .bottom, spacing: 8) {
-                Text(String(viewModel.heartRate))
+                Text("\(Int(viewModel.heartRates.last ?? 0.0))")
                     .fontWeight(.semibold)
                     .foregroundColor(.textColor)
                     .font(.system(size: 36, design: .rounded))
@@ -84,14 +84,14 @@ struct HealthInfoView: View {
     private var currentSection: some View {
         HStack(alignment: .bottom) {
             //HealthKit에서 가져와야함
-            Text("\(viewModel.isBurning ? viewModel.interval.burningHeartIntervalType.heartTypeValue : viewModel.interval.restingHeartIntervalType.heartTypeValue)")
+            Text("\(viewModel.activeInterval.currentIntervalType == .burning ? viewModel.interval.burningHeartIntervalType.heartTypeValue : viewModel.interval.restingHeartIntervalType.heartTypeValue)")
                 .fontWeight(.semibold)
                 .foregroundColor(.textColor)
                 .font(.system(size: 36, design: .rounded))
                 .padding(.trailing, 8)
                 .contentTransition(.numericText())
             
-            Text("현재 구간 (목표 : \(viewModel.isBurning ? viewModel.interval.burningHeartIntervalType.heartTypeValue : viewModel.interval.restingHeartIntervalType.heartTypeValue))")
+            Text("현재 구간 (목표 : \(viewModel.activeInterval.currentIntervalType == .burning ? viewModel.interval.burningHeartIntervalType.heartTypeValue : viewModel.interval.restingHeartIntervalType.heartTypeValue))")
                 .foregroundColor(Color.textColor50)
                 .fontWeight(.medium)
                 .font(.system(size: 20))

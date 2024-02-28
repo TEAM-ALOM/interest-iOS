@@ -14,6 +14,8 @@ import Perception
 @Observable 
 public final class IntervalViewModel {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    @ObservationIgnored @Dependency(\.workoutUseCase) var workoutUseCase
+    @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
     
     private let router: IntervalRouter
     
@@ -36,14 +38,50 @@ public final class IntervalViewModel {
             case let .saved(entity):
                 self.intervalListViewModel.append(interval: entity)
             }
-            
         }
         router.triggerPresentationScreen(presentationRoute: addIntervalRoute)
     }
-
-    public func tapIntervalStartButton(interval: IntervalEntity) {
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
-        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
-        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
+    
+    public func handleWorkout() {
+        workoutUseCase.subcribeWorkoutSessionState { state in
+            print(state)
+            switch state {
+            case .running:
+                guard let uuid = self.workoutUseCase.workoutIntervalId() else {
+                    return
+                }
+                let interval: IntervalEntity = .init(id: uuid)
+                
+                let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: self.router, interval: interval)
+                let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+                self.router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
+                break
+            case .ended:
+                guard !self.router.navigationPath.isEmpty else {
+                    break
+                }
+                self.router.removeScreenTransition()
+            default:
+                break
+            }
+        }
+    }
+    
+    public func subscribeStartedInterval() {
+#if os(iOS)
+        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_ID") { (id: String) in
+            print("\(#function) \(id)")
+            
+            guard let uuid = UUID(uuidString: id) else {
+                return
+            }
+            
+            self.workoutUseCase.workoutSessionMirroring(intervalId: uuid)
+        }
+#endif
+    }
+    
+    public func requestAuthorization() {
+        let _ = workoutUseCase.requestAuthorization()
     }
 }

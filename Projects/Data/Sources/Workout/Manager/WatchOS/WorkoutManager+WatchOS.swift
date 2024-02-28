@@ -11,13 +11,25 @@ import HealthKit
 #if os(watchOS)
 extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate {
     public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        print(toState.rawValue)
-        if toState == .ended {
+        workoutSessionState.send(toState)
+        switch toState {
+        case .running:
+            break
+        case .ended:
             builder?.endCollection(withEnd: date) { (success, error) in
                 self.builder?.finishWorkout { (workout, error) in
                     self.workout = workout
                 }
             }
+            
+            session?.stopMirroringToCompanionDevice { sucesss, error in
+                
+            }
+            
+            intervalId = nil
+            break
+        default:
+            break
         }
     }
     
@@ -34,11 +46,15 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         
         session?.delegate = self
         
+        workoutSessionState.send(session?.state ?? .prepared)
         let startDate = Date()
-        Task {
-            try? await session?.startMirroringToCompanionDevice()
-        }
+        self.startDate = startDate
+        print("\(#function) \(self.startDate)")
         session?.startActivity(with: startDate)
+        session?.startMirroringToCompanionDevice(completion: { success, error in
+            print("\(#function) \(success)")
+        })
+        
         builder?.beginCollection(withStart: startDate, completion: { success, error in
             
         })
@@ -57,6 +73,14 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
     
     public func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
         
+    }
+    
+    public func sendActiveInfoData(_ data: Data) {
+        session?.sendToRemoteWorkoutSession(data: data, completion: { sucess, error in
+            if !sucess {
+                print("#function: \(error)")
+            }
+        })
     }
 }
 #endif

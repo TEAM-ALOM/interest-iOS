@@ -27,7 +27,9 @@ struct MainBackgroundModifier: ViewModifier {
                     }
                     .ignoresSafeArea()
                 }
+            #if os(iOS)
                 .toolbarBackground(Color.navigationColor, for: .navigationBar)
+            #endif
         }
     }
 }

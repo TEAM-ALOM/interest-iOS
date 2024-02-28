@@ -36,10 +36,6 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
     
     override public func tapStartButton(interval: IntervalEntity) {
         super.tapStartButton(interval: interval)
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
-        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
-        
-        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
 
     public override func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
@@ -88,10 +84,12 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     }
     
     public func tapStartButton(interval: IntervalEntity) {
-        workoutUseCase.startWorkout(workoutType: .running)
+        wcSessionUseCase.sendMessage(["INTERVAL_ID": interval.id.uuidString])
+        workoutUseCase.startWorkout(interval: interval)
     }
     
     public func observeIntervalMessage() {
+        // 아이폰과 워치간의 인터벌 공유를 위한 코드(잘 작동하지 않음)
         wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_SAVE") { (interval: IntervalEntity) in
             self.intervalUseCase.save(interval: interval)
             self.fetchIntervalItems()
@@ -102,8 +100,11 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
             self.fetchIntervalItems()
         }
         
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_DELETE") { (id: UUID) in
-            let _ = self.intervalUseCase.delete(at: id)
+        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_DELETE") { (id: String) in
+            guard let uuid = UUID(uuidString: id) else {
+                return
+            }
+            let _ = self.intervalUseCase.delete(at: uuid)
             self.fetchIntervalItems()
         }
     }
@@ -112,23 +113,12 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     
     public func tapIntervalDeleteButton(at id: UUID) {
         let _ = intervalUseCase.delete(at: id)
-        self.wcSessionUseCase.sendData(["INTERVAL_DELETE": id])
+        self.wcSessionUseCase.sendData(["INTERVAL_DELETE": id.uuidString])
         
         self.fetchIntervalItems()
     }
     
     public func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
         
-    }
-    
-    public func observeWorkoutMessage() {
-        wcSessionUseCase.observeReceiveMessageValue(key: "WORKOUT") { (message: String) in
-             
-        }
-    }
-    
-    public func checkSessionState() {
-        let status = wcSessionUseCase.checkSessionStatus()
-        print(status)
     }
 }

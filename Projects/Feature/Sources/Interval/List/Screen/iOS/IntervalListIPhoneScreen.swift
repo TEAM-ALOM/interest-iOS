@@ -23,7 +23,7 @@ public struct IntervalListIPhoneScreen: View {
             .padding(.horizontal, 24)
             .padding(.top, 24)
             .onAppear() {
-                viewModel.checkSessionState()
+                
             }
         }
         .mainBackground()

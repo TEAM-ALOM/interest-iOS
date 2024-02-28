@@ -18,16 +18,15 @@ public struct IntervalActiveWatchScreen: View {
     public var body: some View {
         ZStack {
             Group {
-                if viewModel.isBurning {
-                    let untilBurning = viewModel.totalTime - viewModel.activeTime
+                switch viewModel.activeInterval.currentIntervalType {
+                case .burning:
                     let burningTime = Double(viewModel.interval.burningSecondTime)
                     Color.burningColor
-                        .opacity(0.2 * ((burningTime - untilBurning) / burningTime))
-                } else {
-                    let untilResting = viewModel.totalTime - viewModel.activeTime
+                        .opacity(0.2 * (Double(viewModel.currentSecondTime) / burningTime))
+                case .resting:
                     let restingTime = Double(viewModel.interval.restingSecondTime)
                     Color.restColor
-                        .opacity(0.2 * ((restingTime - untilResting) / restingTime))
+                        .opacity(0.2 * (Double(viewModel.currentSecondTime) / restingTime))
                 }
             }
             .ignoresSafeArea()
@@ -39,10 +38,9 @@ public struct IntervalActiveWatchScreen: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 4)
         }
-        .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
-        .animation(.smooth, value: viewModel.isBurning)
+        .exerciseBackground(mode: viewModel.activeInterval.currentIntervalType == .burning ? .burning : .rest)
+        .animation(.smooth, value: viewModel.activeInterval.currentIntervalType)
         .onAppear(perform: {
             viewModel.setupTimer()
         })

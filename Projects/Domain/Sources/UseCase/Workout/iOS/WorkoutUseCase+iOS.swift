@@ -9,9 +9,13 @@ import Foundation
 import HealthKit
 
 #if os(iOS)
-public extension WorkoutUseCase {
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async {
-        await workoutRepository.fetchHealthKitData(type: type)
+extension WorkoutUseCase {
+    public func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void) {
+        workoutRepository.subcribeActiveInterval(updateHandler: updateHandler)
+    }
+    
+    public func workoutSessionMirroring(intervalId: UUID) {
+        workoutRepository.workoutSessionMirroring(intervalId: intervalId)
     }
 }
 #endif

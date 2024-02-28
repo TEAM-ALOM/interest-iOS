@@ -50,6 +50,18 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
         self.message
             .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
+            .removeDuplicates { oldValue, newValue in
+                oldValue.contains { key, value in
+                    guard let new = newValue[key] else {
+                        return false
+                    }
+                    
+                    guard new as? Data == value as? Data else {
+                        return false
+                    }
+                    return true
+                }
+            }
             .sink { receivedMesssge in
                 print(receivedMesssge)
                 messageHandler(receivedMesssge)
