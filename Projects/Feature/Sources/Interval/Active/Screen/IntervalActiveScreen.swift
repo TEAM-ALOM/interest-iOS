@@ -19,11 +19,26 @@ public struct IntervalActiveScreen: View {
     }
     
     public var body: some View {
+        Group {
 #if os(iOS)
-        iOS
+            iOS
+                .preferredColorScheme(.dark)
 #elseif os(watchOS)
-        watchOS
-            .navigationBarBackButtonHidden()
+            watchOS
+                .navigationBarBackButtonHidden()
 #endif
+        }
+        .onAppear() {
+            viewModel.subscribeHeartRate()
+            viewModel.subscribeCalorie()
+            viewModel.subscribeWorkoutSessionState()
+        }
+        .onDisappear() {
+            viewModel.timerPublisherCancel()
+        }
     }
+}
+
+#Preview {
+    IntervalActiveScreen(viewModel: .init(interval: .init(id: .init())))
 }

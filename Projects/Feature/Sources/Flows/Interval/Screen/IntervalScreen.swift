@@ -29,26 +29,29 @@ public struct IntervalScreen: View {
         UIRefreshControl.appearance().tintColor = UIColor(Color.keyColor)
             
         let barAppearance = UINavigationBarAppearance()
-        let style = UITraitCollection().userInterfaceStyle
         
-        barAppearance.configureWithTransparentBackground()
         barAppearance.largeTitleTextAttributes = [
             .foregroundColor: UIColor(Color.textColor)
         ]
         barAppearance.titleTextAttributes = [.foregroundColor: UIColor(Color.keyColor)]
         
         UINavigationBar.appearance().standardAppearance = barAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
         UINavigationBar.appearance().compactAppearance = barAppearance
 #endif
     }
 
     public var body: some View {
+        Group {
 #if os(iOS)
-        iOS
+            iOS
 #elseif os(watchOS)
-        watchOS
+            watchOS
 #endif
+        }
+        .onAppear {
+            viewModel.requestAuthorization()
+            viewModel.handleWorkout()
+        }
     }
 }
 
@@ -72,6 +75,9 @@ private extension IntervalScreen {
                     }
                     .sheetWithRouter(router: self.router)
             }
+            .onAppear {
+                viewModel.subscribeStartedInterval()
+            }
         }
         .tint(Color.keyColor)
     }
@@ -88,4 +94,8 @@ private extension IntervalScreen {
         }
         .tint(Color.keyColor)
     }
+}
+
+#Preview {
+    IntervalScreen(router: .init(), viewModel: .init(router: .init()))
 }

@@ -12,17 +12,14 @@ struct WatchHealthInfoView : View{
     @Binding var viewModel: IntervalActiveViewModel
     
     var body : some View {
-        VStack(alignment: .leading, spacing : 5){
-            Spacer()
+        Group {
             repeatCount
-                .padding(.horizontal,12)
+            
             heartBpm
-                .padding(.horizontal,12)
+            
             calorie
-                .padding(.horizontal,12)
+            
             currentTime
-                .padding(.leading,12)
-                .padding(.trailing,3)
             
         }
     }
@@ -36,8 +33,9 @@ struct WatchHealthInfoView : View{
             
             Text(String(format: "%d / %d",viewModel.currentCount , viewModel.interval.repeatCount))
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(.textColor)
                 .font(.system(size: 16, design: .rounded))
+                .contentTransition(.numericText())
         }
     }
     
@@ -45,6 +43,7 @@ struct WatchHealthInfoView : View{
         HStack{
             Text("심박수")
                 .foregroundColor(Color.textColor50)
+            
             Spacer()
             
             Image(systemName: "heart.fill")
@@ -52,12 +51,13 @@ struct WatchHealthInfoView : View{
                 .scaledToFit()
                 .frame(width: 16,height: 16)
                 .foregroundColor(Color.heartColor)
-                .symbolEffect(.bounce, options: .speed(1), value: viewModel.isBounce)
+                .symbolEffect(.bounce, options: .speed(1), value: viewModel.totalSecondTime)
             
-            Text(String(viewModel.heartRate))
+            Text("\(Int(viewModel.heartRates.last ?? 0.0))")
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(.textColor)
                 .font(.system(size: 16, design: .rounded))
+                .contentTransition(.numericText())
         }
     }
     
@@ -67,10 +67,11 @@ struct WatchHealthInfoView : View{
                 .foregroundColor(Color.textColor50)
             Spacer()
             
-            Text(String(format: "%dKcal", viewModel.calorie))
+            Text("\(Int(viewModel.calorie))")
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(.textColor)
                 .font(.system(size: 16, design: .rounded))
+                .contentTransition(.numericText())
         }
     }
     
@@ -81,11 +82,15 @@ struct WatchHealthInfoView : View{
             
             Spacer()
             
-            Text(viewModel.calculateActiveTime())
-                .foregroundColor(.white)
+            Text(viewModel.totalSecondTimeString)
+                .foregroundColor(.textColor)
                 .fontWeight(.semibold)
                 .font(.system(size: 16, design: .rounded))
-                .frame(width: 88,height: 16,alignment: .leading)
+                .frame(width: 88, height: 16, alignment: .leading)
         }
     }
+}
+
+#Preview {
+    IntervalActiveWatchScreen(viewModel: .init(interval: .init(id: .init())))
 }

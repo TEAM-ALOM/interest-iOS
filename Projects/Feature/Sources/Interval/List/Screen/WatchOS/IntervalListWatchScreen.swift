@@ -13,13 +13,17 @@ public struct IntervalListWatchScreen: View {
     @State var viewModel: IntervalListViewModel
     
     public var body: some View {
-        VStack{
+        VStack {
             WatchListView(viewModel: viewModel)
                 .padding(.top,5)
+            
             Spacer()
+            
             HStack{
                 Spacer()
+                
                 StartButton(viewModel: viewModel, interval: viewModel.selectedInterval)
+                
                 Spacer()
             }
         }

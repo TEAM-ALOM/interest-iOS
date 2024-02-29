@@ -51,10 +51,11 @@ private extension BurningRestingPicker {
                 
                 Text(isBurning ? "버닝 옵션" : "휴식 옵션")
                     .fontWeight(.semibold)
+                    .foregroundStyle(Color.textColor)
                 
                 Spacer()
             }
-            .padding(.vertical,15)
+            .padding(.bottom, 12)
             
             pickTimeView(hour: $hours, minute: $minutes, second: $seconds, isExpanded: $isTimeExpanded)
                 .onChange(of: hours) {
@@ -82,7 +83,7 @@ private extension BurningRestingPicker {
             }, label: {
                 HStack{
                     Text("시간")
-                        //.foregroundStyle(Color(colorScheme == .dark ? .white: .black))
+                        .foregroundStyle(Color.textColor)
                     
                     Spacer()
                     
@@ -98,12 +99,10 @@ private extension BurningRestingPicker {
             if (isTimeExpanded){
                 timePicker(hour: $hours, minute: $minutes, second: $seconds)
                     .frame(height: isExpanded.wrappedValue ? 213 : 0)
-                    .offset(y: -7)
             }
             
             if (isExpanded.wrappedValue) {
                 Divider()
-                    .padding(.bottom, 4)
             }
         }
     }
@@ -116,32 +115,39 @@ private extension BurningRestingPicker {
                     ForEach(0..<12) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
+                            .foregroundStyle(Color.textColor)
                     }
                 }
                 .pickerStyle(.wheel)
                 
                 Text("시간")
+                    .foregroundStyle(Color.textColor)
                 
                 Picker("분", selection: $minutes) {
                     ForEach(0..<60) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
+                            .foregroundStyle(Color.textColor)
                     }
                 }
                 .pickerStyle(.wheel)
                 .frame(width: geometry.size.width/4.5)
+                
                 Text("분")
+                    .foregroundStyle(Color.textColor)
                 
                 Picker("초", selection: $seconds) {
                     ForEach(0..<60) { i in
                         Text(String(format: "%2d", i))
                             .tag(i)
+                            .foregroundStyle(Color.textColor)
                     }
                 }
                 .pickerStyle(.wheel)
                 .frame(width: geometry.size.width/4.5)
                 
                 Text("초")
+                    .foregroundStyle(Color.textColor)
             }
         }
     }
@@ -156,7 +162,7 @@ private extension BurningRestingPicker {
             }, label: {
                 HStack{
                     Text("구간")
-                        //.foregroundStyle(Color(colorScheme == .dark ? .white: .black))
+                        .foregroundStyle(Color.textColor)
                     
                     Spacer()
                     Text("\(selection.wrappedValue.heartTypeName)")
@@ -164,7 +170,6 @@ private extension BurningRestingPicker {
                         .foregroundStyle(Color.keyColor)
                         .bold()
                 }
-                .padding(.vertical,10)
             })
             
             Divider()
@@ -173,6 +178,7 @@ private extension BurningRestingPicker {
                 Picker("", selection: selection) {
                     ForEach(HeartIntervalType.allCases, id: \.self) { type in
                         Text(type.title).tag(type)
+                            .foregroundStyle(Color.textColor)
                     }
                 }
                 .pickerStyle(.wheel)

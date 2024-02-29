@@ -11,25 +11,26 @@ struct IntervalChangeView: View {
     @Binding var viewModel: IntervalActiveViewModel
     
     var body: some View {
-        VStack{
+        Group {
+            let isBurning = viewModel.activeInterval.currentIntervalType == .burning
+            
             HStack{
-                Image(systemName: viewModel.isBurning ? "flame.fill" : "circle.hexagonpath.fill")
+                Image(systemName: viewModel.activeInterval.currentIntervalType.systemImage)
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
                     .frame(width: 30,height: 30)
                 
-                Text(viewModel.isBurning ? "버닝중" : "휴식중")
-                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
+                Text(viewModel.activeInterval.currentIntervalType.text + "중")
                     .fontWeight(.bold)
                     .font(.system(size: 34))
                 
                 Spacer()
             }
+            .foregroundStyle(isBurning ? Color.burningColor : Color.restColor)
             
             HStack{
                 HStack{
-                    Text(viewModel.calculateUntilTime())
+                    Text(viewModel.currentSecondTimeString)
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 52, design: .rounded))
@@ -38,9 +39,9 @@ struct IntervalChangeView: View {
                 
                 VStack(alignment : .leading){
                     HStack(spacing:0){
-                        Text(viewModel.isBurning ? "휴식" : "버닝")
-                            .offset(y : viewModel.isBurning ? 0 : 1)
-                            .foregroundStyle(viewModel.isBurning ? Color.restColor : Color.burningColor)
+                        Text(viewModel.activeInterval.currentIntervalType.text)
+                            .offset(y : isBurning ? 0 : 1)
+                            .foregroundStyle(isBurning ? Color.restColor : Color.burningColor)
                         Text("까지")
                             .foregroundStyle(Color.textColor50)
                     }
@@ -54,7 +55,6 @@ struct IntervalChangeView: View {
                             .fontWeight(.semibold)
                     }
                 }
-                .padding(.leading,13)
                 
                 Spacer()
             }
@@ -62,3 +62,6 @@ struct IntervalChangeView: View {
     }
 }
 
+#Preview {
+    IntervalActiveIPhoneScreen(viewModel: .init(interval: .init(id: .init())))
+}

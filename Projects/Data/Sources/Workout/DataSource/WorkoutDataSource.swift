@@ -6,24 +6,27 @@
 //
 
 import Foundation
-
 import Dependencies
-
-import HealthKit
+import Domain
 
 public protocol WorkoutDataSourceInterface {
     func requestAuthorization() -> Bool
+    
+#if os(watchOS)
+    func sendActiveInfoData(_ activeInterval: ActiveIntervalEntity)
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
-    
-    #if os(iOS)
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
-    #elseif os(watchOS)
-    func startWorkout(workoutType: HKWorkoutActivityType)
+#elseif os(iOS)
+    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
+    func workoutSessionMirroring(intervalId: UUID)
+#endif
+    func startWorkout(interval: IntervalEntity)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
-    #endif
+    func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
+    func workoutIntervalId() -> UUID?
+    func workoutStartDate() -> Date?
 }
 
 public final class WorkoutDataSource: WorkoutDataSourceInterface {
@@ -37,12 +40,49 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
         return manager.requestAuthorization()
     }
     
-    public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
-        manager.subcribeHeartRate(updateHandler: updateHandler)
+    public func startWorkout(interval: IntervalEntity) {
+        manager.startWorkout(workoutType: interval.exerciseType.hkWorkoutActivityType, intervalId: interval.id)
     }
     
-    public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
-        manager.subcribeCalorie(updateHandler: updateHandler)
+    public func pauseWorkout() {
+        manager.pauseWorkout()
+    }
+    
+    public func resumeWorkout() {
+        manager.resumeWorkout()
+    }
+    
+    public func endWorkout() {
+        manager.endWorkout()
+    }
+    
+    public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
+        manager.subcribeWorkoutSessionState { state in
+            switch state {
+            case .notStarted:
+                updateHandler(.notStarted)
+            case .running:
+                updateHandler(.running)
+            case .ended:
+                updateHandler(.ended)
+            case .paused:
+                updateHandler(.paused)
+            case .prepared:
+                updateHandler(.prepared)
+            case .stopped:
+                updateHandler(.stopped)
+            @unknown default:
+                print(state)
+            }
+        }
+    }
+    
+    public func workoutIntervalId() -> UUID? {
+        return manager.workoutIntervalId()
+    }
+    
+    public func workoutStartDate() -> Date? {
+        return manager.workoutStartDate()
     }
 }
 
@@ -58,5 +98,5 @@ public extension DependencyValues {
 }
 
 extension WorkoutDataSource: DependencyKey {
-    public static var liveValue: WorkoutDataSource = .init(manager: .init())
+    public static var liveValue: WorkoutDataSource = .init(manager: .shared)
 }

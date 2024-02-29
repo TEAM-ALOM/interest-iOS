@@ -15,6 +15,7 @@ public protocol WCSessionUseCaseInterface {
 #endif
     func sendMessage(_ message: [String: Any])
     func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
+    func sendData(_ message: [String: Any])
 }
 
 public final class WCSessionUseCase: WCSessionUseCaseInterface {
@@ -34,26 +35,21 @@ public final class WCSessionUseCase: WCSessionUseCaseInterface {
         wcSessionRepository.sendMessage(message)
     }
     
+    public func sendData(_ message: [String : Any]) {
+        wcSessionRepository.sendData(message)
+    }
+    
     public func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void) {
         wcSessionRepository.observeReceiveMessageValue(key: key, valueHandler: valueHandler)
     }
 }
 
-extension WCSessionUseCase: TestDependencyKey {
-    public static var testValue: WCSessionUseCase = unimplemented()
-}
 
-public extension DependencyValues {
-    var wcSessionUseCase: WCSessionUseCase {
-        get { self[WCSessionUseCase.self] }
-        set { self[WCSessionUseCase.self] = newValue }
-    }
-}
 
-extension WCSessionUseCase {
-    public static func live(
-        wcSessionRepository: WCSessionRepositoryInterface
-    ) -> Self {
-        return Self(wcSessionRepository: wcSessionRepository)
-    }
-}
+//extension WCSessionUseCase {
+//    public static func live(
+//        wcSessionRepository: WCSessionRepositoryInterface
+//    ) -> Self {
+//        return Self(wcSessionRepository: wcSessionRepository)
+//    }
+//}

@@ -16,17 +16,37 @@ public struct IntervalActiveWatchScreen: View {
     @State private var timer: Timer?
     
     public var body: some View {
-        VStack(alignment: .center){
-            WatchIntervalChangeView(viewModel: $viewModel)
+        ZStack {
+            Group {
+                switch viewModel.activeInterval.currentIntervalType {
+                case .burning:
+                    let burningTime = Double(viewModel.interval.burningSecondTime)
+                    Color.burningColor
+                        .opacity(0.2 * (Double(viewModel.currentSecondTime) / burningTime))
+                case .resting:
+                    let restingTime = Double(viewModel.interval.restingSecondTime)
+                    Color.restColor
+                        .opacity(0.2 * (Double(viewModel.currentSecondTime) / restingTime))
+                }
+            }
+            .ignoresSafeArea()
             
-            Spacer()
-            
-            WatchHealthInfoView(viewModel: $viewModel)
+            VStack(spacing: 8) {
+                WatchIntervalChangeView(viewModel: $viewModel)
+                
+                WatchHealthInfoView(viewModel: $viewModel)
+                
+                Spacer()
+            }
         }
-        .padding(.vertical , 5)
-        .exerciseBackground(mode: viewModel.isBurning ? .burning : .rest)
+        .exerciseBackground(mode: viewModel.activeInterval.currentIntervalType == .burning ? .burning : .rest)
+        .animation(.smooth, value: viewModel.activeInterval.currentIntervalType)
         .onAppear(perform: {
             viewModel.setupTimer()
         })
     }
+}
+
+#Preview {
+    IntervalActiveWatchScreen(viewModel: .init(interval: .init(id: .init())))
 }

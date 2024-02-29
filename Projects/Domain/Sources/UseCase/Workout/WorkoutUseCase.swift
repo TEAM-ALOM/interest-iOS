@@ -12,17 +12,22 @@ import Dependencies
 
 public protocol WorkoutUseCaseInterface {
     func requestAuthorization() -> Bool
+    
+#if os(watchOS)
+    func sendActiveInfoData(_ activeInterval: ActiveIntervalEntity)
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
-    
-    #if os(iOS)
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async
-    #elseif os(watchOS)
-    func startWorkout(workoutType: HKWorkoutActivityType)
+#elseif os(iOS)
+    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
+    func workoutSessionMirroring(intervalId: UUID)
+#endif
+    func startWorkout(interval: IntervalEntity)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
-    #endif
+    func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
+    func workoutIntervalId() -> UUID?
+    func workoutStartDate() -> Date?
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -36,30 +41,31 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
         return workoutRepository.requestAuthorization()
     }
     
-    public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
-        workoutRepository.subcribeHeartRate(updateHandler: updateHandler)
+    public func startWorkout(interval: IntervalEntity) {
+        workoutRepository.startWorkout(interval: interval)
     }
     
-    public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
-        workoutRepository.subcribeCalorie(updateHandler: updateHandler)
+    public func pauseWorkout() {
+        workoutRepository.pauseWorkout()
     }
-}
-
-extension WorkoutUseCase: TestDependencyKey {
-    public static var testValue: WorkoutUseCase = unimplemented()
-}
-
-public extension DependencyValues {
-    var workoutUseCase: WorkoutUseCase {
-        get { self[WorkoutUseCase.self] }
-        set { self[WorkoutUseCase.self] = newValue }
+    
+    public func resumeWorkout() {
+        workoutRepository.resumeWorkout()
     }
-}
-
-extension WorkoutUseCase {
-    public static func live(
-        workoutRepository: WorkoutRepositoryInterface
-    ) -> Self {
-        return Self(workoutRepository: workoutRepository)
+    
+    public func endWorkout() {
+        workoutRepository.endWorkout()
+    }
+    
+    public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
+        workoutRepository.subcribeWorkoutSessionState(updateHandler: updateHandler)
+    }
+    
+    public func workoutIntervalId() -> UUID? {
+        return workoutRepository.workoutIntervalId()
+    }
+    
+    public func workoutStartDate() -> Date? {
+        return workoutRepository.workoutStartDate()
     }
 }

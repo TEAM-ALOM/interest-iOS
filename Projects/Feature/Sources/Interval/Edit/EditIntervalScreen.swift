@@ -20,8 +20,6 @@ public struct EditIntervalScreen: View {
     public var body: some View {
         NavigationStack{
             containerView
-                .padding(.horizontal, 30)
-                .padding(.top, 10)
                 .navigationTitle(
                     "인터벌 편집"
                 )
@@ -40,6 +38,7 @@ public struct EditIntervalScreen: View {
                         }, label: {
                             Text("저장")
                         })
+                        .disabled(viewModel.interval.title == "")
                     }
                 }
         }
@@ -49,42 +48,43 @@ public struct EditIntervalScreen: View {
 private extension EditIntervalScreen {
     private var containerView: some View {
         ScrollView {
-            nameView
-            exercisePickerView
-            repeatCountPickerView
-            burningRestingPickerView
-            Spacer()
+            VStack(spacing: 20) {
+                nameView
+                exercisePickerView
+                repeatCountPickerView
+                burningRestingPickerView
+                Spacer()
+            }
+            .padding(.top, 28)
+            .padding(.horizontal, 24)
         }
     }
     
     private var nameView: some View {
-        VStack{
+        VStack(spacing: 12) {
             HStack{
                 Text("이름")
                     .fontWeight(.semibold)
                 Spacer()
             }
+            
             TextField("달리기 인터벌", text: $viewModel.interval.title)
-                .padding(.all,12)
-                .cornerRadius(10)
+                .padding(12)
+                .background(RoundedRectangle(cornerRadius: 10,
+                                             style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/).fill(Color.textColor25))
         }
     }
     
     private var exercisePickerView: some View {
-        HStack{
-            ExercisePickerView(selectedExerciseType: $viewModel.interval.exerciseType)
-        }
-        .padding(.vertical,10)
+        ExercisePickerView(selectedExerciseType: $viewModel.interval.exerciseType)
     }
     
     private var repeatCountPickerView: some View {
-        VStack{
-            RepeatPicker(isRepeat: false, repeatCount: $viewModel.interval.repeatCount)
-        }
+        RepeatPicker(isRepeat: false, repeatCount: $viewModel.interval.repeatCount)
     }
     
     private var burningRestingPickerView: some View {
-        VStack{
+        Group{
             BurningRestingPicker(isBurning: true, heartType: $viewModel.interval.burningHeartIntervalType, totalTime: $viewModel.interval.burningSecondTime)
             
             BurningRestingPicker(isBurning: false, heartType: $viewModel.interval.restingHeartIntervalType, totalTime: $viewModel.interval.restingSecondTime)

@@ -23,12 +23,32 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
         return dataSource.requestAuthorization()
     }
     
-    public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
-        dataSource.subcribeHeartRate(updateHandler: updateHandler)
+    public func startWorkout(interval: IntervalEntity) {
+        dataSource.startWorkout(interval: interval)
     }
     
-    public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
-        dataSource.subcribeCalorie(updateHandler: updateHandler)
+    public func pauseWorkout() {
+        dataSource.pauseWorkout()
+    }
+    
+    public func resumeWorkout() {
+        dataSource.resumeWorkout()
+    }
+    
+    public func endWorkout() {
+        dataSource.endWorkout()
+    }
+    
+    public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
+        dataSource.subcribeWorkoutSessionState(updateHandler: updateHandler)
+    }
+    
+    public func workoutIntervalId() -> UUID? {
+        return dataSource.workoutIntervalId()
+    }
+    
+    public func workoutStartDate() -> Date? {
+        return dataSource.workoutStartDate()
     }
 }
 

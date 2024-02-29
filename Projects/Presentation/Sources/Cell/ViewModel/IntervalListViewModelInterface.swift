@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Domain
 import SwiftUI
 
 public protocol IntervalListViewModelInterface {

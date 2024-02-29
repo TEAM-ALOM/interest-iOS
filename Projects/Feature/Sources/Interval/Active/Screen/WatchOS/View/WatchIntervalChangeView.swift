@@ -12,46 +12,45 @@ struct WatchIntervalChangeView : View {
     @Binding var viewModel: IntervalActiveViewModel
     
     var body: some View {
-        VStack{
+        Group {
+            let isBurning = viewModel.activeInterval.currentIntervalType == .burning
             HStack{
-                Image(systemName: viewModel.isBurning ? "flame.fill" : "circle.hexagonpath.fill")
-                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
-                Text(viewModel.isBurning ? "버닝중" : "휴식중")
-                    .foregroundColor(viewModel.isBurning ? Color.burningColor : Color.restColor)
+                Image(systemName: viewModel.activeInterval.currentIntervalType.systemImage)
+                
+                Text(viewModel.activeInterval.currentIntervalType.text + "중")
+                    .fontWeight(.semibold)
+                    .font(.system(size: 20))
                 Spacer()
             }
-            .padding(.horizontal,12)
-            .padding(.bottom, 5)
-            Spacer()
+            .foregroundColor(isBurning ? Color.burningColor : Color.restColor)
+            
             HStack{
-                Spacer()
-                HStack{
-                    Text(viewModel.calculateUntilTime())
-                        .foregroundColor(.white)
-                        .fontWeight(.semibold)
-                        .font(.system(size: 28, design: .rounded))
-                        .frame(width: 112, height: 28, alignment: .leading)
-                }
+                Text(viewModel.currentSecondTimeString)
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 28, design: .rounded))
+                    .frame(width: 112, height: 28, alignment: .leading)
+                
                 VStack(alignment : .leading){
                     HStack(spacing:0){
-                        Text(viewModel.isBurning ? "휴식" : "버닝")
-                            .offset(y : viewModel.isBurning ? 0 : 1)
-                            .foregroundStyle(viewModel.isBurning ? Color.restColor : Color.burningColor)
+                        Text(viewModel.activeInterval.currentIntervalType.text)
+                            .offset(y : isBurning ? 0 : 1)
+                            .foregroundStyle(isBurning ? Color.restColor : Color.burningColor)
                         Text("까지")
                             .foregroundStyle(Color.textColor50)
                     }
-                    .font(.system(size: 10))
                     
-                    HStack{
-                        Text("남음")
-                            .foregroundStyle(Color.textColor50)
-                            .font(.system(size: 10))
-                        
-                    }
+                    Text("남음")
+                        .foregroundStyle(Color.textColor50)
                 }
+                .font(.system(size: 12))
+                
                 Spacer()
             }
-            .frame(width: 161, height: 28)
         }
     }
+}
+
+#Preview {
+    IntervalActiveWatchScreen(viewModel: .init(interval: .init(id: .init())))
 }

@@ -2,28 +2,23 @@
 //  WorkoutUseCase+WatchOS.swift
 //  Domain
 //
-//  Created by 김도형 on 1/23/24.
+//  Created by 김도형 on 2/26/24.
 //
 
 import Foundation
-import HealthKit
 
 #if os(watchOS)
-public extension WorkoutUseCase {
-    func startWorkout(workoutType: HKWorkoutActivityType) {
-        workoutRepository.startWorkout(workoutType: workoutType)
+extension WorkoutUseCase {
+    public func sendActiveInfoData(_ activeInterval: ActiveIntervalEntity) {
+        workoutRepository.sendActiveInfoData(activeInterval)
     }
     
-    func pauseWorkout() {
-        workoutRepository.pauseWorkout()
+    public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
+        workoutRepository.subcribeHeartRate(updateHandler: updateHandler)
     }
     
-    func resumeWorkout() {
-        workoutRepository.resumeWorkout()
-    }
-    
-    func endWorkout() {
-        workoutRepository.endWorkout()
+    public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
+        workoutRepository.subcribeCalorie(updateHandler: updateHandler)
     }
 }
 #endif

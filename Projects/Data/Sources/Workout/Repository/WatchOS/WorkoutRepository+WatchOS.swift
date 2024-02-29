@@ -2,28 +2,24 @@
 //  WorkoutRepository+WatchOS.swift
 //  Data
 //
-//  Created by 김도형 on 1/23/24.
+//  Created by 김도형 on 2/26/24.
 //
 
 import Foundation
-import HealthKit
+import Domain
 
 #if os(watchOS)
-public extension WorkoutRepository {
-    func startWorkout(workoutType: HKWorkoutActivityType) {
-        dataSource.startWorkout(workoutType: workoutType)
+extension WorkoutRepository {
+    public func sendActiveInfoData(_ activeInterval: ActiveIntervalEntity) {
+        dataSource.sendActiveInfoData(activeInterval)
     }
     
-    func pauseWorkout() {
-        dataSource.pauseWorkout()
+    public func subcribeHeartRate(updateHandler: @escaping (Double) -> Void) {
+        dataSource.subcribeHeartRate(updateHandler: updateHandler)
     }
     
-    func resumeWorkout() {
-        dataSource.resumeWorkout()
-    }
-    
-    func endWorkout() {
-        dataSource.endWorkout()
+    public func subcribeCalorie(updateHandler: @escaping (Double) -> Void) {
+        dataSource.subcribeCalorie(updateHandler: updateHandler)
     }
 }
 #endif

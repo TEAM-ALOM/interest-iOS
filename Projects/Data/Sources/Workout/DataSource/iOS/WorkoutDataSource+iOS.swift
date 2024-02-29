@@ -6,12 +6,21 @@
 //
 
 import Foundation
-import HealthKit
+import Domain
 
 #if os(iOS)
 public extension WorkoutDataSource {
-    func fetchHealthKitData(type: HKQuantityTypeIdentifier) async {
-        await manager.healthKitDataQuery(type: type)
+    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void) {
+        manager.subcribeActiveInterval { data in
+            guard let activeInterval = try? JSONDecoder().decode(ActiveIntervalEntity.self, from: data) else {
+                return
+            }
+            updateHandler(activeInterval)
+        }
+    }
+    
+    func workoutSessionMirroring(intervalId: UUID) {
+        manager.workoutSessionMirroring(intervalId: intervalId)
     }
 }
 #endif

@@ -16,9 +16,10 @@ struct StartButton: View {
 
     var body : some View {
             Button(action: {
-                if let interval = interval {
-                    viewModel.tapStartButton(interval: interval)
-                }
+//                if let interval = interval {
+                // 임시로 샘플 인터벌을 생성하여 테스트를 진행하였음
+                    viewModel.tapStartButton(interval: .init(id: .init()))
+//                }
             }) {
                 Image(systemName: "play.circle.fill")
                     .resizable()

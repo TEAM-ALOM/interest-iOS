@@ -31,6 +31,10 @@ public final class WCSessionRepository: WCSessionRepositoryInterface {
     public func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void) {
         dataSource.observeReceiveMessageValue(key: key, valueHandler: valueHandler)
     }
+    
+    public func sendData(_ message: [String : Any]) {
+        dataSource.sendData(message)
+    }
 }
 
 extension WCSessionRepository: TestDependencyKey {

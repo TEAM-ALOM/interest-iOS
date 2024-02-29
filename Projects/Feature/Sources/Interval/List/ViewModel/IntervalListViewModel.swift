@@ -8,10 +8,12 @@
 import Foundation
 import SwiftUI
 
+import Presentation
+import Domain
+
+import SharedThirdPartyLib
 import Dependencies
 import Perception
-
-import Domain
 
 @Observable
 public final class IntervalListViewModelWithRouter: IntervalListViewModel {
@@ -23,14 +25,6 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
         self.router = router
         super.init()
     }
-
-    override public func tapStartButton(interval: IntervalEntity) {
-        super.tapStartButton(interval: interval)
-        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: router, interval: interval)
-        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
-        
-        router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
-    }
     
     override public func tapIntervalDetailPageButton(interval: IntervalEntity) {
         super.tapIntervalDetailPageButton(interval: interval)
@@ -38,6 +32,10 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
         let intervalDetailRoute: IntervalRouter.NavigationRoute = .intervalDetail(intervalDetailViewModel)
         
         router.triggerNavigationScreen(navigationRoute: intervalDetailRoute)
+    }
+    
+    override public func tapStartButton(interval: IntervalEntity) {
+        super.tapStartButton(interval: interval)
     }
 
     public override func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
@@ -65,6 +63,8 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
 @Observable
 public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable {
     @ObservationIgnored @Dependency(\.intervalUseCase) var intervalUseCase
+    @ObservationIgnored @Dependency(\.workoutUseCase) var workoutUseCase
+    @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
     
     public let id: UUID = .init()
     
@@ -78,20 +78,47 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     }
     
     public func fetchIntervalItems() {
-        intervals = intervalUseCase.fetches()
+        withAnimation(.snappy) {
+            intervals = intervalUseCase.fetches()
+        }
     }
     
-    public func tapStartButton(interval: IntervalEntity) { }
+    public func tapStartButton(interval: IntervalEntity) {
+        wcSessionUseCase.sendMessage(["INTERVAL_ID": interval.id.uuidString])
+        workoutUseCase.startWorkout(interval: interval)
+    }
+    
+    public func observeIntervalMessage() {
+        // 아이폰과 워치간의 인터벌 공유를 위한 코드(잘 작동하지 않음)
+        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_SAVE") { (interval: IntervalEntity) in
+            self.intervalUseCase.save(interval: interval)
+            self.fetchIntervalItems()
+        }
+        
+        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_UPDATE") { (interval: IntervalEntity) in
+            let _ = self.intervalUseCase.update(at: interval.id, to: interval)
+            self.fetchIntervalItems()
+        }
+        
+        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_DELETE") { (id: String) in
+            guard let uuid = UUID(uuidString: id) else {
+                return
+            }
+            let _ = self.intervalUseCase.delete(at: uuid)
+            self.fetchIntervalItems()
+        }
+    }
     
     public func tapIntervalDetailPageButton(interval: IntervalEntity) { }
     
     public func tapIntervalDeleteButton(at id: UUID) {
         let _ = intervalUseCase.delete(at: id)
+        self.wcSessionUseCase.sendData(["INTERVAL_DELETE": id.uuidString])
         
         self.fetchIntervalItems()
     }
     
     public func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
+        
     }
-
 }

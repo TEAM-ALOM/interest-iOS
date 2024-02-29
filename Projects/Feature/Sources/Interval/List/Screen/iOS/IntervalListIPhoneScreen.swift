@@ -7,9 +7,8 @@
 
 import Foundation
 import SwiftUI
-import SharedDesignSystem
 import Presentation
-import Domain
+import SharedDesignSystem
 
 public struct IntervalListIPhoneScreen: View {
     @State var viewModel: IntervalListViewModel
@@ -22,7 +21,10 @@ public struct IntervalListIPhoneScreen: View {
                 }
             }
             .padding(.horizontal, 24)
-            .padding(.top, 32)
+            .padding(.top, 24)
+            .onAppear() {
+                
+            }
         }
         .mainBackground()
         .onAppear {

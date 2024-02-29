@@ -15,6 +15,7 @@ public protocol WCSessionDataSourceInterface {
 #endif
     func sendMessage(_ message: [String: Any])
     func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
+    func sendData(_ message: [String: Any])
 }
 
 public final class WCSessionDataSource: WCSessionDataSourceInterface {
@@ -34,10 +35,15 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
         manager.sendMessage(message)
     }
     
+    public func sendData(_ message: [String: Any]) {
+        manager.sendData(message)
+    }
+    
     public func observeReceiveMessageValue<T>(key: String, 
                                        valueHandler: @escaping (T) -> Void) {
         manager.subcribeReceivedMessage { message in
             guard let value = message[key] as? T else {
+                print(message[key])
                 return
             }
             
@@ -58,5 +64,5 @@ public extension DependencyValues {
 }
 
 extension WCSessionDataSource: DependencyKey {
-    public static var liveValue: WCSessionDataSource = .init(manager: .init())
+    public static var liveValue: WCSessionDataSource = .init(manager: .shared)
 }
