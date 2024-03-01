@@ -25,7 +25,13 @@ public protocol IntervalRecordDataSourceInterface {
 }
 
 public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
-    private var context: ModelContext? { PersistentContainer.shared.context }
+    private var context: ModelContext? {
+        if let container = try? ModelContainer(for: IntervalPersistentModel.self, IntervalRecordPersistentModel.self) {
+            return ModelContext(container)
+        } else {
+            return nil
+        }
+    }
     
     public init() {}
     
