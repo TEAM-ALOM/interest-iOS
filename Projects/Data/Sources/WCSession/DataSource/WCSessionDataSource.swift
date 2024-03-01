@@ -51,18 +51,3 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
         }
     }
 }
-
-extension WCSessionDataSource: TestDependencyKey {
-    public static var testValue: WCSessionDataSource = unimplemented()
-}
-
-public extension DependencyValues {
-    var wcSessionDataSource: WCSessionDataSource {
-        get { self[WCSessionDataSource.self] }
-        set { self[WCSessionDataSource.self] = newValue }
-    }
-}
-
-extension WCSessionDataSource: DependencyKey {
-    public static var liveValue: WCSessionDataSource = .init(manager: .shared)
-}

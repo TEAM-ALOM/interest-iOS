@@ -123,18 +123,3 @@ public final class IntervalDataSource: IntervalDataSourceInterface {
         }
     }
 }
-
-extension IntervalDataSource: TestDependencyKey {
-    public static var testValue: IntervalDataSource = unimplemented()
-}
-
-public extension DependencyValues {
-    var intervalDataSource: IntervalDataSource {
-        get { self[IntervalDataSource.self] }
-        set { self[IntervalDataSource.self] = newValue }
-    }
-}
-
-extension IntervalDataSource: DependencyKey {
-    public static var liveValue: IntervalDataSource = .init()
-}

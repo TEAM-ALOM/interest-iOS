@@ -36,18 +36,3 @@ public final class WCSessionRepository: WCSessionRepositoryInterface {
         dataSource.sendData(message)
     }
 }
-
-extension WCSessionRepository: TestDependencyKey {
-    public static var testValue: WCSessionRepository = unimplemented()
-}
-
-public extension DependencyValues {
-    var wcSessionRepository: WCSessionRepository {
-        get { self[WCSessionRepository.self] }
-        set { self[WCSessionRepository.self] = newValue }
-    }
-}
-
-extension WCSessionRepository: DependencyKey {
-    public static var liveValue: WCSessionRepository = .init(dataSource: DependencyValues.live.wcSessionDataSource)
-}

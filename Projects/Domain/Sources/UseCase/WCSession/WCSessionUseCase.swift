@@ -44,12 +44,13 @@ public final class WCSessionUseCase: WCSessionUseCaseInterface {
     }
 }
 
+extension WCSessionUseCase: TestDependencyKey {
+    public static var testValue: WCSessionUseCase = unimplemented()
+}
 
-
-//extension WCSessionUseCase {
-//    public static func live(
-//        wcSessionRepository: WCSessionRepositoryInterface
-//    ) -> Self {
-//        return Self(wcSessionRepository: wcSessionRepository)
-//    }
-//}
+public extension DependencyValues {
+    var wcSessionUseCase: WCSessionUseCase {
+        get { self[WCSessionUseCase.self] }
+        set { self[WCSessionUseCase.self] = newValue }
+    }
+}

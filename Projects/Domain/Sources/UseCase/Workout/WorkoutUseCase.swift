@@ -69,3 +69,14 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
         return workoutRepository.workoutStartDate()
     }
 }
+
+extension WorkoutUseCase: TestDependencyKey {
+    public static var testValue: WorkoutUseCase = unimplemented()
+}
+
+public extension DependencyValues {
+    var workoutUseCase: WorkoutUseCase {
+        get { self[WorkoutUseCase.self] }
+        set { self[WorkoutUseCase.self] = newValue }
+    }
+}

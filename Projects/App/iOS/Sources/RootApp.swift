@@ -22,7 +22,11 @@ public struct RootApp: App {
         WindowGroup {
             IntervalScreen(
                 router: intervalRouter,
-                viewModel: IntervalViewModel(router: intervalRouter)
+                viewModel: withDependencies({
+                        $0.prepare()
+                }, operation: {
+                    IntervalViewModel(router: intervalRouter)
+                })
             )
             .modelContainer(for: [
                 IntervalPersistentModel.self,

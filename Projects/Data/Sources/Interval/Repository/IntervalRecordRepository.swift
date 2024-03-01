@@ -43,20 +43,3 @@ public final class IntervalRecordRepository: IntervalRecordRepositoryInterface {
         return dataSource.delete(intervalId: intervalId, at: recordId)
     }
 }
-
-extension IntervalRecordRepository: TestDependencyKey {
-    public static var testValue: IntervalRecordRepository = unimplemented()
-}
-
-public extension DependencyValues {
-    var intervalRecordRepository: IntervalRecordRepository {
-        get { self[IntervalRecordRepository.self] }
-        set { self[IntervalRecordRepository.self] = newValue }
-    }
-}
-
-extension IntervalRecordRepository: DependencyKey {
-    public static var liveValue: IntervalRecordRepository = .init(
-        dataSource: DependencyValues.live.intervalRecordDataSource
-    )
-}

@@ -88,18 +88,3 @@ public final class IntervalRecordDataSource: IntervalRecordDataSourceInterface {
         }
     }
 }
-
-extension IntervalRecordDataSource: TestDependencyKey {
-    public static var testValue: IntervalRecordDataSource = unimplemented()
-}
-
-public extension DependencyValues {
-    var intervalRecordDataSource: IntervalRecordDataSource {
-        get { self[IntervalRecordDataSource.self] }
-        set { self[IntervalRecordDataSource.self] = newValue }
-    }
-}
-
-extension IntervalRecordDataSource: DependencyKey {
-    public static var liveValue: IntervalRecordDataSource = .init()
-}
