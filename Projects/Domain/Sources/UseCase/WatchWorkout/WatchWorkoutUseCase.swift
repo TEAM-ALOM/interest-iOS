@@ -9,6 +9,8 @@ import Foundation
 import HealthKit
 import WatchConnectivity
 
+import Dependencies
+
 #if os(watchOS)
 public protocol WatchWorkoutUseCaseInterface {
     func start() async throws -> Void
@@ -20,27 +22,22 @@ public protocol WatchWorkoutUseCaseInterface {
 }
 
 public class WatchWorkoutUseCase: NSObject, WatchWorkoutUseCaseInterface {
-    public var heartRateUpdateHandler: (Double) -> Void
-    public var calorieUpdateHandler: (Double) -> Void
+    public var heartRateUpdateHandler: (Double) -> Void = { _ in }
+    public var calorieUpdateHandler: (Double) -> Void = { _ in }
     
     private let healthStore = HKHealthStore()
     private var workout: HKWorkout?
     private var workoutSession: HKWorkoutSession?
     private var workoutSessionState: HKWorkoutSessionState = .notStarted
     
-    
     private var liveWorkoutBuilder: HKLiveWorkoutBuilder?
     
     public init(
         workout: HKWorkout? = nil,
-        workoutSession: HKWorkoutSession? = nil,
-        heartRateUpdateHandler: @escaping (Double) -> Void,
-        calorieUpdateHandler: @escaping (Double) -> Void
+        workoutSession: HKWorkoutSession? = nil
     ) {
         self.workout = workout
         self.workoutSession = workoutSession
-        self.heartRateUpdateHandler = heartRateUpdateHandler
-        self.calorieUpdateHandler = calorieUpdateHandler
     }
     
     public func pause() {
@@ -83,6 +80,17 @@ public class WatchWorkoutUseCase: NSObject, WatchWorkoutUseCaseInterface {
         let startDate = Date()
         workoutSession?.startActivity(with: startDate)
         try await liveWorkoutBuilder?.beginCollection(at: startDate)
+    }
+}
+
+extension WatchWorkoutUseCase: TestDependencyKey {
+    public static var testValue: WatchWorkoutUseCase = unimplemented()
+}
+
+public extension DependencyValues {
+    var watchWorkoutUseCase: WatchWorkoutUseCase {
+        get { self[WatchWorkoutUseCase.self] }
+        set { self[WatchWorkoutUseCase.self] = newValue }
     }
 }
 

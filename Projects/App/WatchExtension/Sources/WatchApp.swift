@@ -19,11 +19,14 @@ struct WatchApp: App {
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            IntervalScreen(router: intervalRouter, viewModel: .init(router: intervalRouter))
-                .onAppear() {
-                    appDelegate.subsrcibeStartedInterval()
-                    appDelegate.subscribeStartWatchAppFromiPhone()
-                }
+            IntervalScreen(
+                router: intervalRouter,
+                viewModel: .init(router: intervalRouter)
+            )
+            .onAppear() {
+                appDelegate.subsrcibeStartedInterval()
+                appDelegate.subscribeStartWatchAppFromiPhone()
+            }
         }
     }
 }

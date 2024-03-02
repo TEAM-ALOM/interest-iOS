@@ -32,5 +32,9 @@ extension DependencyValues {
         self.intervalRecordUseCase = .init(intervalRecordRepository: intervalRecordRepository)
         self.workoutUseCase = .init(workoutRepository: workoutRepository)
         self.wcSessionUseCase = .init(wcSessionRepository: wcSessionRepository)
+        
+#if os(watchOS)
+        self.watchWorkoutUseCase = .init()
+#endif
     }
 }
