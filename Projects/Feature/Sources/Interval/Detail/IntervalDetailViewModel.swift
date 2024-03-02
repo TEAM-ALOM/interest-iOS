@@ -58,6 +58,6 @@ public class IntervalDetailViewModel {
     }
     
     func fetchIntervalRecords(){
-        self.interval.records = intervalRecordUseCase.fetchIntervalRecords(intervalId: interval.id)
+        self.interval.records = intervalRecordUseCase.fetches(intervalId: interval.id)
     }
 }

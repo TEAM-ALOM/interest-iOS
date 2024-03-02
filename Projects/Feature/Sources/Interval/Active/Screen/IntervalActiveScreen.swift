@@ -29,9 +29,10 @@ public struct IntervalActiveScreen: View {
 #endif
         }
         .onAppear() {
-            viewModel.subscribeHeartRate()
-            viewModel.subscribeCalorie()
-            viewModel.subscribeWorkoutSessionState()
+            viewModel.onAppear()
+//            viewModel.subscribeHeartRate()
+//            viewModel.subscribeCalorie()
+//            viewModel.subscribeWorkoutSessionState()
         }
         .onDisappear() {
             viewModel.timerPublisherCancel()

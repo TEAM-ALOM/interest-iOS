@@ -41,6 +41,7 @@ public class IntervalActiveViewModel: ObservableObject {
     @ObservationIgnored @Dependency(\.intervalRecordUseCase) var intervalRecordUseCase
     @ObservationIgnored @Dependency(\.workoutUseCase) var workoutUseCase
     @ObservationIgnored @Dependency(\.wcSessionUseCase) var wcSessionUseCase
+    @ObservationIgnored @Dependency(\.newWorkoutUseCase) var newWorkoutUseCase
     
     public enum DelegateAction {
         case saved(IntervalRecordEntity)
@@ -74,6 +75,10 @@ public class IntervalActiveViewModel: ObservableObject {
         self.activeInterval = .init(intervalID: interval.id)
     }
     
+    public func onAppear() {
+        self.newWorkoutUseCase.requestAuthorization()
+    }
+    
     public func sendSignal(action: DelegateAction) {
         self.delegateActionHandler?(action)
     }
@@ -99,7 +104,7 @@ public class IntervalActiveViewModel: ObservableObject {
             createDate: .now,
             calorie: calorie)
         
-        intervalRecordUseCase.appendIntervalRecord(intervalId: interval.id, record: newIntervalrecord)
+        intervalRecordUseCase.save(intervalId: interval.id, record: newIntervalrecord)
     }
     
     private func formatTotalTimeInterval(timeInterval: TimeInterval) -> String {

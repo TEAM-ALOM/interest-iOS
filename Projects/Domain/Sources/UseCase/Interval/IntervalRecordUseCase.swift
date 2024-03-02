@@ -10,10 +10,10 @@ import Foundation
 import Dependencies
 
 public protocol IntervalRecordUseCaseInterface {
-    func fetchIntervalRecord(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity?
-    func fetchIntervalRecords(intervalId id: UUID) -> [IntervalRecordEntity]
-    func appendIntervalRecord(intervalId: UUID, record: IntervalRecordEntity) -> Void
-    func deleteIntervalRecord(intervalId: UUID, at recordId: UUID) -> Bool
+    func fetch(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity?
+    func fetches(intervalId id: UUID) -> [IntervalRecordEntity]
+    func save(intervalId: UUID, record: IntervalRecordEntity) -> Void
+    func delete(intervalId: UUID, at recordId: UUID) -> Bool
 }
 
 public final class IntervalRecordUseCase: IntervalRecordUseCaseInterface {
@@ -23,19 +23,19 @@ public final class IntervalRecordUseCase: IntervalRecordUseCaseInterface {
         self.intervalRecordRepository = intervalRecordRepository
     }
     
-    public func fetchIntervalRecord(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity? {
+    public func fetch(intervalId: UUID, at recordId: UUID) -> IntervalRecordEntity? {
         return intervalRecordRepository.fetch(intervalId: intervalId, at: recordId)
     }
     
-    public func fetchIntervalRecords(intervalId id: UUID) -> [IntervalRecordEntity] {
+    public func fetches(intervalId id: UUID) -> [IntervalRecordEntity] {
         return intervalRecordRepository.fetches(intervalId: id)
     }
     
-    public func appendIntervalRecord(intervalId: UUID, record: IntervalRecordEntity) -> Void {
+    public func save(intervalId: UUID, record: IntervalRecordEntity) -> Void {
         return intervalRecordRepository.append(intervalId: intervalId, record: record)
     }
     
-    public func deleteIntervalRecord(intervalId: UUID, at recordId: UUID) -> Bool {
+    public func delete(intervalId: UUID, at recordId: UUID) -> Bool {
         return intervalRecordRepository.delete(intervalId: intervalId, at: recordId)
     }
 }
