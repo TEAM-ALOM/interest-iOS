@@ -10,14 +10,13 @@ import WatchConnectivity
 import Combine
 
 public class WCSessionManager: NSObject, WCSessionDelegate {
-    static let shared = WCSessionManager()
-    
     private let session = WCSession.default
-    private var message = PassthroughSubject<[String: Any], Never>()
-    private var cancellable = Set<AnyCancellable>()
+    private(set) var message = PassthroughSubject<[String: Any], Never>()
+    private var messageCacellable = Set<AnyCancellable>()
     
     public override init() {
         super.init()
+        
         if WCSession.isSupported() {
             session.delegate = self
             session.activate()
@@ -42,31 +41,18 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
         self.message.send(message)
     }
     
-    public func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
-        self.message.send(userInfo)
-    }
-    
-    func subcribeReceivedMessage(messageHandler: @escaping ([String: Any]) -> Void) {
-        self.message
-            .subscribe(on: DispatchQueue.main)
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates { oldValue, newValue in
-                oldValue.contains { key, value in
-                    guard let new = newValue[key] else {
-                        return false
-                    }
-                    
-                    guard new as? Data == value as? Data else {
-                        return false
-                    }
-                    return true
+    func subscribeReceivedMessage(messageHandler: @escaping (_ message: [String: Any]) -> Void) {
+            self.message
+                .subscribe(on: DispatchQueue.main)
+                .receive(on: DispatchQueue.main)
+                .sink { message in
+                    messageHandler(message)
                 }
-            }
-            .sink { receivedMesssge in
-                print(receivedMesssge)
-                messageHandler(receivedMesssge)
-            }
-            .store(in: &cancellable)
+                .store(in: &messageCacellable)
+        }
+    
+    func unsubcribeReceivedMessage() {
+        self.messageCacellable.removeAll()
     }
     
     func sendMessage(_ message: [String: Any]) {
@@ -74,22 +60,4 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
             print("Error sending message: \(error.localizedDescription)")
         })
     }
-    
-    func sendData(_ message: [String: Any]) {
-        session.transferUserInfo(message)
-    }
-    
-    #if os(iOS)
-    func checkSessionStatus() -> WCSessionStatus {
-        if !session.isPaired {
-            return .notPaired
-        } else if !session.isWatchAppInstalled {
-            return .notInstalledWatchApp
-        } else if !session.isReachable {
-            return .notReachable
-        } else {
-            return .connected
-        }
-    }
-    #endif
 }

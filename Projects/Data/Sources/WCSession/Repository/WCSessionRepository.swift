@@ -18,22 +18,16 @@ public final class WCSessionRepository: WCSessionRepositoryInterface {
         self.dataSource = dataSource
     }
     
-#if os(iOS)
-    public func checkSessionStatus() -> String {
-        return dataSource.checkSessionStatus()
-    }
-    #endif
-    
     public func sendMessage(_ message: [String : Any]) {
-        dataSource.sendMessage(message)
+        self.dataSource.sendMessage(message)
     }
     
-    public func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void) {
-        dataSource.observeReceiveMessageValue(key: key, valueHandler: valueHandler)
+    public func subscribeReceivedMessage(messageHandler: @escaping ([String : Any]) -> Void) {
+        self.dataSource.subscribeReceivedMessage(messageHandler: messageHandler)
     }
     
-    public func sendData(_ message: [String : Any]) {
-        dataSource.sendData(message)
+    public func unsubcribeReceivedMessage() {
+        self.dataSource.unsubcribeReceivedMessage()
     }
 }
 

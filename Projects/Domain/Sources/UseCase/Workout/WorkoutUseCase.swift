@@ -21,13 +21,11 @@ public protocol WorkoutUseCaseInterface {
     func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
     func workoutSessionMirroring(intervalId: UUID)
 #endif
-    func startWorkout(interval: IntervalEntity)
+    func startWorkout(configuration: HKWorkoutConfiguration)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
     func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
-    func workoutIntervalId() -> UUID?
-    func workoutStartDate() -> Date?
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -41,8 +39,8 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
         return workoutRepository.requestAuthorization()
     }
     
-    public func startWorkout(interval: IntervalEntity) {
-        workoutRepository.startWorkout(interval: interval)
+    public func startWorkout(configuration: HKWorkoutConfiguration) {
+        workoutRepository.startWorkout(configuration: configuration)
     }
     
     public func pauseWorkout() {
@@ -59,13 +57,5 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
     
     public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
         workoutRepository.subcribeWorkoutSessionState(updateHandler: updateHandler)
-    }
-    
-    public func workoutIntervalId() -> UUID? {
-        return workoutRepository.workoutIntervalId()
-    }
-    
-    public func workoutStartDate() -> Date? {
-        return workoutRepository.workoutStartDate()
     }
 }

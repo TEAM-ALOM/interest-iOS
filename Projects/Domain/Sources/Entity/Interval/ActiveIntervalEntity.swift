@@ -8,16 +8,12 @@
 import Foundation
 
 public struct ActiveIntervalEntity: Codable {
-    public var intervalID: UUID
-    public var startDate: Date? = nil
     public var currentIntervalType: ActiveIntervalType = .resting
     public var currentIntervalCount: Int = 0
     public var restingCount: Int = 1
     public var burningCount: Int = 0
     
-    public init(intervalID: UUID) {
-        self.intervalID = intervalID
-    }
+    public init() { }
 }
 
 extension ActiveIntervalEntity {

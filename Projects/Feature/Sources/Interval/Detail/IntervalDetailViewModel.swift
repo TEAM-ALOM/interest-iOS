@@ -48,15 +48,6 @@ public class IntervalDetailViewModel {
         #endif
     }
     
-    func checkStartWatchApp() {
-        wcSessionUseCase.observeReceiveMessageValue(key: "WATCH_READY") { (success: Bool) in
-            print("\(#function) \(success)")
-            if success {
-                self.wcSessionUseCase.sendMessage(["INTERVAL_ID": self.interval.id.uuidString])
-            }
-        }
-    }
-    
     func fetchIntervalRecords(){
         self.interval.records = intervalRecordUseCase.fetchIntervalRecords(intervalId: interval.id)
     }

@@ -6,11 +6,9 @@
 //
 
 import Foundation
-import HealthKit
-
 import Dependencies
-
 import Domain
+import HealthKit
 
 public final class WorkoutRepository: WorkoutRepositoryInterface {
     internal let dataSource: WorkoutDataSourceInterface
@@ -23,8 +21,8 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
         return dataSource.requestAuthorization()
     }
     
-    public func startWorkout(interval: IntervalEntity) {
-        dataSource.startWorkout(interval: interval)
+    public func startWorkout(configuration: HKWorkoutConfiguration) {
+        dataSource.startWorkout(configuration: configuration)
     }
     
     public func pauseWorkout() {
@@ -41,14 +39,6 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
     
     public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
         dataSource.subcribeWorkoutSessionState(updateHandler: updateHandler)
-    }
-    
-    public func workoutIntervalId() -> UUID? {
-        return dataSource.workoutIntervalId()
-    }
-    
-    public func workoutStartDate() -> Date? {
-        return dataSource.workoutStartDate()
     }
 }
 

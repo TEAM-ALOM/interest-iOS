@@ -9,10 +9,7 @@ import Foundation
 import Combine
 
 public protocol WCSessionRepositoryInterface {
-#if os(iOS)
-    func checkSessionStatus() -> String
-#endif
     func sendMessage(_ message: [String: Any])
-    func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
-    func sendData(_ message: [String: Any])
+    func subscribeReceivedMessage(messageHandler: @escaping (_ message: [String: Any]) -> Void)
+    func unsubcribeReceivedMessage()
 }

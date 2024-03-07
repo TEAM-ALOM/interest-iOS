@@ -7,6 +7,7 @@
 
 import Foundation
 import Dependencies
+import HealthKit
 import Domain
 
 public protocol WorkoutDataSourceInterface {
@@ -20,13 +21,11 @@ public protocol WorkoutDataSourceInterface {
     func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
     func workoutSessionMirroring(intervalId: UUID)
 #endif
-    func startWorkout(interval: IntervalEntity)
+    func startWorkout(configuration: HKWorkoutConfiguration)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
     func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
-    func workoutIntervalId() -> UUID?
-    func workoutStartDate() -> Date?
 }
 
 public final class WorkoutDataSource: WorkoutDataSourceInterface {
@@ -40,8 +39,8 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
         return manager.requestAuthorization()
     }
     
-    public func startWorkout(interval: IntervalEntity) {
-        manager.startWorkout(workoutType: interval.exerciseType.hkWorkoutActivityType, intervalId: interval.id)
+    public func startWorkout(configuration: HKWorkoutConfiguration) {
+        manager.startWorkout(configuration: configuration)
     }
     
     public func pauseWorkout() {
@@ -75,14 +74,6 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
                 print(state)
             }
         }
-    }
-    
-    public func workoutIntervalId() -> UUID? {
-        return manager.workoutIntervalId()
-    }
-    
-    public func workoutStartDate() -> Date? {
-        return manager.workoutStartDate()
     }
 }
 

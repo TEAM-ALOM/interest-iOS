@@ -19,11 +19,9 @@ public protocol WorkoutRepositoryInterface {
     func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
     func workoutSessionMirroring(intervalId: UUID)
 #endif
-    func startWorkout(interval: IntervalEntity)
+    func startWorkout(configuration: HKWorkoutConfiguration)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
     func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
-    func workoutIntervalId() -> UUID?
-    func workoutStartDate() -> Date?
 }

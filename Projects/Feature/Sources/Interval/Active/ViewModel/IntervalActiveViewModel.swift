@@ -48,7 +48,7 @@ public class IntervalActiveViewModel: ObservableObject {
     
     public var delegateActionHandler: ((DelegateAction) -> ())?
     
-    @ObservationIgnored var interval: IntervalEntity
+    var interval: IntervalEntity?
     var activeInterval: ActiveIntervalEntity
     
     var timer: Timer?
@@ -69,9 +69,9 @@ public class IntervalActiveViewModel: ObservableObject {
     @ObservationIgnored private var timerSubscription: AnyCancellable?
     @ObservationIgnored private let timerPublisher = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     
-    init(interval: IntervalEntity) {
+    init(interval: IntervalEntity? = nil) {
         self.interval = interval
-        self.activeInterval = .init(intervalID: interval.id)
+        self.activeInterval = .init()
     }
     
     public func sendSignal(action: DelegateAction) {
@@ -91,6 +91,10 @@ public class IntervalActiveViewModel: ObservableObject {
     func tapEndButton() {
         workoutUseCase.endWorkout()
         
+        guard let intervalId = interval?.id else {
+            return
+        }
+        
         let newIntervalrecord = IntervalRecordEntity(
             id: .init(),
             heartRates: heartRates, // HealthKit의 평균심박수
@@ -99,7 +103,7 @@ public class IntervalActiveViewModel: ObservableObject {
             createDate: .now,
             calorie: calorie)
         
-        intervalRecordUseCase.appendIntervalRecord(intervalId: interval.id, record: newIntervalrecord)
+        intervalRecordUseCase.appendIntervalRecord(intervalId: intervalId, record: newIntervalrecord)
     }
     
     private func formatTotalTimeInterval(timeInterval: TimeInterval) -> String {
@@ -107,7 +111,7 @@ public class IntervalActiveViewModel: ObservableObject {
         let minutes = Int(timeInterval) / 60 % 60
         let seconds = Int(timeInterval) % 60
         let milliseconds = Int(timeInterval.truncatingRemainder(dividingBy: 1) * 100)
-
+        
         return String(format: "%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds)
     }
     
@@ -115,22 +119,23 @@ public class IntervalActiveViewModel: ObservableObject {
         let minutes = Int(timeInterval) / 60 % 60
         let seconds = Int(timeInterval) % 60
         let milliseconds = Int(timeInterval.truncatingRemainder(dividingBy: 1) * 100)
-
+        
         return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
     }
     
     func setupTimer() {
+        let burningSecondTime = TimeInterval(self.interval?.burningSecondTime ?? 0)
+        let restingSecondTime = TimeInterval(self.interval?.restingSecondTime ?? 0)
+        
         timerSubscription = timerPublisher
             .sink { [weak self] _ in
-                guard let `self` = self else { return }
+                guard let `self` = self, let interval else { return }
                 
                 print(self.workoutSessionState)
                 
                 if self.workoutSessionState == .running {
                     let burningCount = TimeInterval(self.activeInterval.burningCount)
                     let restingCount = TimeInterval(self.activeInterval.restingCount)
-                    let burningSecondTime = TimeInterval(self.interval.burningSecondTime)
-                    let restingSecondTime = TimeInterval(self.interval.restingSecondTime)
                     
                     self.totalSecondTime = Date.now.timeIntervalSince(self.startDate)
                     self.currentSecondTime = (burningSecondTime * burningCount + restingSecondTime * restingCount) - self.totalSecondTime
@@ -157,46 +162,58 @@ public class IntervalActiveViewModel: ObservableObject {
                         }
                     }
                     
-                    if self.currentCount > self.interval.repeatCount {
+                    if self.currentCount > interval.repeatCount {
                         self.tapEndButton()
                     }
                 }
             }
     }
     
-    func subscribeHeartRate() {
-        #if os(iOS)
-        wcSessionUseCase.observeReceiveMessageValue(key: "HEART_RATE") { (heartRate: Double) in
-            withAnimation {
+    func subscribeReceivedMessage() {
+        wcSessionUseCase.subscribeReceivedMessage { message in
+#if os(iOS)
+            if let heartRate = message["HEART_RATE"] as? Double {
                 self.heartRates.append(heartRate)
             }
+            
+            if let calorie = message["CALORIE"] as? Double {
+                self.calorie = Int(calorie)
+            }
+#elseif os(watchOS)
+            if let interval = message["INTERVAL"] as? IntervalEntity {
+                self.interval = interval
+            }
+#endif
         }
-        #elseif os(watchOS)
+    }
+    
+    func unsubscribeReceivedMessage() {
+        wcSessionUseCase.unsubcribeReceivedMessage()
+    }
+
+#if os(iOS)
+    func sendInterval() {
+        wcSessionUseCase.sendMessage(["INTERVAL": self.interval])
+    }
+#elseif os(watchOS)
+    func subscribeHeartRate() {
         workoutUseCase.subcribeHeartRate { heartRate in
             withAnimation {
                 self.heartRates.append(heartRate)
             }
             self.wcSessionUseCase.sendMessage(["HEART_RATE": heartRate])
         }
-        #endif
     }
     
     func subscribeCalorie() {
-        #if os(iOS)
-        wcSessionUseCase.observeReceiveMessageValue(key: "CALORIE") { (calorie: Double) in
-            withAnimation {
-                self.calorie = Int(calorie)
-            }
-        }
-        #elseif os(watchOS)
         workoutUseCase.subcribeCalorie { calorie in
             withAnimation {
                 self.calorie = Int(calorie)
             }
             self.wcSessionUseCase.sendMessage(["CALORIE": calorie])
         }
-        #endif
     }
+#endif
     
     func subscribeWorkoutSessionState() {
         workoutUseCase.subcribeWorkoutSessionState { state in

@@ -69,7 +69,7 @@ public final class IntervalViewModel {
     
     public func subscribeStartedInterval() {
 #if os(iOS)
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_ID") { (id: String) in
+        wcSessionUseCase.observeReceivedMessage(key: "INTERVAL_ID") { (id: String) in
             print("\(#function) \(id)")
             
             guard let uuid = UUID(uuidString: id) else {
