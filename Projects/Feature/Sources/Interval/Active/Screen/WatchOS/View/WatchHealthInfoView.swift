@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 struct WatchHealthInfoView : View{
     @Binding var viewModel: IntervalActiveViewModel
@@ -28,13 +29,15 @@ struct WatchHealthInfoView : View{
         HStack{
             Text("인터벌")
                 .foregroundColor(Color.textColor50)
+                .fontWeight(.semibold)
+                .font(.system(size: 20, design: .rounded))
             
             Spacer()
             
-            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.interval.repeatCount))
+            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.interval?.repeatCount ?? 0))
                 .fontWeight(.semibold)
                 .foregroundColor(.textColor)
-                .font(.system(size: 16, design: .rounded))
+                .font(.system(size: 20, design: .rounded))
                 .contentTransition(.numericText())
         }
     }
@@ -43,20 +46,22 @@ struct WatchHealthInfoView : View{
         HStack{
             Text("심박수")
                 .foregroundColor(Color.textColor50)
+                .fontWeight(.semibold)
+                .font(.system(size: 20, design: .rounded))
             
             Spacer()
             
             Image(systemName: "heart.fill")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 16,height: 16)
+                .frame(height: 20)
                 .foregroundColor(Color.heartColor)
                 .symbolEffect(.bounce, options: .speed(1), value: viewModel.totalSecondTime)
             
             Text("\(Int(viewModel.heartRates.last ?? 0.0))")
                 .fontWeight(.semibold)
+                .font(.system(size: 20, design: .rounded))
                 .foregroundColor(.textColor)
-                .font(.system(size: 16, design: .rounded))
                 .contentTransition(.numericText())
         }
     }
@@ -65,12 +70,14 @@ struct WatchHealthInfoView : View{
         HStack{
             Text("칼로리")
                 .foregroundColor(Color.textColor50)
+                .fontWeight(.semibold)
+                .font(.system(size: 20, design: .rounded))
             Spacer()
             
             Text("\(Int(viewModel.calorie))")
                 .fontWeight(.semibold)
                 .foregroundColor(.textColor)
-                .font(.system(size: 16, design: .rounded))
+                .font(.system(size: 20, design: .rounded))
                 .contentTransition(.numericText())
         }
     }
@@ -79,14 +86,15 @@ struct WatchHealthInfoView : View{
         HStack{
             Text("진행시간")
                 .foregroundColor(Color.textColor50)
+                .font(.system(size: 20))
             
             Spacer()
             
             Text(viewModel.totalSecondTimeString)
                 .foregroundColor(.textColor)
                 .fontWeight(.semibold)
-                .font(.system(size: 16, design: .rounded))
-                .frame(width: 88, height: 16, alignment: .leading)
+                .font(.system(size: 20, design: .rounded))
+                .frame(height: 20, alignment: .leading)
         }
     }
 }

@@ -26,15 +26,17 @@ public struct IntervalActiveScreen: View {
 #elseif os(watchOS)
             watchOS
                 .navigationBarBackButtonHidden()
-                .onAppear() {
-                    viewModel.subscribeHeartRate()
-                    viewModel.subscribeCalorie()
-                }
 #endif
         }
         .onAppear() {
-            viewModel.subscribeWorkoutSessionState()
             viewModel.subscribeReceivedMessage()
+            viewModel.subscribeWorkoutSessionState()
+            viewModel.setupTimer()
+            
+#if os(watchOS)
+            viewModel.subscribeHeartRate()
+            viewModel.subscribeCalorie()
+#endif
         }
         .onDisappear() {
             viewModel.timerPublisherCancel()

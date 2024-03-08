@@ -16,6 +16,8 @@ public class WorkoutManager: NSObject {
     var hearRate = PassthroughSubject<Double, Never>()
     var calorie = PassthroughSubject<Double, Never>()
     var workoutSessionState = PassthroughSubject<HKWorkoutSessionState, Never>()
+    var interval: Any?
+    var startDate: Date?
     
     private var cancellable = Set<AnyCancellable>()
     private var healthKitTypes: Set = [
@@ -79,6 +81,10 @@ public class WorkoutManager: NSObject {
             .store(in: &cancellable)
     }
     
+    func unsubscribeWorkoutSessionInfo() {
+        self.cancellable.removeAll()
+    }
+    
     func startWorkout(configuration: HKWorkoutConfiguration) {
 #if os(watchOS)
         self.workoutInWatch(configuration: configuration)
@@ -99,7 +105,7 @@ public class WorkoutManager: NSObject {
         session?.end()
     }
     
-    internal func process(_ statistics: HKStatistics?,
+    func process(_ statistics: HKStatistics?,
                           type: HKQuantityType) {
         switch type {
         case HKQuantityType(.heartRate):

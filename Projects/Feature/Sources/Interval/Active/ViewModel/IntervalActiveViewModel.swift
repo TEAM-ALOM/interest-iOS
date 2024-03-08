@@ -19,7 +19,7 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     
     public init(
         router: IntervalRouter,
-        interval: IntervalEntity
+        interval: IntervalEntity?
     ) {
         self.router = router
         super.init(interval: interval)
@@ -31,6 +31,17 @@ public class IntervalActiveViewModelWithRouter: IntervalActiveViewModel {
     
     override func tapEndButton(){
         super.tapEndButton()
+    }
+    
+    override func subscribeWorkoutSessionState() {
+        super.subscribeWorkoutSessionState()
+        
+        switch self.workoutSessionState {
+        case .ended:
+            self.router.removeScreenTransition()
+        default:
+            break
+        }
     }
 }
 
@@ -48,26 +59,25 @@ public class IntervalActiveViewModel: ObservableObject {
     
     public var delegateActionHandler: ((DelegateAction) -> ())?
     
-    var interval: IntervalEntity?
-    var activeInterval: ActiveIntervalEntity
-    
-    var timer: Timer?
-    var isBounce : Bool = true
-    
+    @ObservationIgnored var timer: Timer?
     @ObservationIgnored var totalSecondTime: TimeInterval = 0
     @ObservationIgnored var currentSecondTime: TimeInterval = 0
-    @ObservationIgnored var currentCount : Int = 1
+    @ObservationIgnored private var timerSubscription: AnyCancellable?
+    @ObservationIgnored private let timerPublisher = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
+    
+    var interval: IntervalEntity?
+    var activeInterval: ActiveIntervalEntity
+    var isBounce : Bool = true
+    var currentCount : Int = 1
     var workoutSessionState: WorkoutSessionState = .running
     var heartRates: [Double] = []
     var calorie : Int = 0
     
     var currentSecondTimeString = "00:00:00.00"
     var totalSecondTimeString = "00:00:00.00"
+    var currentSection: Int = 0
     
-    @ObservationIgnored let startDate: Date = .now
     
-    @ObservationIgnored private var timerSubscription: AnyCancellable?
-    @ObservationIgnored private let timerPublisher = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     
     init(interval: IntervalEntity? = nil) {
         self.interval = interval
@@ -124,47 +134,48 @@ public class IntervalActiveViewModel: ObservableObject {
     }
     
     func setupTimer() {
-        let burningSecondTime = TimeInterval(self.interval?.burningSecondTime ?? 0)
-        let restingSecondTime = TimeInterval(self.interval?.restingSecondTime ?? 0)
-        
         timerSubscription = timerPublisher
             .sink { [weak self] _ in
-                guard let `self` = self, let interval else { return }
+                guard let `self` = self,
+                      let interval,
+                      let startDate = workoutUseCase.getWorkoutStartDate(),
+                      self.workoutSessionState == .running else {
+                    return
+                }
                 
-                print(self.workoutSessionState)
+                let burningCount = TimeInterval(self.activeInterval.burningCount)
+                let restingCount = TimeInterval(self.activeInterval.restingCount)
+                let burningSecondTime = TimeInterval(interval.burningSecondTime)
+                let restingSecondTime = TimeInterval(interval.restingSecondTime)
                 
-                if self.workoutSessionState == .running {
-                    let burningCount = TimeInterval(self.activeInterval.burningCount)
-                    let restingCount = TimeInterval(self.activeInterval.restingCount)
-                    
-                    self.totalSecondTime = Date.now.timeIntervalSince(self.startDate)
-                    self.currentSecondTime = (burningSecondTime * burningCount + restingSecondTime * restingCount) - self.totalSecondTime
-                    
-                    self.totalSecondTimeString = self.formatTotalTimeInterval(timeInterval: totalSecondTime)
-                    self.currentSecondTimeString = self.formatCurrentTimeInterval(timeInterval: currentSecondTime)
-                    
-                    switch self.activeInterval.currentIntervalType {
-                    case .burning:
-                        if self.currentSecondTime <= 0 {
-                            withAnimation(.snappy) {
-                                self.currentCount += 1
-                                self.activeInterval.restingCount += 1
-                                self.activeInterval.currentIntervalType = .resting
-                            }
-                        }
-                    case .resting:
-                        if self.currentSecondTime <= 0 {
-                            withAnimation(.snappy) {
-                                self.currentCount += 1
-                                self.activeInterval.burningCount += 1
-                                self.activeInterval.currentIntervalType = .burning
-                            }
+                self.totalSecondTime = Date.now.timeIntervalSince(startDate)
+                
+                self.currentSecondTime = (burningSecondTime * burningCount + restingSecondTime * restingCount) - self.totalSecondTime
+                
+                self.totalSecondTimeString = self.formatTotalTimeInterval(timeInterval: totalSecondTime)
+                self.currentSecondTimeString = self.formatCurrentTimeInterval(timeInterval: currentSecondTime)
+                
+                switch self.activeInterval.currentIntervalType {
+                case .burning:
+                    if self.currentSecondTime <= 0 {
+                        withAnimation(.snappy) {
+                            self.currentCount += 1
+                            self.activeInterval.restingCount += 1
+                            self.activeInterval.currentIntervalType = .resting
                         }
                     }
-                    
-                    if self.currentCount > interval.repeatCount {
-                        self.tapEndButton()
+                case .resting:
+                    if self.currentSecondTime <= 0 {
+                        withAnimation(.snappy) {
+                            self.currentCount += 1
+                            self.activeInterval.burningCount += 1
+                            self.activeInterval.currentIntervalType = .burning
+                        }
                     }
+                }
+                
+                if self.currentCount > interval.repeatCount {
+                    self.tapEndButton()
                 }
             }
     }
@@ -172,14 +183,24 @@ public class IntervalActiveViewModel: ObservableObject {
     func subscribeReceivedMessage() {
         wcSessionUseCase.subscribeReceivedMessage { message in
 #if os(iOS)
-            if let heartRate = message["HEART_RATE"] as? Double {
-                self.heartRates.append(heartRate)
-            }
-            
-            if let calorie = message["CALORIE"] as? Double {
-                self.calorie = Int(calorie)
+            withAnimation {
+                if let heartRate = message["HEART_RATE"] as? Double {
+                    self.heartRates.append(heartRate)
+                    self.currentSection = HeartIntervalType.currentSection(heartRate: heartRate)
+                }
+                
+                if let calorie = message["CALORIE"] as? Double {
+                    self.calorie = Int(calorie)
+                }
+                
+
+                if let startDate = message["WORKOUT_START"] as? Date {
+                    self.workoutUseCase.setWorkoutStartDate(date: startDate)
+                    self.wcSessionUseCase.sendMessage(["INTERVAL": self.interval as Any])
+                }
             }
 #elseif os(watchOS)
+            print("\(#function) \(message["INTERVAL"])")
             if let interval = message["INTERVAL"] as? IntervalEntity {
                 self.interval = interval
             }
@@ -191,15 +212,21 @@ public class IntervalActiveViewModel: ObservableObject {
         wcSessionUseCase.unsubcribeReceivedMessage()
     }
 
-#if os(iOS)
-    func sendInterval() {
-        wcSessionUseCase.sendMessage(["INTERVAL": self.interval])
+#if os(watchOS)
+    func sendWorkoutStartMessage() {
+        guard let startDate = workoutUseCase.getWorkoutStartDate() else {
+            return
+        }
+        
+        wcSessionUseCase.sendMessage(["WORKOUT_START": startDate])
+        print("\(#function) \(["WORKOUT_START": startDate])")
     }
-#elseif os(watchOS)
+    
     func subscribeHeartRate() {
         workoutUseCase.subcribeHeartRate { heartRate in
             withAnimation {
                 self.heartRates.append(heartRate)
+                self.currentSection = HeartIntervalType.currentSection(heartRate: heartRate)
             }
             self.wcSessionUseCase.sendMessage(["HEART_RATE": heartRate])
         }
@@ -217,11 +244,27 @@ public class IntervalActiveViewModel: ObservableObject {
     
     func subscribeWorkoutSessionState() {
         workoutUseCase.subcribeWorkoutSessionState { state in
-            self.workoutSessionState = state
-        }
+            self.workoutSessionState = state        }
     }
     
     func timerPublisherCancel() {
         timerSubscription?.cancel()
+    }
+}
+
+private extension HeartIntervalType {
+    static func currentSection(heartRate: Double) -> Int {
+        switch heartRate {
+        case 0...134:
+            return 1
+        case 135...148:
+            return 2
+        case 149...162:
+            return 3
+        case 163...175:
+            return 4
+        default:
+            return 5
+        }
     }
 }

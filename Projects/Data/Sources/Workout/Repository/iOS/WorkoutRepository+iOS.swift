@@ -10,12 +10,8 @@ import Domain
 
 #if os(iOS)
 public extension WorkoutRepository {
-    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void) {
-        dataSource.subcribeActiveInterval(updateHandler: updateHandler)
-    }
-    
-    func workoutSessionMirroring(intervalId: UUID) {
-        dataSource.workoutSessionMirroring(intervalId: intervalId)
+    func workoutSessionMirroring() {
+        dataSource.workoutSessionMirroring()
     }
 }
 #endif

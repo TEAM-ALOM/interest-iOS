@@ -11,7 +11,7 @@ import Domain
 import HealthKit
 
 public final class WorkoutRepository: WorkoutRepositoryInterface {
-    internal let dataSource: WorkoutDataSourceInterface
+    let dataSource: WorkoutDataSourceInterface
     
     public init(dataSource: WorkoutDataSourceInterface) {
         self.dataSource = dataSource
@@ -39,6 +39,22 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
     
     public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
         dataSource.subcribeWorkoutSessionState(updateHandler: updateHandler)
+    }
+    
+    public func setWorkoutInterval(interval: IntervalEntity?) {
+        dataSource.setWorkoutInterval(interval: interval)
+    }
+    
+    public func getWorkoutInterval() -> IntervalEntity? {
+        dataSource.getWorkoutInterval()
+    }
+    
+    public func getWorkoutStartDate() -> Date? {
+        dataSource.getWorkoutStartDate()
+    }
+    
+    public func setWorkoutStartDate(date: Date?) {
+        dataSource.setWorkoutStartDate(date: date)
     }
 }
 

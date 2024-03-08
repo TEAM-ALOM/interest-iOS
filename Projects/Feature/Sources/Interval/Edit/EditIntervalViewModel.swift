@@ -66,9 +66,6 @@ public class EditIntervalViewModel{
     func tapSaveButton() {
         let entity = interval
         let result = intervalUseCase.update(at: entity.id, to: entity)
-        if result != nil {
-            wcSessionUseCase.sendData(["INTERVAL_UPDATE": entity])
-        }
         send?(.fetched(entity))
     }
 }

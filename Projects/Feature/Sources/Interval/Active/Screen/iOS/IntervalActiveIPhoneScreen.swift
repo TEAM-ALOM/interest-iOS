@@ -17,11 +17,11 @@ public struct IntervalActiveIPhoneScreen: View {
             Group {
                 switch viewModel.activeInterval.currentIntervalType {
                 case .burning:
-                    let burningTime = Double(viewModel.interval.burningSecondTime)
+                    let burningTime = Double(viewModel.interval?.burningSecondTime ?? 0)
                     Color.burningColor
                         .opacity(0.2 * (Double(viewModel.currentSecondTime) / burningTime))
                 case .resting:
-                    let restingTime = Double(viewModel.interval.restingSecondTime)
+                    let restingTime = Double(viewModel.interval?.restingSecondTime ?? 0)
                     Color.restColor
                         .opacity(0.2 * (Double(viewModel.currentSecondTime) / restingTime))
                 }
@@ -39,13 +39,10 @@ public struct IntervalActiveIPhoneScreen: View {
             }
             .padding(.horizontal, 16)
         }
-        .navigationTitle(viewModel.interval.title)
+        .navigationTitle(viewModel.interval?.title ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .exerciseBackground(mode: viewModel.activeInterval.currentIntervalType == .burning ? .burning : .rest)
         .animation(.smooth, value: viewModel.activeInterval.currentIntervalType)
-        .onAppear(perform: {
-            viewModel.setupTimer()
-        })
         .overlay(alignment: .bottom) {
             stateButton(isPause: true, action: viewModel.tapPauseButton)
         }

@@ -11,6 +11,7 @@ import Domain
 import SharedThirdPartyLib
 import Dependencies
 import Perception
+import HealthKit
 
 @Observable
 public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
@@ -26,6 +27,11 @@ public final class IntervalDetailViewModelWithRouter: IntervalDetailViewModel {
     
     override func tapIntervalStartButton(interval: IntervalEntity) {
         super.tapIntervalStartButton(interval: interval)
+        
+        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: self.router, interval: interval)
+        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+        
+        self.router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
 }
 
@@ -40,11 +46,14 @@ public class IntervalDetailViewModel {
     public init(interval: IntervalEntity) {
         self.interval = interval
     }
-    
+
     func tapIntervalStartButton(interval: IntervalEntity) {
-        workoutUseCase.startWorkout(interval: interval)
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = interval.exerciseType.hkWorkoutActivityType
+        workoutUseCase.setWorkoutInterval(interval: interval)
+        workoutUseCase.startWorkout(configuration: configuration)
         #if os(iOS)
-        workoutUseCase.workoutSessionMirroring(intervalId: interval.id)
+        workoutUseCase.workoutSessionMirroring()
         #endif
     }
     

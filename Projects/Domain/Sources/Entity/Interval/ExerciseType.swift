@@ -8,7 +8,7 @@
 import Foundation
 import HealthKit
 
-public enum ExerciseType: CaseIterable {
+public enum ExerciseType: CaseIterable, Codable {
     case run
     case cycle
     case swim

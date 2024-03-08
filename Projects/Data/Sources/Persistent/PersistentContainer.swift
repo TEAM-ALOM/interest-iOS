@@ -12,7 +12,8 @@ public class PersistentContainer {
     public static let shared = PersistentContainer()
 
     public var context: ModelContext? {
-        if let container = try? ModelContainer(for: IntervalPersistentModel.self, IntervalRecordPersistentModel.self) {
+        if let container = try? ModelContainer(for: IntervalPersistentModel.self, IntervalRecordPersistentModel.self,
+                                               configurations: .init(cloudKitDatabase: .private("iCloud.com.interest"))) {
             return ModelContext(container)
         } else {
             return nil

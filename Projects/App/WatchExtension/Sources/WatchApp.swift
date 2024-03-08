@@ -15,11 +15,14 @@ import Data
 struct WatchApp: App {
     @WKApplicationDelegateAdaptor var appDelegate: AppDelegate
     
-    let intervalRouter: IntervalRouter = .init()
-    
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            IntervalScreen(router: intervalRouter, viewModel: .init(router: intervalRouter))
+            IntervalScreen(router: appDelegate.intervalRouter,
+                           viewModel: .init(router: appDelegate.intervalRouter))
+                .modelContainer(for: [
+                    IntervalPersistentModel.self,
+                    IntervalRecordPersistentModel.self
+                ])
         }
     }
 }

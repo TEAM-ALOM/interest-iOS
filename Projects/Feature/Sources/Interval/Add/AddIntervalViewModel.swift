@@ -64,9 +64,6 @@ public class AddIntervalViewModel {
     func tapSaveButton() {
         let entity = interval
         let result = intervalUseCase.save(interval: entity)
-//        if result {
-            wcSessionUseCase.sendData(["INTERVAL_SAVE": entity])
-//        }
         send?(.saved(entity))
     }
 }

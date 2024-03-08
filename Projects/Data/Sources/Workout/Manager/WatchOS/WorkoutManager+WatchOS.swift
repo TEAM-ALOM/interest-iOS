@@ -25,8 +25,6 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
             session?.stopMirroringToCompanionDevice { sucesss, error in
                 
             }
-            
-            intervalId = nil
             break
         default:
             break
@@ -49,7 +47,6 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         workoutSessionState.send(session?.state ?? .prepared)
         let startDate = Date()
         self.startDate = startDate
-        print("\(#function) \(self.startDate)")
         session?.startActivity(with: startDate)
         session?.startMirroringToCompanionDevice(completion: { success, error in
             print("\(#function) \(success)")

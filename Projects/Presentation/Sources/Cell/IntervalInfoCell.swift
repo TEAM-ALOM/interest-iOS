@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Domain
+import SharedDesignSystem
 
 public struct IntervalInfoCell<ViewModel: IntervalListViewModelInterface>: View {
     private let viewModel: ViewModel

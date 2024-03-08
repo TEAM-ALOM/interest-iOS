@@ -18,14 +18,17 @@ public protocol WorkoutUseCaseInterface {
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
 #elseif os(iOS)
-    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
-    func workoutSessionMirroring(intervalId: UUID)
+    func workoutSessionMirroring()
 #endif
     func startWorkout(configuration: HKWorkoutConfiguration)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
     func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
+    func setWorkoutInterval(interval: IntervalEntity?)
+    func getWorkoutInterval() -> IntervalEntity?
+    func getWorkoutStartDate() -> Date?
+    func setWorkoutStartDate(date: Date?)
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -57,5 +60,21 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
     
     public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
         workoutRepository.subcribeWorkoutSessionState(updateHandler: updateHandler)
+    }
+    
+    public func setWorkoutInterval(interval: IntervalEntity?) {
+        workoutRepository.setWorkoutInterval(interval: interval)
+    }
+    
+    public func getWorkoutInterval() -> IntervalEntity? {
+        workoutRepository.getWorkoutInterval()
+    }
+    
+    public func getWorkoutStartDate() -> Date? {
+        workoutRepository.getWorkoutStartDate()
+    }
+    
+    public func setWorkoutStartDate(date: Date?) {
+        workoutRepository.setWorkoutStartDate(date: date)
     }
 }

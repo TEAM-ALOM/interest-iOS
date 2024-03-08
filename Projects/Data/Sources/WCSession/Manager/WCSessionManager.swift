@@ -56,8 +56,6 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
     }
     
     func sendMessage(_ message: [String: Any]) {
-        session.sendMessage(message, replyHandler: nil, errorHandler: { (error) in
-            print("Error sending message: \(error.localizedDescription)")
-        })
+        session.sendMessage(message, replyHandler: nil)
     }
 }

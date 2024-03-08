@@ -50,7 +50,6 @@ public struct IntervalScreen: View {
         }
         .onAppear {
             viewModel.requestAuthorization()
-            viewModel.handleWorkout()
         }
     }
 }
@@ -74,9 +73,6 @@ private extension IntervalScreen {
                         route.nextView
                     }
                     .sheetWithRouter(router: self.router)
-            }
-            .onAppear {
-                viewModel.subscribeStartedInterval()
             }
         }
         .tint(Color.keyColor)

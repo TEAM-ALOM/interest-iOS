@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SharedDesignSystem
 
 struct IntervalChangeView: View {
     @Binding var viewModel: IntervalActiveViewModel
