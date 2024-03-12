@@ -83,6 +83,8 @@ public class WorkoutManager: NSObject {
     
     func unsubscribeWorkoutSessionInfo() {
         self.cancellable.removeAll()
+        self.interval = nil
+        self.startDate = nil
     }
     
     func startWorkout(configuration: HKWorkoutConfiguration) {

@@ -29,6 +29,7 @@ public protocol WorkoutUseCaseInterface {
     func getWorkoutInterval() -> IntervalEntity?
     func getWorkoutStartDate() -> Date?
     func setWorkoutStartDate(date: Date?)
+    func unsubscribeWorkoutSessionInfo()
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -76,5 +77,9 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
     
     public func setWorkoutStartDate(date: Date?) {
         workoutRepository.setWorkoutStartDate(date: date)
+    }
+    
+    public func unsubscribeWorkoutSessionInfo() {
+        workoutRepository.unsubscribeWorkoutSessionInfo()
     }
 }

@@ -12,8 +12,32 @@ public struct ActiveIntervalEntity: Codable {
     public var currentIntervalCount: Int = 0
     public var restingCount: Int = 1
     public var burningCount: Int = 0
+    public var burningSecondTime: Int
+    public var restingSecondTime: Int
+    public var repeatCount: Int
+    public var intervalId: UUID?
+    public var intervalTitle: String
+    public var burningHeartIntervalType: HeartIntervalType
+    public var restingHeartIntervalType: HeartIntervalType
+    public var startDate: Date
     
-    public init() { }
+    public init(burningSecondTime: Int, 
+                restingSecondTime: Int,
+                repeatCount: Int,
+                intervalId: UUID? = nil, 
+                startDate: Date = .now,
+                intervalTitle: String = "",
+                burningHeartIntervalType: HeartIntervalType = .five,
+                restingHeartIntervalType: HeartIntervalType = .two) {
+        self.burningSecondTime = burningSecondTime
+        self.restingSecondTime = restingSecondTime
+        self.repeatCount = repeatCount
+        self.intervalId = intervalId
+        self.startDate = startDate
+        self.intervalTitle = intervalTitle
+        self.burningHeartIntervalType = burningHeartIntervalType
+        self.restingHeartIntervalType = restingHeartIntervalType
+    }
 }
 
 extension ActiveIntervalEntity {

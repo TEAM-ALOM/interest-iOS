@@ -23,10 +23,10 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
     }
     
     public func sendMessage(_ message: [String: Any]) {
-        if let value = message["INTERVAL"] as? IntervalEntity, 
+        if let value = message["ACTIVE_INTERVAL"] as? ActiveIntervalEntity,
             let data = try? JSONEncoder().encode(value),
             let json = String(data: data, encoding: .utf8) {
-            manager.sendMessage(["INTERVAL": json])
+            manager.sendMessage(["ACTIVE_INTERVAL": json])
         } else {
             manager.sendMessage(message)
         }
@@ -34,10 +34,10 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
     
     public func subscribeReceivedMessage(messageHandler: @escaping (_ message: [String: Any]) -> Void) {
         manager.subscribeReceivedMessage { message in
-            if let value = message["INTERVAL"] as? String, 
+            if let value = message["ACTIVE_INTERVAL"] as? String,
                 let data = value.data(using: .utf8),
-                let interval = try? JSONDecoder().decode(IntervalEntity.self, from: data) {
-                messageHandler(["INTERVAL": interval])
+                let interval = try? JSONDecoder().decode(ActiveIntervalEntity.self, from: data) {
+                messageHandler(["ACTIVE_INTERVAL": interval])
             } else {
                 messageHandler(message)
             }

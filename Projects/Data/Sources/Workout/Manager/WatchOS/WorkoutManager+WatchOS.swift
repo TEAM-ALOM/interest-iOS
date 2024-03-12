@@ -16,14 +16,15 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         case .running:
             break
         case .ended:
+#if os(watchOS)
+            session?.stopMirroringToCompanionDevice { sucesss, error in
+                
+            }
+#endif
             builder?.endCollection(withEnd: date) { (success, error) in
                 self.builder?.finishWorkout { (workout, error) in
                     self.workout = workout
                 }
-            }
-            
-            session?.stopMirroringToCompanionDevice { sucesss, error in
-                
             }
             break
         default:

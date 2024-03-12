@@ -31,7 +31,6 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
         healthStore.workoutSessionMirroringStartHandler = { mirroredSession in
             self.session = mirroredSession
             self.session?.delegate = self
-            self.startDate = .now
             self.workoutSessionState.send(mirroredSession.state)
         }
     }

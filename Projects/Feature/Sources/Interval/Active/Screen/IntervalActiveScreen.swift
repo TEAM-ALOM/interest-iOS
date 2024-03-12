@@ -32,15 +32,15 @@ public struct IntervalActiveScreen: View {
             viewModel.subscribeReceivedMessage()
             viewModel.subscribeWorkoutSessionState()
             viewModel.setupTimer()
-            
+            viewModel.sendActiveInterval()
 #if os(watchOS)
             viewModel.subscribeHeartRate()
             viewModel.subscribeCalorie()
 #endif
         }
         .onDisappear() {
-            viewModel.timerPublisherCancel()
             viewModel.unsubscribeReceivedMessage()
+            viewModel.unsubscribeWorkoutSessionInfo()
         }
     }
 }

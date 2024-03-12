@@ -29,6 +29,7 @@ public protocol WorkoutDataSourceInterface {
     func getWorkoutInterval() -> IntervalEntity?
     func getWorkoutStartDate() -> Date?
     func setWorkoutStartDate(date: Date?)
+    func unsubscribeWorkoutSessionInfo()
 }
 
 public final class WorkoutDataSource: WorkoutDataSourceInterface {
@@ -72,6 +73,10 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
     
     public func setWorkoutStartDate(date: Date?) {
         manager.startDate = date
+    }
+    
+    public func unsubscribeWorkoutSessionInfo() {
+        manager.unsubscribeWorkoutSessionInfo()
     }
     
     public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {

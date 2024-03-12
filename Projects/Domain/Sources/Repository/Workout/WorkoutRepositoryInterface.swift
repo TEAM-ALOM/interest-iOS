@@ -27,4 +27,5 @@ public protocol WorkoutRepositoryInterface {
     func getWorkoutInterval() -> IntervalEntity?
     func getWorkoutStartDate() -> Date?
     func setWorkoutStartDate(date: Date?)
+    func unsubscribeWorkoutSessionInfo()
 }

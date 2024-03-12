@@ -24,6 +24,7 @@ class AppDelegate: NSObject, WKApplicationDelegate, WKExtensionDelegate {
     
     func handle(_ workoutConfiguration: HKWorkoutConfiguration) {
         self.workoutUseCase.startWorkout(configuration: workoutConfiguration)
+        
         let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: self.intervalRouter, interval: self.workoutUseCase.getWorkoutInterval())
         let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
         

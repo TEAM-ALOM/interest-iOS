@@ -42,14 +42,21 @@ public class WCSessionManager: NSObject, WCSessionDelegate {
     }
     
     func subscribeReceivedMessage(messageHandler: @escaping (_ message: [String: Any]) -> Void) {
-            self.message
-                .subscribe(on: DispatchQueue.main)
-                .receive(on: DispatchQueue.main)
-                .sink { message in
-                    messageHandler(message)
+        self.message
+            .subscribe(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates { oldValue, newValue in
+                oldValue.contains { key, value in
+                    let isSameKey = oldValue.keys == newValue.keys
+                    let isSameValue = oldValue[key] as? Data == newValue[key] as? Data
+                    return isSameKey && isSameValue
                 }
-                .store(in: &messageCacellable)
-        }
+            }
+            .sink { message in
+                messageHandler(message)
+            }
+            .store(in: &messageCacellable)
+    }
     
     func unsubcribeReceivedMessage() {
         self.messageCacellable.removeAll()

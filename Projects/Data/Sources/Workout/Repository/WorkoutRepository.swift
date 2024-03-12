@@ -56,6 +56,10 @@ public final class WorkoutRepository: WorkoutRepositoryInterface {
     public func setWorkoutStartDate(date: Date?) {
         dataSource.setWorkoutStartDate(date: date)
     }
+    
+    public func unsubscribeWorkoutSessionInfo() {
+        dataSource.unsubscribeWorkoutSessionInfo()
+    }
 }
 
 extension WorkoutRepository: TestDependencyKey {

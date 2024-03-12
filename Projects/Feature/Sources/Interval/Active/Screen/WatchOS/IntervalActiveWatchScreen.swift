@@ -19,11 +19,11 @@ public struct IntervalActiveWatchScreen: View {
             Group {
                 switch viewModel.activeInterval.currentIntervalType {
                 case .burning:
-                    let burningTime = Double(viewModel.interval?.burningSecondTime ?? 0)
+                    let burningTime = Double(viewModel.activeInterval.burningSecondTime)
                     Color.burningColor
                         .opacity(0.2 * (Double(viewModel.currentSecondTime) / burningTime))
                 case .resting:
-                    let restingTime = Double(viewModel.interval?.restingSecondTime ?? 0)
+                    let restingTime = Double(viewModel.activeInterval.restingSecondTime)
                     Color.restColor
                         .opacity(0.2 * (Double(viewModel.currentSecondTime) / restingTime))
                 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 struct WatchIntervalChangeView : View {
     @Binding var viewModel: IntervalActiveViewModel
@@ -29,7 +30,7 @@ struct WatchIntervalChangeView : View {
                     .foregroundColor(.white)
                     .fontWeight(.semibold)
                     .font(.system(size: 28, design: .rounded))
-                    .frame(width: 112, height: 28, alignment: .leading)
+                    .frame(width: 118, height: 28, alignment: .leading)
                 
                 VStack(alignment : .leading){
                     HStack(spacing:0){
