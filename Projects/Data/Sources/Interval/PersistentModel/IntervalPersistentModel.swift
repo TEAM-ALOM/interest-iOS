@@ -13,7 +13,7 @@ import Domain
 
 @Model
 public class IntervalPersistentModel {
-    @Attribute(.unique) public let id: UUID = UUID()
+    public let id: UUID = UUID()
     
     public var title: String = ""
     public var exerciseType: ExerciseTypePersistentModel = ExerciseTypePersistentModel.run
@@ -24,7 +24,7 @@ public class IntervalPersistentModel {
     public var restingHeartIntervalType: HeartIntervalTypePresistentModel = HeartIntervalTypePresistentModel.three
     public var repeatCount: Int = 0
     
-    @Relationship(deleteRule: .cascade, inverse: \IntervalRecordPersistentModel.interval) public var records: [IntervalRecordPersistentModel]? = []
+    @Relationship public var records: [IntervalRecordPersistentModel]? = []
     
     public init(
         title: String,

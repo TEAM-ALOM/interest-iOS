@@ -10,12 +10,10 @@ import Foundation
 import Dependencies
 
 public protocol WCSessionUseCaseInterface {
-#if os(iOS)
-    func checkSessionStatus() -> String
-#endif
     func sendMessage(_ message: [String: Any])
-    func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
-    func sendData(_ message: [String: Any])
+    func subscribeReceivedMessage(
+        messageHandler: @escaping (_ message: [String: Any]) -> Void)
+    func unsubcribeReceivedMessage()
 }
 
 public final class WCSessionUseCase: WCSessionUseCaseInterface {
@@ -25,31 +23,15 @@ public final class WCSessionUseCase: WCSessionUseCaseInterface {
         self.wcSessionRepository = wcSessionRepository
     }
     
-#if os(iOS)
-    public func checkSessionStatus() -> String {
-        return wcSessionRepository.checkSessionStatus()
-    }
-#endif
-    
     public func sendMessage(_ message: [String : Any]) {
-        wcSessionRepository.sendMessage(message)
+        self.wcSessionRepository.sendMessage(message)
     }
     
-    public func sendData(_ message: [String : Any]) {
-        wcSessionRepository.sendData(message)
+    public func subscribeReceivedMessage(messageHandler: @escaping ([String : Any]) -> Void) {
+        self.wcSessionRepository.subscribeReceivedMessage(messageHandler: messageHandler)
     }
     
-    public func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void) {
-        wcSessionRepository.observeReceiveMessageValue(key: key, valueHandler: valueHandler)
+    public func unsubcribeReceivedMessage() {
+        self.wcSessionRepository.unsubcribeReceivedMessage()
     }
 }
-
-
-
-//extension WCSessionUseCase {
-//    public static func live(
-//        wcSessionRepository: WCSessionRepositoryInterface
-//    ) -> Self {
-//        return Self(wcSessionRepository: wcSessionRepository)
-//    }
-//}

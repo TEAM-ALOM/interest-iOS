@@ -14,6 +14,7 @@ import Domain
 import SharedThirdPartyLib
 import Dependencies
 import Perception
+import HealthKit
 
 @Observable
 public final class IntervalListViewModelWithRouter: IntervalListViewModel {
@@ -33,10 +34,16 @@ public final class IntervalListViewModelWithRouter: IntervalListViewModel {
         
         router.triggerNavigationScreen(navigationRoute: intervalDetailRoute)
     }
-    
+#if os(watchOS)
     override public func tapStartButton(interval: IntervalEntity) {
         super.tapStartButton(interval: interval)
+        
+        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: self.router, interval: interval)
+        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+        
+        self.router.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
+#endif
 
     public override func tapIntervalEditButton(selectedInterval: Binding<IntervalEntity>) {
         super.tapIntervalEditButton(selectedInterval: selectedInterval)
@@ -70,7 +77,7 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     
     var intervals: [IntervalEntity] = []
     var selectedInterval: IntervalEntity? = nil
-
+    
     public init() { }
     
     public func append(interval: IntervalEntity) {
@@ -78,43 +85,21 @@ public class IntervalListViewModel: IntervalListViewModelInterface, Identifiable
     }
     
     public func fetchIntervalItems() {
-        withAnimation(.snappy) {
-            intervals = intervalUseCase.fetches()
-        }
+        intervals = intervalUseCase.fetches()
     }
-    
+#if os(watchOS)
     public func tapStartButton(interval: IntervalEntity) {
-        wcSessionUseCase.sendMessage(["INTERVAL_ID": interval.id.uuidString])
-        workoutUseCase.startWorkout(interval: interval)
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = interval.exerciseType.hkWorkoutActivityType
+        workoutUseCase.setWorkoutInterval(interval: interval)
+        workoutUseCase.startWorkout(configuration: configuration)
     }
-    
-    public func observeIntervalMessage() {
-        // 아이폰과 워치간의 인터벌 공유를 위한 코드(잘 작동하지 않음)
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_SAVE") { (interval: IntervalEntity) in
-            self.intervalUseCase.save(interval: interval)
-            self.fetchIntervalItems()
-        }
-        
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_UPDATE") { (interval: IntervalEntity) in
-            let _ = self.intervalUseCase.update(at: interval.id, to: interval)
-            self.fetchIntervalItems()
-        }
-        
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_DELETE") { (id: String) in
-            guard let uuid = UUID(uuidString: id) else {
-                return
-            }
-            let _ = self.intervalUseCase.delete(at: uuid)
-            self.fetchIntervalItems()
-        }
-    }
+#endif
     
     public func tapIntervalDetailPageButton(interval: IntervalEntity) { }
     
     public func tapIntervalDeleteButton(at id: UUID) {
         let _ = intervalUseCase.delete(at: id)
-        self.wcSessionUseCase.sendData(["INTERVAL_DELETE": id.uuidString])
-        
         self.fetchIntervalItems()
     }
     

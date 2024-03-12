@@ -35,6 +35,7 @@
 	<array>
 		<string>fetch</string>
 		<string>processing</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch</string>
@@ -59,5 +60,7 @@
 	<array>
 		<string>workout-processing</string>
 	</array>
+	<key>CFBundleDisplayName</key>
+	<string>인터레스트</string>
 </dict>
 </plist>

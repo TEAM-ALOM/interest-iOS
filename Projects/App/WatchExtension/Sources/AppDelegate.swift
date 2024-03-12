@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import WatchKit
 import HealthKit
 import Feature
@@ -16,36 +15,19 @@ import Perception
 
 class AppDelegate: NSObject, WKApplicationDelegate, WKExtensionDelegate {
     @Dependency(\.workoutUseCase) var workoutUseCase
-    @Dependency(\.wcSessionUseCase) var wcSessionUseCase
-    @Dependency(\.intervalUseCase) var intervalUseCase
     
-    var startWatchAppFromiPhone = PassthroughSubject<Bool, Never>()
+    let intervalRouter: IntervalRouter
+    
+    override init() {
+        self.intervalRouter = .init()
+    }
     
     func handle(_ workoutConfiguration: HKWorkoutConfiguration) {
-        startWatchAppFromiPhone.send(true)
-    }
-    
-    func subscribeStartWatchAppFromiPhone() {
-        startWatchAppFromiPhone
-            .subscribe(on: DispatchQueue.main)
-            .receive(on: DispatchQueue.main)
-            .sink { value in
-                if value {
-                    self.startWorkout()
-                }
-            }
-            .cancel()
-    }
-    
-    func startWorkout() {
-        wcSessionUseCase.sendMessage(["WATCH_READY": true])
-    }
-    
-    func subsrcibeStartedInterval() {
-        wcSessionUseCase.observeReceiveMessageValue(key: "INTERVAL_ID") { [weak self] (id: String) in
-            guard let `self` = self else { return }
-            // 임시로 샘플 인터벌을 생성하여 테스트를 진행하였음
-            self.workoutUseCase.startWorkout(interval: .init(id: UUID(uuidString: id)!))
-        }
+        self.workoutUseCase.startWorkout(configuration: workoutConfiguration)
+        
+        let intervalActiveViewModel: IntervalActiveViewModel = IntervalActiveViewModelWithRouter(router: self.intervalRouter, interval: self.workoutUseCase.getWorkoutInterval())
+        let intervalActiveRoute: IntervalRouter.NavigationRoute = .intervalActive(intervalActiveViewModel)
+        
+        self.intervalRouter.triggerNavigationScreen(navigationRoute: intervalActiveRoute)
     }
 }

@@ -18,16 +18,18 @@ public protocol WorkoutUseCaseInterface {
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
 #elseif os(iOS)
-    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
-    func workoutSessionMirroring(intervalId: UUID)
+    func workoutSessionMirroring()
 #endif
-    func startWorkout(interval: IntervalEntity)
+    func startWorkout(configuration: HKWorkoutConfiguration)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
     func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
-    func workoutIntervalId() -> UUID?
-    func workoutStartDate() -> Date?
+    func setWorkoutInterval(interval: IntervalEntity?)
+    func getWorkoutInterval() -> IntervalEntity?
+    func getWorkoutStartDate() -> Date?
+    func setWorkoutStartDate(date: Date?)
+    func unsubscribeWorkoutSessionInfo()
 }
 
 public final class WorkoutUseCase: WorkoutUseCaseInterface {
@@ -41,8 +43,8 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
         return workoutRepository.requestAuthorization()
     }
     
-    public func startWorkout(interval: IntervalEntity) {
-        workoutRepository.startWorkout(interval: interval)
+    public func startWorkout(configuration: HKWorkoutConfiguration) {
+        workoutRepository.startWorkout(configuration: configuration)
     }
     
     public func pauseWorkout() {
@@ -61,11 +63,23 @@ public final class WorkoutUseCase: WorkoutUseCaseInterface {
         workoutRepository.subcribeWorkoutSessionState(updateHandler: updateHandler)
     }
     
-    public func workoutIntervalId() -> UUID? {
-        return workoutRepository.workoutIntervalId()
+    public func setWorkoutInterval(interval: IntervalEntity?) {
+        workoutRepository.setWorkoutInterval(interval: interval)
     }
     
-    public func workoutStartDate() -> Date? {
-        return workoutRepository.workoutStartDate()
+    public func getWorkoutInterval() -> IntervalEntity? {
+        workoutRepository.getWorkoutInterval()
+    }
+    
+    public func getWorkoutStartDate() -> Date? {
+        workoutRepository.getWorkoutStartDate()
+    }
+    
+    public func setWorkoutStartDate(date: Date?) {
+        workoutRepository.setWorkoutStartDate(date: date)
+    }
+    
+    public func unsubscribeWorkoutSessionInfo() {
+        workoutRepository.unsubscribeWorkoutSessionInfo()
     }
 }

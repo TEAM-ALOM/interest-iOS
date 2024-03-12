@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Domain
+import SharedDesignSystem
 
 struct WatchExercisePickerView: View {
     var viewModel: IntervalListViewModel

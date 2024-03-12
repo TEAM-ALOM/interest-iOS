@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Domain
 import Presentation
+import SharedDesignSystem
 
 public struct EditIntervalScreen: View {
     @State var viewModel: EditIntervalViewModel

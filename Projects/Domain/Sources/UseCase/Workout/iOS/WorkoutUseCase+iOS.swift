@@ -10,12 +10,8 @@ import HealthKit
 
 #if os(iOS)
 extension WorkoutUseCase {
-    public func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void) {
-        workoutRepository.subcribeActiveInterval(updateHandler: updateHandler)
-    }
-    
-    public func workoutSessionMirroring(intervalId: UUID) {
-        workoutRepository.workoutSessionMirroring(intervalId: intervalId)
+    public func workoutSessionMirroring() {
+        workoutRepository.workoutSessionMirroring()
     }
 }
 #endif

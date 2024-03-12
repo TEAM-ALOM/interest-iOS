@@ -29,12 +29,18 @@ public struct IntervalActiveScreen: View {
 #endif
         }
         .onAppear() {
+            viewModel.subscribeReceivedMessage()
+            viewModel.subscribeWorkoutSessionState()
+            viewModel.setupTimer()
+            viewModel.sendActiveInterval()
+#if os(watchOS)
             viewModel.subscribeHeartRate()
             viewModel.subscribeCalorie()
-            viewModel.subscribeWorkoutSessionState()
+#endif
         }
         .onDisappear() {
-            viewModel.timerPublisherCancel()
+            viewModel.unsubscribeReceivedMessage()
+            viewModel.unsubscribeWorkoutSessionInfo()
         }
     }
 }

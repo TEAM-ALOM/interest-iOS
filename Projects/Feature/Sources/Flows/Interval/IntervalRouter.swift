@@ -42,6 +42,7 @@ public final class IntervalRouter: FlowRouter {
     }
     
     public func removeScreenTransition() {
+        guard !navigationPath.isEmpty else { return }
         navigationPath.removeLast()
     }
 }

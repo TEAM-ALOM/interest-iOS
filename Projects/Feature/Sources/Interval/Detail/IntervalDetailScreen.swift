@@ -42,7 +42,6 @@ struct IntervalDetailScreen: View {
         .mainBackground()
         .onAppear(){
             viewModel.fetchIntervalRecords()
-            viewModel.checkStartWatchApp()
         }
     }
     

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Domain
+import SharedDesignSystem
 
 struct StartButton: View {
     var viewModel: IntervalListViewModel
@@ -16,10 +17,11 @@ struct StartButton: View {
 
     var body : some View {
             Button(action: {
-//                if let interval = interval {
-                // 임시로 샘플 인터벌을 생성하여 테스트를 진행하였음
-                    viewModel.tapStartButton(interval: .init(id: .init()))
-//                }
+                if let interval {
+                    #if os(watchOS)
+                    viewModel.tapStartButton(interval: interval)
+                    #endif
+                }
             }) {
                 Image(systemName: "play.circle.fill")
                     .resizable()

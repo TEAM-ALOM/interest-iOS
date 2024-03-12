@@ -12,7 +12,7 @@ import Domain
 
 @Model
 public class IntervalRecordPersistentModel {
-    @Attribute(.unique) public let id: UUID = UUID()
+    public let id: UUID = UUID()
     
     public var heartRates: [Double] = []
     public var repeatedCount: Int = 0

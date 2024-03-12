@@ -7,6 +7,7 @@
 
 import Foundation
 import Dependencies
+import HealthKit
 import Domain
 
 public protocol WorkoutDataSourceInterface {
@@ -17,16 +18,18 @@ public protocol WorkoutDataSourceInterface {
     func subcribeHeartRate(updateHandler: @escaping (Double) -> Void)
     func subcribeCalorie(updateHandler: @escaping (Double) -> Void)
 #elseif os(iOS)
-    func subcribeActiveInterval(updateHandler: @escaping (ActiveIntervalEntity) -> Void)
-    func workoutSessionMirroring(intervalId: UUID)
+    func workoutSessionMirroring()
 #endif
-    func startWorkout(interval: IntervalEntity)
+    func startWorkout(configuration: HKWorkoutConfiguration)
     func pauseWorkout()
     func resumeWorkout()
     func endWorkout()
     func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void)
-    func workoutIntervalId() -> UUID?
-    func workoutStartDate() -> Date?
+    func setWorkoutInterval(interval: IntervalEntity?)
+    func getWorkoutInterval() -> IntervalEntity?
+    func getWorkoutStartDate() -> Date?
+    func setWorkoutStartDate(date: Date?)
+    func unsubscribeWorkoutSessionInfo()
 }
 
 public final class WorkoutDataSource: WorkoutDataSourceInterface {
@@ -40,8 +43,8 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
         return manager.requestAuthorization()
     }
     
-    public func startWorkout(interval: IntervalEntity) {
-        manager.startWorkout(workoutType: interval.exerciseType.hkWorkoutActivityType, intervalId: interval.id)
+    public func startWorkout(configuration: HKWorkoutConfiguration) {
+        manager.startWorkout(configuration: configuration)
     }
     
     public func pauseWorkout() {
@@ -54,6 +57,26 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
     
     public func endWorkout() {
         manager.endWorkout()
+    }
+    
+    public func setWorkoutInterval(interval: IntervalEntity?) {
+        manager.interval = interval as Any
+    }
+    
+    public func getWorkoutInterval() -> IntervalEntity? {
+        return manager.interval as? IntervalEntity
+    }
+    
+    public func getWorkoutStartDate() -> Date? {
+        return manager.startDate
+    }
+    
+    public func setWorkoutStartDate(date: Date?) {
+        manager.startDate = date
+    }
+    
+    public func unsubscribeWorkoutSessionInfo() {
+        manager.unsubscribeWorkoutSessionInfo()
     }
     
     public func subcribeWorkoutSessionState(updateHandler: @escaping (WorkoutSessionState) -> Void) {
@@ -75,14 +98,6 @@ public final class WorkoutDataSource: WorkoutDataSourceInterface {
                 print(state)
             }
         }
-    }
-    
-    public func workoutIntervalId() -> UUID? {
-        return manager.workoutIntervalId()
-    }
-    
-    public func workoutStartDate() -> Date? {
-        return manager.workoutStartDate()
     }
 }
 

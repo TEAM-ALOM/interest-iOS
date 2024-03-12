@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SharedDesignSystem
 
 struct HealthInfoView: View {
     @Binding var viewModel: IntervalActiveViewModel
@@ -21,7 +22,7 @@ struct HealthInfoView: View {
     
     private var repeatCount: some View {
         HStack(alignment: .bottom) {
-            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.interval.repeatCount))
+            Text(String(format: "%d / %d",viewModel.currentCount , viewModel.activeInterval.repeatCount))
                 .fontWeight(.semibold)
                 .foregroundColor(.textColor)
                 .font(.system(size: 36, design: .rounded))
@@ -84,14 +85,14 @@ struct HealthInfoView: View {
     private var currentSection: some View {
         HStack(alignment: .bottom) {
             //HealthKit에서 가져와야함
-            Text("\(viewModel.activeInterval.currentIntervalType == .burning ? viewModel.interval.burningHeartIntervalType.heartTypeValue : viewModel.interval.restingHeartIntervalType.heartTypeValue)")
+            Text("\(viewModel.currentSection)")
                 .fontWeight(.semibold)
                 .foregroundColor(.textColor)
                 .font(.system(size: 36, design: .rounded))
                 .padding(.trailing, 8)
                 .contentTransition(.numericText())
             
-            Text("현재 구간 (목표 : \(viewModel.activeInterval.currentIntervalType == .burning ? viewModel.interval.burningHeartIntervalType.heartTypeValue : viewModel.interval.restingHeartIntervalType.heartTypeValue))")
+            Text("현재 구간 (목표 : \(viewModel.activeInterval.currentIntervalType == .burning ? viewModel.activeInterval.burningHeartIntervalType.heartTypeValue : viewModel.activeInterval.restingHeartIntervalType.heartTypeValue))")
                 .foregroundColor(Color.textColor50)
                 .fontWeight(.medium)
                 .font(.system(size: 20))

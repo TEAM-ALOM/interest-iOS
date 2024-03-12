@@ -16,8 +16,7 @@ public class WorkoutManager: NSObject {
     var hearRate = PassthroughSubject<Double, Never>()
     var calorie = PassthroughSubject<Double, Never>()
     var workoutSessionState = PassthroughSubject<HKWorkoutSessionState, Never>()
-    var activeInterval = PassthroughSubject<Data, Never>()
-    var intervalId: UUID?
+    var interval: Any?
     var startDate: Date?
     
     private var cancellable = Set<AnyCancellable>()
@@ -82,21 +81,13 @@ public class WorkoutManager: NSObject {
             .store(in: &cancellable)
     }
     
-    func subcribeActiveInterval(updateHandler: @escaping (Data) -> Void) {
-        self.activeInterval
-            .subscribe(on: DispatchQueue.main)
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .sink { value in
-                updateHandler(value)
-            }
-            .store(in: &cancellable)
+    func unsubscribeWorkoutSessionInfo() {
+        self.cancellable.removeAll()
+        self.interval = nil
+        self.startDate = nil
     }
     
-    func startWorkout(workoutType: HKWorkoutActivityType, intervalId: UUID) {
-        let configuration = HKWorkoutConfiguration()
-        configuration.activityType = workoutType
-        self.intervalId = intervalId
+    func startWorkout(configuration: HKWorkoutConfiguration) {
 #if os(watchOS)
         self.workoutInWatch(configuration: configuration)
 #elseif os(iOS)
@@ -116,15 +107,7 @@ public class WorkoutManager: NSObject {
         session?.end()
     }
     
-    func workoutIntervalId() -> UUID? {
-        return intervalId
-    }
-    
-    func workoutStartDate() -> Date? {
-        return startDate
-    }
-    
-    internal func process(_ statistics: HKStatistics?,
+    func process(_ statistics: HKStatistics?,
                           type: HKQuantityType) {
         switch type {
         case HKQuantityType(.heartRate):

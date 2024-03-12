@@ -6,16 +6,13 @@
 //
 
 import Foundation
-
 import Dependencies
+import Domain
 
 public protocol WCSessionDataSourceInterface {
-#if os(iOS)
-    func checkSessionStatus() -> String
-#endif
     func sendMessage(_ message: [String: Any])
-    func observeReceiveMessageValue<T>(key: String, valueHandler: @escaping (T) -> Void)
-    func sendData(_ message: [String: Any])
+    func subscribeReceivedMessage(messageHandler: @escaping (_ message: [String: Any]) -> Void)
+    func unsubcribeReceivedMessage()
 }
 
 public final class WCSessionDataSource: WCSessionDataSourceInterface {
@@ -25,30 +22,30 @@ public final class WCSessionDataSource: WCSessionDataSourceInterface {
         self.manager = manager
     }
     
-#if os(iOS)
-    public func checkSessionStatus() -> String {
-        return manager.checkSessionStatus().rawValue
-    }
-#endif
-    
     public func sendMessage(_ message: [String: Any]) {
-        manager.sendMessage(message)
-    }
-    
-    public func sendData(_ message: [String: Any]) {
-        manager.sendData(message)
-    }
-    
-    public func observeReceiveMessageValue<T>(key: String, 
-                                       valueHandler: @escaping (T) -> Void) {
-        manager.subcribeReceivedMessage { message in
-            guard let value = message[key] as? T else {
-                print(message[key])
-                return
-            }
-            
-            valueHandler(value)
+        if let value = message["ACTIVE_INTERVAL"] as? ActiveIntervalEntity,
+            let data = try? JSONEncoder().encode(value),
+            let json = String(data: data, encoding: .utf8) {
+            manager.sendMessage(["ACTIVE_INTERVAL": json])
+        } else {
+            manager.sendMessage(message)
         }
+    }
+    
+    public func subscribeReceivedMessage(messageHandler: @escaping (_ message: [String: Any]) -> Void) {
+        manager.subscribeReceivedMessage { message in
+            if let value = message["ACTIVE_INTERVAL"] as? String,
+                let data = value.data(using: .utf8),
+                let interval = try? JSONDecoder().decode(ActiveIntervalEntity.self, from: data) {
+                messageHandler(["ACTIVE_INTERVAL": interval])
+            } else {
+                messageHandler(message)
+            }
+        }
+    }
+    
+    public func unsubcribeReceivedMessage() {
+        self.manager.unsubcribeReceivedMessage()
     }
 }
 
@@ -64,5 +61,5 @@ public extension DependencyValues {
 }
 
 extension WCSessionDataSource: DependencyKey {
-    public static var liveValue: WCSessionDataSource = .init(manager: .shared)
+    public static var liveValue: WCSessionDataSource = .init(manager: .init())
 }

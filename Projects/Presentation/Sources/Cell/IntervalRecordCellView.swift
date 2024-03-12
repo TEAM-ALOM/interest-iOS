@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import SharedDesignSystem
 import Domain
+import SharedDesignSystem
 
 public struct IntervalRecordCellView: View {
     @State private var averageHeartRate: Double = 0

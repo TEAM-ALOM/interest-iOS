@@ -7,8 +7,11 @@
 
 import Foundation
 import SwiftUI
+import SharedDesignSystem
 
 struct WatchIntervalChangeView : View {
+    @Environment(\.scenePhase) var scenePhase
+    
     @Binding var viewModel: IntervalActiveViewModel
     
     var body: some View {
@@ -25,11 +28,17 @@ struct WatchIntervalChangeView : View {
             .foregroundColor(isBurning ? Color.burningColor : Color.restColor)
             
             HStack{
-                Text(viewModel.currentSecondTimeString)
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .font(.system(size: 28, design: .rounded))
-                    .frame(width: 112, height: 28, alignment: .leading)
+                let isActive = scenePhase == .active
+                
+                TimelineView(.periodic(from: .now, by: isActive ? 0.01 : 1)) { context in
+                    Text(isActive ? viewModel.currentTimeString : viewModel.currentTimeStringAOD)
+                        .foregroundColor(.textColor)
+                        .fontWeight(.semibold)
+                        .font(.system(size: 28, design: .rounded))
+                        .frame(width: isActive ? 120 : .infinity, alignment: .leading)
+                        .allowsTightening(true)
+                        .fixedSize()
+                }
                 
                 VStack(alignment : .leading){
                     HStack(spacing:0){

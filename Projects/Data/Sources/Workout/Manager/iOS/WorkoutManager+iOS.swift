@@ -16,28 +16,21 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
         case .running:
             break
         case .ended:
-            intervalId = nil
+            self.interval = nil
             break
         default:
             break
         }
     }
     
-//    public func workoutSession(_ workoutSession: HKWorkoutSession, didBeginActivityWith workoutConfiguration: HKWorkoutConfiguration, date: Date) {
-//        self.startDate = date
-//        print("\(#function) \(self.startDate)")
-//    }
-    
     public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
         
     }
     
-    func workoutSessionMirroring(intervalId: UUID) {
+    func workoutSessionMirroring() {
         healthStore.workoutSessionMirroringStartHandler = { mirroredSession in
-            self.intervalId = intervalId
             self.session = mirroredSession
             self.session?.delegate = self
-            self.startDate = mirroredSession.startDate
             self.workoutSessionState.send(mirroredSession.state)
         }
     }
@@ -46,13 +39,6 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
         healthStore.startWatchApp(with: configuration) { success, error in
             print("\(#function) \(success)")
         }
-    }
-    
-    public func workoutSession(_ workoutSession: HKWorkoutSession, didReceiveDataFromRemoteWorkoutSession data: [Data]) {
-        guard let recentData = data.last else {
-            return
-        }
-        activeInterval.send(recentData)
     }
 }
 #endif

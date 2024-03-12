@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Domain
+import SharedDesignSystem
 
 public struct ExercisePickerView: View {
     @Namespace var heroEffect

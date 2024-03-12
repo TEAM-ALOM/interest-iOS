@@ -13,25 +13,24 @@ public struct IntervalActiveWatchScreen: View {
     @State var viewModel: IntervalActiveViewModel
     
     @State private var isBounce = true
-    @State private var timer: Timer?
     
     public var body: some View {
         ZStack {
             Group {
                 switch viewModel.activeInterval.currentIntervalType {
                 case .burning:
-                    let burningTime = Double(viewModel.interval.burningSecondTime)
+                    let burningTime = Double(viewModel.activeInterval.burningSecondTime)
                     Color.burningColor
                         .opacity(0.2 * (Double(viewModel.currentSecondTime) / burningTime))
                 case .resting:
-                    let restingTime = Double(viewModel.interval.restingSecondTime)
+                    let restingTime = Double(viewModel.activeInterval.restingSecondTime)
                     Color.restColor
                         .opacity(0.2 * (Double(viewModel.currentSecondTime) / restingTime))
                 }
             }
             .ignoresSafeArea()
             
-            VStack(spacing: 8) {
+            VStack(spacing: 4) {
                 WatchIntervalChangeView(viewModel: $viewModel)
                 
                 WatchHealthInfoView(viewModel: $viewModel)
@@ -41,9 +40,6 @@ public struct IntervalActiveWatchScreen: View {
         }
         .exerciseBackground(mode: viewModel.activeInterval.currentIntervalType == .burning ? .burning : .rest)
         .animation(.smooth, value: viewModel.activeInterval.currentIntervalType)
-        .onAppear(perform: {
-            viewModel.setupTimer()
-        })
     }
 }
 

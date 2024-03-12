@@ -16,17 +16,16 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         case .running:
             break
         case .ended:
+#if os(watchOS)
+            session?.stopMirroringToCompanionDevice { sucesss, error in
+                
+            }
+#endif
             builder?.endCollection(withEnd: date) { (success, error) in
                 self.builder?.finishWorkout { (workout, error) in
                     self.workout = workout
                 }
             }
-            
-            session?.stopMirroringToCompanionDevice { sucesss, error in
-                
-            }
-            
-            intervalId = nil
             break
         default:
             break
@@ -49,7 +48,6 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         workoutSessionState.send(session?.state ?? .prepared)
         let startDate = Date()
         self.startDate = startDate
-        print("\(#function) \(self.startDate)")
         session?.startActivity(with: startDate)
         session?.startMirroringToCompanionDevice(completion: { success, error in
             print("\(#function) \(success)")

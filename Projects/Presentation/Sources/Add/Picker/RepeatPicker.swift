@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Domain
+import SharedDesignSystem
 
 public struct RepeatPicker: View {
     public var isRepeat: Bool
