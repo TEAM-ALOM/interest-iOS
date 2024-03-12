@@ -60,5 +60,7 @@
 	<array>
 		<string>workout-processing</string>
 	</array>
+	<key>CFBundleDisplayName</key>
+	<string>인터레스트</string>
 </dict>
 </plist>
