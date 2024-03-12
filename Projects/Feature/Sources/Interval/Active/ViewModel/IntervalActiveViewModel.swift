@@ -101,7 +101,11 @@ public class IntervalActiveViewModel: ObservableObject {
     }
     
     func tapPauseButton() {
-        workoutUseCase.pauseWorkout()
+        if self.workoutSessionState == .running {
+            workoutUseCase.pauseWorkout()
+        } else {
+            workoutUseCase.resumeWorkout()
+        }
     }
     
     func tapReStartButton() {

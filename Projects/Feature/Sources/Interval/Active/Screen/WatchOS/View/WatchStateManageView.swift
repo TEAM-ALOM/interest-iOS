@@ -43,9 +43,11 @@ public struct WatchStateManageView: View {
     
     @ViewBuilder
     func watchStateButton(isPause : Bool, action: @escaping () -> Void) -> some View {
+        let isRunning = viewModel.workoutSessionState == .running
+        
         VStack{
             Button(action: action) {
-                Image(systemName: isPause ? "pause.fill" : "xmark")
+                Image(systemName: isPause ? isRunning ? "pause.fill" : "play.fill" : "xmark")
                     .resizable()
                     .frame(width: 20, height: 25)
                     .foregroundStyle(isPause ? Color.noticeColor : Color.warningColor)
@@ -55,7 +57,7 @@ public struct WatchStateManageView: View {
             .background(isPause ? Color.noticeColor25 : Color.warningColor25)
             .cornerRadius(20)
             
-            Text(isPause ? "일시 정지" : "운동 종료")
+            Text(isPause ? isRunning ? "일시 정지" : "재개" : "운동 종료")
                 .font(.system(size: 12))
                 .fontWeight(.medium)
                 .foregroundColor(Color.textColor50)
@@ -64,5 +66,5 @@ public struct WatchStateManageView: View {
 }
 
 #Preview {
-    IntervalActiveWatchScreen(viewModel: .init(interval: .init(id: .init())))
+    WatchStateManageView(viewModel: .init())
 }
