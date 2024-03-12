@@ -31,7 +31,7 @@ struct IntervalChangeView: View {
             
             HStack{
                 HStack{
-                    Text(viewModel.currentSecondTimeString)
+                    Text(viewModel.currentTimeString)
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .font(.system(size: 52, design: .rounded))

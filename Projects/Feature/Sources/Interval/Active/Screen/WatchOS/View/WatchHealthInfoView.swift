@@ -10,6 +10,8 @@ import SwiftUI
 import SharedDesignSystem
 
 struct WatchHealthInfoView : View{
+    @Environment(\.scenePhase) var scenePhase
+    
     @Binding var viewModel: IntervalActiveViewModel
     
     var body : some View {
@@ -88,11 +90,16 @@ struct WatchHealthInfoView : View{
             
             Spacer()
             
-            Text(viewModel.totalSecondTimeString)
-                .foregroundColor(.textColor)
-                .fontWeight(.semibold)
-                .font(.system(size: 20, design: .rounded))
-                .frame(height: 20, alignment: .leading)
+            let isActive = scenePhase == .active
+            
+            TimelineView(.periodic(from: .now, by: isActive ? 0.01 : 1)) { context in
+                Text(isActive ? viewModel.totalTimeString : viewModel.totalTimeStringAOD)
+                    .foregroundColor(.textColor)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 20, design: .rounded))
+                    .frame(width: isActive ? 110 : .infinity, alignment: .leading)
+                    .allowsTightening(true)
+            }
         }
     }
     

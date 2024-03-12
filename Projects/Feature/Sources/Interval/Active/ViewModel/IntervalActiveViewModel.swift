@@ -72,8 +72,10 @@ public class IntervalActiveViewModel: ObservableObject {
     var heartRates: [Double] = []
     var calorie : Int = 0
     
-    var currentSecondTimeString = "00:00.00"
-    var totalSecondTimeString = "00:00:00.00"
+    var currentTimeString = "00:00.00"
+    var totalTimeString = "00:00:00.00"
+    var currentTimeStringAOD = "00:00"
+    var totalTimeStringAOD = "00:00:00"
     var currentSection: Int = 0
     
     init(interval: IntervalEntity? = nil) {
@@ -124,18 +126,28 @@ public class IntervalActiveViewModel: ObservableObject {
         intervalRecordUseCase.appendIntervalRecord(intervalId: intervalId, record: newIntervalrecord)
     }
     
-    private func formatTotalTimeInterval(timeInterval: TimeInterval) -> String {
+    private func formatTotalTimeInterval(timeInterval: TimeInterval, isAOD: Bool = false) -> String {
         let hours = Int(timeInterval) / 3600
         let minutes = Int(timeInterval) / 60 % 60
         let seconds = Int(timeInterval) % 60
+        
+        guard !isAOD else {
+            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        }
+        
         let milliseconds = Int(timeInterval.truncatingRemainder(dividingBy: 1) * 100)
         
         return String(format: "%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds)
     }
     
-    private func formatCurrentTimeInterval(timeInterval: TimeInterval) -> String {
+    private func formatCurrentTimeInterval(timeInterval: TimeInterval, isAOD: Bool = false) -> String {
         let minutes = Int(timeInterval) / 60 % 60
         let seconds = Int(timeInterval) % 60
+        
+        guard !isAOD else {
+            return String(format: "%02d:%02d", minutes, seconds)
+        }
+        
         let milliseconds = Int(timeInterval.truncatingRemainder(dividingBy: 1) * 100)
         
         return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
@@ -159,8 +171,10 @@ public class IntervalActiveViewModel: ObservableObject {
                 
                 self.currentSecondTime = (burningSecondTime * burningCount + restingSecondTime * restingCount) - self.totalSecondTime
                 
-                self.totalSecondTimeString = self.formatTotalTimeInterval(timeInterval: totalSecondTime)
-                self.currentSecondTimeString = self.formatCurrentTimeInterval(timeInterval: currentSecondTime)
+                self.totalTimeString = self.formatTotalTimeInterval(timeInterval: totalSecondTime)
+                self.currentTimeString = self.formatCurrentTimeInterval(timeInterval: currentSecondTime)
+                self.currentTimeStringAOD = self.formatCurrentTimeInterval(timeInterval: currentSecondTime, isAOD: true)
+                self.totalTimeStringAOD = self.formatTotalTimeInterval(timeInterval: totalSecondTime, isAOD: true)
                 
                 switch self.activeInterval.currentIntervalType {
                 case .burning:
